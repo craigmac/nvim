@@ -15,11 +15,11 @@ vim.opt.path:remove { '/usr/include' }
 vim.opt.path:append { '**' }
 vim.opt.relativenumber = true
 -- So I can use autocmds in exrc project files
+-- TODO: is it possible to use K in lua files to open e.g., :help <cword> like .vim files?
+-- might have to use an expr mapping to determing if what comes before cword is something
+-- like 'vim.opt' (although user can alias anything so this is best we can do?)
 vim.opt.secure = false
 vim.opt.showmatch = true
---vim.opt.statusline = '%F'
---vim.opt.statusline = vim.opt.statusline + "%="
---vim.opt.statusline = vim.opt.statusline + "%y"
 vim.opt.shortmess:remove { 'c', 'S' }
 vim.opt.signcolumn = 'yes'
 vim.opt.smartcase = true

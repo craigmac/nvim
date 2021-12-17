@@ -1,10 +1,5 @@
 -- neovim 0.6+ configuration
 
-vim.cmd [[
-set path=.,,**
-
-]]
-
 -- General
 require "my.options"
 require "my.plugins"
@@ -16,7 +11,7 @@ require "my.colorscheme"
 require "my.treesitter"
 require "my.cmp"
 require "my.fugitive"
--- require "my.comment"
+require "my.comment"
 -- require "my.gitsigns"
 -- require "my.lsp"
 -- require "my.lualine"
