@@ -13,7 +13,9 @@ require "my.autocommand"
 require "my.colorscheme"
 
 -- Plugins
--- require "my.cmp"
+require "my.treesitter"
+require "my.cmp"
+require "my.fugitive"
 -- require "my.comment"
 -- require "my.gitsigns"
 -- require "my.lsp"
