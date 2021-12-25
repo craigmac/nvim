@@ -4,24 +4,11 @@ local install_path = fn.stdpath "data" .. "/site/pack/packer/start/packer.nvim"
 
 if fn.empty(fn.glob(install_path)) > 0 then
   PACKER_BOOTSTRAP = fn.system {
-    "git",
-    "clone",
-    "--depth",
-    "1",
-    "https://github.com/wbthomason/packer.nvim",
-    install_path,
+    "git", "clone", "https://github.com/wbthomason/packer.nvim", install_path,
   }
   print "Installing packer.nvim, close and reopen Neovim..."
   vim.cmd [[packadd packer.nvim]]
 end
-
--- Reloads Neovim when this file is saved
-vim.cmd [[
-  augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost plugins.lua source <afile> | PackerSync
-  augroup END
-]]
 
 -- pcall() won't error out if it doesn't exist
 local status_ok, packer = pcall(require, "packer")
@@ -29,57 +16,52 @@ if not status_ok then
   return
 end
 
--- Use popup window for packer
-packer.init {
-  display = {
-    open_fn = function()
-      return require("packer.util").float { border = "rounded" }
-    end,
-  },
-}
-
 return packer.startup(function(use)
-  use "wbthomason/packer.nvim" -- manage ourselves
-  use "nvim-lua/popup.nvim" -- Neovim implementation of vim popup API, some plugins use it
-  use "nvim-lua/plenary.nvim" -- Used by lots of plugins, useful Lua functions
-  use "akinsho/toggleterm.nvim"
-  use "nvim-telescope/telescope.nvim"
-  use "numToStr/Comment.nvim" -- like vim-commentary but treesitter aware
-  use "JoosepAlviste/nvim-ts-context-commentstring" -- used with Comment.nvim
-  use { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }
-  use "nvim-treesitter/nvim-treesitter-textobjects"
+  use { 'wbthomason/packer.nvim', lock = true, }
+  use { 
+    'nvim-telescope/telescope.nvim', 
+    lock = true,
+    requires = { {'nvim-lua/plenary.nvim', lock = true} }
+  }
+  use { 
+    'nvim-telescope/telescope-fzf-native.nvim',
+    lock = true,
+    run = 'make',
+  }
 
-  -- LSP
-  use "neovim/nvim-lspconfig" -- enable LSP
- -- wraps external formatters/linters to use builtin LSP stuff and act like a
- -- LSP server so we can leverage the builtin LSP stuff and use any
- -- formatter/linter we want, such as vale, markdownlint
-  use "jose-elias-alvarez/null-ls.nvim"
+  use { 'numToStr/Comment.nvim', lock = true }
+  use { 
+    'JoosepAlviste/nvim-ts-context-commentstring', 
+    lock = true,
+    after = { 'nvim-treesitter' }
+  }
+  use { 'nvim-treesitter/nvim-treesitter', lock = true, run = ':TSUpdate' }
+  use { 'nvim-treesitter/nvim-treesitter-textobjects',
+    lock = true,
+    after = { 'nvim-treesitter' },
+  }
 
-  -- Completion framework and completion sources
-  use "hrsh7th/nvim-cmp" -- Framework
-  use "hrsh7th/cmp-nvim-lsp" -- LSP source
-  use "hrsh7th/cmp-buffer"
-  use "hrsh7th/cmp-path"
-  use "hrsh7th/cmp-cmdline" -- vim command line source
+  use { 'neovim/nvim-lspconfig', lock = true }
+  use { 'jose-elias-alvarez/null-ls.nvim', lock = true }
+  use { 'b0o/SchemaStore.nvim', lock = true, after = { 'nvim-lspconfig' }}
+  use { 'hrsh7th/nvim-cmp', lock = true }
+  use { 'hrsh7th/cmp-nvim-lsp', lock = true, after = 'nvim-cmp' }
+  use { 'hrsh7th/cmp-buffer', lock = true, after = 'nvim-cmp' }
+  use { 'hrsh7th/cmp-path', lock = true, after = 'nvim-cmp' }
+  use { 'hrsh7th/cmp-cmdline', lock = true, after = 'nvim-cmp' }
+  use { 'saadparwaiz1/cmp_luasnip', lock = true, after = 'nvim-cmp' }
+  use { 'L3MON4D3/LuaSnip', lock = true, after = 'nvim-cmp' }
+  use { 'rafamadriz/friendly-snippets', lock = true, after = 'LuaSnip' }
+  use { 'tpope/vim-fugitive', lock = true }
+  use { 'tpope/vim-rhubarb', lock = true, after = 'vim-fugitive' }
+  use { 'lewis6991/gitsigns.nvim', lock = true }
 
-  -- Snippets
-  -- use "L3MON4D3/LuaSnip" -- Engine
-  -- use "rafamadriz/friendly-snippets" -- some snippets
-  -- use "saadparwaiz1/cmp_luasnip" -- luasnip source for nvim-cmp
-
-  -- Git
-  use "tpope/vim-fugitive"
-  use "tpope/vim-rhubarb"
-  use "lewis6991/gitsigns.nvim"
-
-  -- use "christoomey/vim-tmux-navigator"
-
-  -- Colors
-  use "projekt0n/github-nvim-theme"
+  use { 'projekt0n/github-nvim-theme', lock = true }
+  use { 'mcchrish/zenbones.nvim', lock = true, requires = { {'rktjmp/lush.nvim', lock = true} }}
+  use { 'tomasiser/vim-code-dark', lock = true }
 
   if PACKER_BOOTSTRAP then
-    require("packer").sync()
+    require('packer').sync()
   end
 end)
 

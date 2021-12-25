@@ -6,7 +6,5 @@ if exists('current_compiler')
   finish
 endif
 
-compiler yamllint-relaxed
-
 setlocal foldmethod=indent
 

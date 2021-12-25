@@ -1,10 +1,11 @@
-vim.cmd [[
-nnoremap <Leader>gg :G<CR>
-nnoremap <Leader>gP :G push<CR>
-nnoremap <Leader>gp :G pull<CR>
-nnoremap <Leader>gd :Gvdiffsplit<CR>
-nnoremap <Leader>gb :G blame<CR>
-nnoremap <Leader>gl :Gclog<CR>
-nnoremap <Leader>gc :G commit -av<CR>
-]]
+local map = vim.api.nvim_set_keymap
+local opts = { silent = true, noremap = true }
+
+map('n', '<Leader>gg', '<Cmd>G<CR>', opts)
+map('n', '<Leader>gP', '<Cmd>G push<CR>', opts)
+map('n', '<Leader>gp', '<Cmd>G pull<CR>', opts)
+map('n', '<Leader>gd', '<Cmd>Gvdiffsplit<CR>', opts)
+map('n', '<Leader>gb', '<Cmd>G blame<CR>', opts)
+map('n', '<Leader>gl', '<Cmd>Gclog<CR>', opts)
+map('n', '<Leader>gc', '<Cmd>G commit -av<CR>', opts)
 

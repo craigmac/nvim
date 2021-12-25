@@ -74,25 +74,67 @@ _G.packer_plugins = {
     path = "/Users/cmaceach/.local/share/nvim/site/pack/packer/start/Comment.nvim",
     url = "https://github.com/numToStr/Comment.nvim"
   },
-  ["cmp-buffer"] = {
+  LuaSnip = {
+    after = { "friendly-snippets" },
+    load_after = {},
     loaded = true,
-    path = "/Users/cmaceach/.local/share/nvim/site/pack/packer/start/cmp-buffer",
+    needs_bufread = true,
+    path = "/Users/cmaceach/.local/share/nvim/site/pack/packer/opt/LuaSnip",
+    url = "https://github.com/L3MON4D3/LuaSnip"
+  },
+  ["SchemaStore.nvim"] = {
+    load_after = {},
+    loaded = true,
+    needs_bufread = false,
+    path = "/Users/cmaceach/.local/share/nvim/site/pack/packer/opt/SchemaStore.nvim",
+    url = "https://github.com/b0o/SchemaStore.nvim"
+  },
+  ["cmp-buffer"] = {
+    after_files = { "/Users/cmaceach/.local/share/nvim/site/pack/packer/opt/cmp-buffer/after/plugin/cmp_buffer.lua" },
+    load_after = {},
+    loaded = true,
+    needs_bufread = false,
+    path = "/Users/cmaceach/.local/share/nvim/site/pack/packer/opt/cmp-buffer",
     url = "https://github.com/hrsh7th/cmp-buffer"
   },
   ["cmp-cmdline"] = {
+    after_files = { "/Users/cmaceach/.local/share/nvim/site/pack/packer/opt/cmp-cmdline/after/plugin/cmp_cmdline.lua" },
+    load_after = {},
     loaded = true,
-    path = "/Users/cmaceach/.local/share/nvim/site/pack/packer/start/cmp-cmdline",
+    needs_bufread = false,
+    path = "/Users/cmaceach/.local/share/nvim/site/pack/packer/opt/cmp-cmdline",
     url = "https://github.com/hrsh7th/cmp-cmdline"
   },
   ["cmp-nvim-lsp"] = {
+    after_files = { "/Users/cmaceach/.local/share/nvim/site/pack/packer/opt/cmp-nvim-lsp/after/plugin/cmp_nvim_lsp.lua" },
+    load_after = {},
     loaded = true,
-    path = "/Users/cmaceach/.local/share/nvim/site/pack/packer/start/cmp-nvim-lsp",
+    needs_bufread = false,
+    path = "/Users/cmaceach/.local/share/nvim/site/pack/packer/opt/cmp-nvim-lsp",
     url = "https://github.com/hrsh7th/cmp-nvim-lsp"
   },
   ["cmp-path"] = {
+    after_files = { "/Users/cmaceach/.local/share/nvim/site/pack/packer/opt/cmp-path/after/plugin/cmp_path.lua" },
+    load_after = {},
     loaded = true,
-    path = "/Users/cmaceach/.local/share/nvim/site/pack/packer/start/cmp-path",
+    needs_bufread = false,
+    path = "/Users/cmaceach/.local/share/nvim/site/pack/packer/opt/cmp-path",
     url = "https://github.com/hrsh7th/cmp-path"
+  },
+  cmp_luasnip = {
+    after_files = { "/Users/cmaceach/.local/share/nvim/site/pack/packer/opt/cmp_luasnip/after/plugin/cmp_luasnip.lua" },
+    load_after = {},
+    loaded = true,
+    needs_bufread = false,
+    path = "/Users/cmaceach/.local/share/nvim/site/pack/packer/opt/cmp_luasnip",
+    url = "https://github.com/saadparwaiz1/cmp_luasnip"
+  },
+  ["friendly-snippets"] = {
+    load_after = {},
+    loaded = true,
+    needs_bufread = false,
+    path = "/Users/cmaceach/.local/share/nvim/site/pack/packer/opt/friendly-snippets",
+    url = "https://github.com/rafamadriz/friendly-snippets"
   },
   ["github-nvim-theme"] = {
     loaded = true,
@@ -103,6 +145,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/cmaceach/.local/share/nvim/site/pack/packer/start/gitsigns.nvim",
     url = "https://github.com/lewis6991/gitsigns.nvim"
+  },
+  ["lush.nvim"] = {
+    loaded = true,
+    path = "/Users/cmaceach/.local/share/nvim/site/pack/packer/start/lush.nvim",
+    url = "https://github.com/rktjmp/lush.nvim"
   },
   ["null-ls.nvim"] = {
     loaded = true,
@@ -125,13 +172,17 @@ _G.packer_plugins = {
     url = "https://github.com/nvim-treesitter/nvim-treesitter"
   },
   ["nvim-treesitter-textobjects"] = {
+    load_after = {},
     loaded = true,
-    path = "/Users/cmaceach/.local/share/nvim/site/pack/packer/start/nvim-treesitter-textobjects",
+    needs_bufread = false,
+    path = "/Users/cmaceach/.local/share/nvim/site/pack/packer/opt/nvim-treesitter-textobjects",
     url = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects"
   },
   ["nvim-ts-context-commentstring"] = {
+    load_after = {},
     loaded = true,
-    path = "/Users/cmaceach/.local/share/nvim/site/pack/packer/start/nvim-ts-context-commentstring",
+    needs_bufread = false,
+    path = "/Users/cmaceach/.local/share/nvim/site/pack/packer/opt/nvim-ts-context-commentstring",
     url = "https://github.com/JoosepAlviste/nvim-ts-context-commentstring"
   },
   ["packer.nvim"] = {
@@ -144,20 +195,20 @@ _G.packer_plugins = {
     path = "/Users/cmaceach/.local/share/nvim/site/pack/packer/start/plenary.nvim",
     url = "https://github.com/nvim-lua/plenary.nvim"
   },
-  ["popup.nvim"] = {
+  ["telescope-fzf-native.nvim"] = {
     loaded = true,
-    path = "/Users/cmaceach/.local/share/nvim/site/pack/packer/start/popup.nvim",
-    url = "https://github.com/nvim-lua/popup.nvim"
+    path = "/Users/cmaceach/.local/share/nvim/site/pack/packer/start/telescope-fzf-native.nvim",
+    url = "https://github.com/nvim-telescope/telescope-fzf-native.nvim"
   },
   ["telescope.nvim"] = {
     loaded = true,
     path = "/Users/cmaceach/.local/share/nvim/site/pack/packer/start/telescope.nvim",
     url = "https://github.com/nvim-telescope/telescope.nvim"
   },
-  ["toggleterm.nvim"] = {
+  ["vim-code-dark"] = {
     loaded = true,
-    path = "/Users/cmaceach/.local/share/nvim/site/pack/packer/start/toggleterm.nvim",
-    url = "https://github.com/akinsho/toggleterm.nvim"
+    path = "/Users/cmaceach/.local/share/nvim/site/pack/packer/start/vim-code-dark",
+    url = "https://github.com/tomasiser/vim-code-dark"
   },
   ["vim-fugitive"] = {
     loaded = true,
@@ -165,13 +216,38 @@ _G.packer_plugins = {
     url = "https://github.com/tpope/vim-fugitive"
   },
   ["vim-rhubarb"] = {
+    load_after = {},
     loaded = true,
-    path = "/Users/cmaceach/.local/share/nvim/site/pack/packer/start/vim-rhubarb",
+    needs_bufread = false,
+    path = "/Users/cmaceach/.local/share/nvim/site/pack/packer/opt/vim-rhubarb",
     url = "https://github.com/tpope/vim-rhubarb"
+  },
+  ["zenbones.nvim"] = {
+    loaded = true,
+    path = "/Users/cmaceach/.local/share/nvim/site/pack/packer/start/zenbones.nvim",
+    url = "https://github.com/mcchrish/zenbones.nvim"
   }
 }
 
 time([[Defining packer_plugins]], false)
+-- Load plugins in order defined by `after`
+time([[Sequenced loading]], true)
+vim.cmd [[ packadd nvim-cmp ]]
+vim.cmd [[ packadd cmp_luasnip ]]
+vim.cmd [[ packadd cmp-buffer ]]
+vim.cmd [[ packadd cmp-path ]]
+vim.cmd [[ packadd cmp-nvim-lsp ]]
+vim.cmd [[ packadd LuaSnip ]]
+vim.cmd [[ packadd friendly-snippets ]]
+vim.cmd [[ packadd cmp-cmdline ]]
+vim.cmd [[ packadd nvim-treesitter ]]
+vim.cmd [[ packadd nvim-ts-context-commentstring ]]
+vim.cmd [[ packadd nvim-treesitter-textobjects ]]
+vim.cmd [[ packadd nvim-lspconfig ]]
+vim.cmd [[ packadd SchemaStore.nvim ]]
+vim.cmd [[ packadd vim-fugitive ]]
+vim.cmd [[ packadd vim-rhubarb ]]
+time([[Sequenced loading]], false)
 if should_profile then save_profiles() end
 
 end)
