@@ -1,0 +1,97 @@
+diff -ruN MyThes-1.0/Makefile MyThes-1.0-vim/Makefile
+--- MyThes-1.0/Makefile	2003-12-08 14:42:33.000000000 -0700
++++ MyThes-1.0-vim/Makefile	2018-11-30 07:48:21.000000000 -0700
+@@ -21,7 +21,7 @@
+ 	-@ ($(RANLIB) $@ || true) >/dev/null 2>&1
+ 
+ example: example.o $(LIBS)
+-	$(CXX) $(CXXFLAGS) -o $@ example.o $(LDFLAGS)
++	$(CXX) -o $@ example.o $(LDFLAGS)
+ 
+ %.o: %.cxx 
+ 	$(CXX) $(CXXFLAGS) -c $<
+diff -ruN MyThes-1.0/README-VIM-THESAURUS MyThes-1.0-vim/README-VIM-THESAURUS
+--- MyThes-1.0/README-VIM-THESAURUS	1969-12-31 17:00:00.000000000 -0700
++++ MyThes-1.0-vim/README-VIM-THESAURUS	2018-11-30 10:04:10.000000000 -0700
+@@ -0,0 +1,21 @@
++To create a thesaurus file formatted for vim's thesaurus run:
++bash ./mk-vim-thesaurus.sh
++
++The file 'thesaurus.txt' will be created.
++
++Here are the steps that mk-vim-thesaurus.sh takes:
++
++1. Extract term list from MyThes-1.0 th_en_US_new.dat file:
++# Note: This will remove complex words with spaces in them because space is the
++# default delimiter for vim's thesaurus format.
++grep -v "^(" th_en_US_new.dat | awk -F"|" '{print $1}' | grep -v ' ' | grep -v 'ISO8859-1' > words-without-spaces.lst
++
++2. make example
++make
++
++3. Run mk_vim_thesaurus_format:
++# Note: While extracting synonyms, multiple word synonyms with spaces are excluded.
++./example th_en_US_new.idx th_en_US_new.dat words-without-spaces.lst  > raw-list
++
++4. Remove entries that don't have synonyms:
++grep -v "^\w\+$" raw-list > thesaurus.txt 
+diff -ruN MyThes-1.0/example.cxx MyThes-1.0-vim/example.cxx
+--- MyThes-1.0/example.cxx	2003-12-08 14:37:13.000000000 -0700
++++ MyThes-1.0-vim/example.cxx	2018-11-30 09:00:44.000000000 -0700
+@@ -70,16 +70,20 @@
+       // or count since needed for CleanUpAfterLookup routine
+       mentry* pm = pmean;
+       if (count) {
+-        fprintf(stdout,"%s has %d meanings\n",buf,count);
+-	for (int  i=0; i < count; i++) {
+-          fprintf(stdout,"   meaning %d: %s\n",i,pm->defn);
++        // initial word
++        fprintf(stdout,"%s",buf);
++        for (int  i=0; i < count; i++) {
+           for (int j=0; j < pm->count; j++) {
+-	    fprintf(stdout,"       %s\n",pm->psyns[j]);
++            // only output the word if it doesn't have spaces
++            // because space is the standard delimiter in the 
++            // vim thesaurus file format.
++            if (strchr(pm->psyns[j], ' ') == NULL)  {
++              fprintf(stdout," %s",pm->psyns[j]);
++            }
+           }
+-          fprintf(stdout,"\n");
+           pm++;
+-	}
+-        fprintf(stdout,"\n\n");
++        }
++        fprintf(stdout,"\n");
+         // now clean up all allocated memory 
+         pMT->CleanUpAfterLookup(&pmean,count);
+       } else {
+diff -ruN MyThes-1.0/mk-vim-thesaurus.sh MyThes-1.0-vim/mk-vim-thesaurus.sh
+--- MyThes-1.0/mk-vim-thesaurus.sh	1969-12-31 17:00:00.000000000 -0700
++++ MyThes-1.0-vim/mk-vim-thesaurus.sh	2018-11-30 08:51:15.000000000 -0700
+@@ -0,0 +1,13 @@
++
++# Extract term list from MyThes-1.0 th_en_US_new.dat file:
++grep -v "^(" th_en_US_new.dat | awk -F"|" '{print $1}' | grep -v ' ' | grep -v 'ISO8859-1' > words-without-spaces.lst
++
++# make example
++make
++
++#  Run mk_vim_thesaurus_format:
++./example th_en_US_new.idx th_en_US_new.dat words-without-spaces.lst  > raw-list
++
++#  Remove entries that don't have synonyms:
++grep -v '^\w\+$' raw-list > thesaurus.txt 
++
+diff -ruN MyThes-1.0/mythes.cxx MyThes-1.0-vim/mythes.cxx
+--- MyThes-1.0/mythes.cxx	2003-12-08 14:40:27.000000000 -0700
++++ MyThes-1.0-vim/mythes.cxx	2018-11-28 13:12:29.000000000 -0700
+@@ -25,7 +25,7 @@
+ // return index of char in string
+ int mystr_indexOfChar(const char * d, int c)
+ {
+-  char * p = strchr(d,c);
++  const char * p = strchr(d,c);
+   if (p) return (int)(p-d);
+   return -1;
+ }

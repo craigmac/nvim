@@ -64,7 +64,8 @@ require('packer').startup(function(use)
   use { 'lewis6991/gitsigns.nvim', requires = 'nvim-lua/plenary.nvim' }
   -- use { 'tomasiser/vim-code-dark' }
   use 'joshdick/onedark.vim'
-  use { 'itchyny/lightline.vim' }
+  -- use { 'itchyny/lightline.vim' }
+  use { 'nvim-lualine/lualine.nvim', requires = 'kyazdani42/nvim-web-devicons' }
   if PACKER_BOOTSTRAP then
     require('packer').sync()
   end
@@ -185,7 +186,7 @@ cmp.setup {
     end,
   },
   completion = {
-    keyword_length = 5,
+    autocomplete = false,
   },
   mapping = {
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
@@ -291,6 +292,7 @@ local null_ls = require 'null-ls'
 local sources = {
   null_ls.builtins.formatting.stylua,
   null_ls.builtins.diagnostics.vale,
+  require'my.null_ls_custom.markdownlint_cli2',
 }
 null_ls.setup {
   on_attach = my_on_attach,
@@ -373,14 +375,39 @@ require('comment').setup {
   end,
 }
 
--- lightline.vim
-vim.g.lightline = {
-  colorscheme = 'onedark',
-  ative = { left = { { 'mode', 'paste' }, { 'gitbranch', 'readonly', 'filename', 'modified' } } },
-  component_function = { gitbranch = 'fugitive#head' },
+-- lualine.nvim
+require('lualine').setup {
+  options = {
+    icons_enabled = true,
+    theme = 'auto',
+    component_separators = {},
+    section_separators = {},
+    disabled_filetypes = {},
+    always_divide_middle = true,
+  },
+  sections = {
+    lualine_a = { 'mode' },
+    lualine_b = { 'branch', 'diagnostics' },
+    lualine_c = { '%F' },
+    lualine_x = {},
+    lualine_y = { 'progress' },
+    lualine_z = { 'location' },
+  },
+  inactive_sections = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = { '%F' },
+    lualine_x = {},
+    lualine_y = {},
+    lualine_z = {},
+  },
+  tabline = {},
+  extensions = {},
 }
+
+-- lualine_b = { { 'FugitiveHead', icon = ''
 
 -- TODO: formatexpr, foldexpr for lsp servers
 -- TODO: for null-ls create buflocal format command to call for each
--- TODO: cmp only complete on manual <C-Space>, use C_n/C-p as usual to immediately select
---
+-- TODO: custom lualine setup: no diff, absolute path, no icons, no EOL, shorter mode display
+-- TODO: Gitsigns and setup codeactions with it too using null-ls?
