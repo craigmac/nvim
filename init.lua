@@ -3,11 +3,16 @@
 -- Utilities
 local map = vim.api.nvim_set_keymap
 local opts = { silent = true, noremap = true }
+map('', '<Space>', '<Nop>', opts)
+vim.g.mapleader = ' '
+-- TODO: make this lua, not vimscript
+-- if executable('nvr')
+--   let $GIT_EDITOR = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
+-- endif
 
 -- Options
 vim.opt.breakindent = true
-vim.opt.clipboard = { 'unnamed', 'unnamedplus' }
-vim.opt.complete:remove { 'd' }
+vim.opt.clipboard = { 'unnamed', 'unnamedplus' } vim.opt.complete:remove { 'd' }
 vim.opt.completeopt = { 'menuone' }
 vim.opt.diffopt:append { 'algorithm:patience' }
 vim.opt.exrc = true
@@ -35,12 +40,6 @@ vim.opt.updatetime = 250
 vim.opt.wrap = false
 
 -- Packer
-local install_path = vim.fn.stdpath 'data' .. '/site/pack/packer/start/packer.nvim'
-if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-  PACKER_BOOTSTRAP = vim.fn.system { 'git', 'clone', 'https://github.com/wbthomason/packer.nvim', install_path }
-  print 'Installing packer.nvim, close and reopen Neovim...'
-  vim.cmd [[packadd packer.nvim]]
-end
 require('packer').startup(function(use)
   use { 'wbthomason/packer.nvim' }
   use { 'nvim-telescope/telescope.nvim', requires = 'nvim-lua/plenary.nvim' }
@@ -51,29 +50,22 @@ require('packer').startup(function(use)
   use { 'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter' }
   use { 'neovim/nvim-lspconfig' }
   use { 'jose-elias-alvarez/null-ls.nvim' }
-  use { 'b0o/SchemaStore.nvim', after = 'nvim-lspconfig' }
   use { 'hrsh7th/nvim-cmp' }
   use { 'hrsh7th/cmp-nvim-lsp' }
   use { 'hrsh7th/cmp-path' }
   use { 'saadparwaiz1/cmp_luasnip' }
   use { 'L3MON4D3/LuaSnip' }
   use { 'rafamadriz/friendly-snippets', after = 'LuaSnip' }
-  use { 'tpope/vim-fugitive' }
   use { 'tpope/vim-surround' }
-  use { 'tpope/vim-rhubarb', after = 'vim-fugitive' }
+  use { 'tpope/vim-repeat' }
   use { 'lewis6991/gitsigns.nvim', requires = 'nvim-lua/plenary.nvim' }
-  -- use { 'tomasiser/vim-code-dark' }
-  use 'joshdick/onedark.vim'
-  -- use { 'itchyny/lightline.vim' }
+  use 'projekt0n/github-nvim-theme'
   use { 'nvim-lualine/lualine.nvim', requires = 'kyazdani42/nvim-web-devicons' }
-  if PACKER_BOOTSTRAP then
-    require('packer').sync()
-  end
+  use 'kdheepak/lazygit.nvim'
 end)
 
 -- Keymaps
-map('', '<Space>', '<Nop>', opts)
-vim.g.mapleader = ' '
+map('n', '<Leader>gg', '<Cmd>LazyGit<CR>', opts)
 map('n', '<Leader>w', ':update<CR>', opts)
 map('n', '<Leader>,', ':edit ~/.config/nvim/init.lua<CR>', opts)
 map('n', ']q', ':cnext<CR>', opts)
@@ -96,12 +88,12 @@ map('n', '<Leader><Leader>', '<Cmd>buffer #<CR>', opts)
 map('n', '<Leader>k', '<Cmd>bdelete!<CR>', opts)
 vim.cmd [[
 " Function keys
-nnoremap <silent><F3> :call utils#ToggleQuickfixList()<CR>
-nnoremap <silent><F4> :call utils#ToggleLocationList()<CR>
-nnoremap <silent><F5> :silent make! % <bar> silent redraw!<CR>
-nnoremap <silent><F6> :15Lexplore<CR>
-nnoremap <silent><F9> :set list!<CR>
-nnoremap <silent><F10> :set spell!<CR>
+nnoremap <F3> :call utils#ToggleQuickfixList()<CR>
+nnoremap <F4> :call utils#ToggleLocationList()<CR>
+nnoremap <F5> :silent make! % <bar> silent redraw!<CR>
+nnoremap <F6> :15Lexplore<CR>
+nnoremap <F9> :set list!<CR>
+nnoremap <F10> :set spell!<CR>
 nnoremap <Leader>ft :e <C-R>=expand('~/.vim/after/ftplugin/'.&ft.'.vim')<CR><CR>
 nnoremap gh :diffget //2<CR>
 nnoremap gl :diffget //3<CR>
@@ -121,8 +113,9 @@ augroup END
 ]]
 
 -- Colors
-vim.g.onedark_terminal_italics = 2
-vim.cmd [[ colorscheme onedark ]]
+require('github-theme').setup {
+  theme_style = 'light'
+}
 
 -- Plugin Configuration
 
@@ -217,15 +210,6 @@ cmp.setup {
   },
 }
 
--- vim-fugitive
-map('n', '<Leader>gg', '<Cmd>G<CR>', opts)
-map('n', '<Leader>gP', '<Cmd>G push<CR>', opts)
-map('n', '<Leader>gp', '<Cmd>G pull<CR>', opts)
-map('n', '<Leader>gd', '<Cmd>Gvdiffsplit<CR>', opts)
-map('n', '<Leader>gb', '<Cmd>G blame<CR>', opts)
-map('n', '<Leader>gl', '<Cmd>Gclog<CR>', opts)
-map('n', '<Leader>gc', '<Cmd>G commit -av<CR>', opts)
-
 -- nvim-lspconfig
 local lspconfig = require 'lspconfig'
 local my_on_attach = function(_, bufnr)
@@ -292,7 +276,7 @@ local null_ls = require 'null-ls'
 local sources = {
   null_ls.builtins.formatting.stylua,
   null_ls.builtins.diagnostics.vale,
-  require'my.null_ls_custom.markdownlint_cli2',
+  require 'my.null_ls_custom.markdownlint_cli2',
 }
 null_ls.setup {
   on_attach = my_on_attach,
@@ -405,9 +389,8 @@ require('lualine').setup {
   extensions = {},
 }
 
--- lualine_b = { { 'FugitiveHead', icon = ''
-
 -- TODO: formatexpr, foldexpr for lsp servers
 -- TODO: for null-ls create buflocal format command to call for each
 -- TODO: custom lualine setup: no diff, absolute path, no icons, no EOL, shorter mode display
 -- TODO: Gitsigns and setup codeactions with it too using null-ls?
+-- TODO: lazy load some packer stuff like Fugitive
