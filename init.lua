@@ -5,14 +5,11 @@ local map = vim.api.nvim_set_keymap
 local opts = { silent = true, noremap = true }
 map('', '<Space>', '<Nop>', opts)
 vim.g.mapleader = ' '
--- TODO: make this lua, not vimscript
--- if executable('nvr')
---   let $GIT_EDITOR = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
--- endif
 
 -- Options
 vim.opt.breakindent = true
-vim.opt.clipboard = { 'unnamed', 'unnamedplus' } vim.opt.complete:remove { 'd' }
+vim.opt.clipboard = { 'unnamed', 'unnamedplus' }
+vim.opt.complete:remove { 'd' }
 vim.opt.completeopt = { 'menuone' }
 vim.opt.diffopt:append { 'algorithm:patience' }
 vim.opt.exrc = true
@@ -57,17 +54,16 @@ require('packer').startup(function(use)
   use { 'L3MON4D3/LuaSnip' }
   use { 'rafamadriz/friendly-snippets', after = 'LuaSnip' }
   use { 'tpope/vim-surround' }
-  use { 'tpope/vim-repeat' }
-  use { 'lewis6991/gitsigns.nvim', requires = 'nvim-lua/plenary.nvim' }
-  use 'projekt0n/github-nvim-theme'
+  use { 'tpope/vim-repeat', after = 'vim-surround' }
+  use 'lunarvim/darkplus.nvim'
   use { 'nvim-lualine/lualine.nvim', requires = 'kyazdani42/nvim-web-devicons' }
   use 'kdheepak/lazygit.nvim'
 end)
 
 -- Keymaps
-map('n', '<Leader>gg', '<Cmd>LazyGit<CR>', opts)
 map('n', '<Leader>w', ':update<CR>', opts)
 map('n', '<Leader>,', ':edit ~/.config/nvim/init.lua<CR>', opts)
+map('n', '<Leader>gg', '<Cmd>LazyGit<CR>', opts)
 map('n', ']q', ':cnext<CR>', opts)
 map('n', ']Q', ':clast<CR>', opts)
 map('n', '[q', ':cprevious<CR>', opts)
@@ -113,9 +109,7 @@ augroup END
 ]]
 
 -- Colors
-require('github-theme').setup {
-  theme_style = 'light'
-}
+vim.cmd [[ colorscheme darkplus ]]
 
 -- Plugin Configuration
 
@@ -212,6 +206,7 @@ cmp.setup {
 
 -- nvim-lspconfig
 local lspconfig = require 'lspconfig'
+vim.diagnostic.config { virtual_text = false }
 local my_on_attach = function(_, bufnr)
   local function buf_set_keymap(...)
     vim.api.nvim_buf_set_keymap(bufnr, ...)
