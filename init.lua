@@ -109,7 +109,11 @@ augroup END
 ]]
 
 -- Colors
-vim.cmd [[ colorscheme darkplus ]]
+vim.cmd [[ 
+  colorscheme darkplus 
+  hi! Whitespace guifg=#404040
+]]
+
 
 -- Plugin Configuration
 
@@ -358,7 +362,7 @@ require('comment').setup {
 require('lualine').setup {
   options = {
     icons_enabled = true,
-    theme = 'auto',
+    theme = 'codedark',
     component_separators = {},
     section_separators = {},
     disabled_filetypes = {},
