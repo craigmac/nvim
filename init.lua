@@ -1,5 +1,4 @@
 -- Neovim 0.6+ configuration
-
 -- Utilities
 local map = vim.api.nvim_set_keymap
 local opts = { silent = true, noremap = true }
@@ -31,7 +30,7 @@ vim.opt.smartindent = true
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.swapfile = false
-vim.opt.termguicolors = true
+vim.opt.termguicolors = false
 vim.opt.thesaurus = '~/.config/nvim/thesaurus/english.txt'
 vim.opt.updatetime = 250
 vim.opt.wrap = false
@@ -50,14 +49,10 @@ require('packer').startup(function(use)
   use { 'hrsh7th/nvim-cmp' }
   use { 'hrsh7th/cmp-nvim-lsp' }
   use { 'hrsh7th/cmp-path' }
-  use { 'saadparwaiz1/cmp_luasnip' }
-  use { 'L3MON4D3/LuaSnip' }
-  use { 'rafamadriz/friendly-snippets', after = 'LuaSnip' }
-  use { 'tpope/vim-surround' }
+  use 'tpope/vim-surround'
   use { 'tpope/vim-repeat', after = 'vim-surround' }
-  use 'lunarvim/darkplus.nvim'
-  use { 'nvim-lualine/lualine.nvim', requires = 'kyazdani42/nvim-web-devicons' }
-  use 'kdheepak/lazygit.nvim'
+  use 'craigmac/vim-tmux-navigator'
+  use 'romainl/apprentice'
 end)
 
 -- Keymaps
@@ -105,15 +100,12 @@ augroup my_autocommands
   autocmd TextYankPost * silent! lua vim.highlight.on_yank()
   autocmd QuickFixCmdPost [^l]* cwindow
   autocmd QuickFixCmdPost  l* lwindow
+  autocmd BufWritePost ~/.config/nvim/init.lua source ~/.config/nvim/init.lua
 augroup END
 ]]
 
 -- Colors
-vim.cmd [[ 
-  colorscheme darkplus 
-  hi! Whitespace guifg=#404040
-]]
-
+vim.cmd [[ colorscheme apprentice ]]
 
 -- Plugin Configuration
 
@@ -168,14 +160,7 @@ require('nvim-treesitter.configs').setup {
 
 -- nvim-cmp
 local cmp = require 'cmp'
-local luasnip = require 'luasnip'
-require('luasnip/loaders/from_vscode').lazy_load()
 cmp.setup {
-  snippet = {
-    expand = function(args)
-      luasnip.lsp_expand(args.body)
-    end,
-  },
   completion = {
     autocomplete = false,
   },
@@ -184,26 +169,10 @@ cmp.setup {
     ['<C-u>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<CR>'] = cmp.mapping.confirm { select = false },
-    ['<Tab>'] = function(fallback)
-      if luasnip.expandable() then
-        luasnip.expand()
-      elseif luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
-      else
-        fallback()
-      end
-    end,
-    ['<S-Tab>'] = function(fallback)
-      if luasnip.jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
-    end,
   },
   sources = cmp.config.sources {
     { name = 'nvim_lsp' },
-    { name = 'luasnip' },
+    -- { name = 'luasnip' },
     { name = 'path' },
   },
 }
@@ -359,34 +328,34 @@ require('comment').setup {
 }
 
 -- lualine.nvim
-require('lualine').setup {
-  options = {
-    icons_enabled = true,
-    theme = 'codedark',
-    component_separators = {},
-    section_separators = {},
-    disabled_filetypes = {},
-    always_divide_middle = true,
-  },
-  sections = {
-    lualine_a = { 'mode' },
-    lualine_b = { 'branch', 'diagnostics' },
-    lualine_c = { '%F' },
-    lualine_x = {},
-    lualine_y = { 'progress' },
-    lualine_z = { 'location' },
-  },
-  inactive_sections = {
-    lualine_a = {},
-    lualine_b = {},
-    lualine_c = { '%F' },
-    lualine_x = {},
-    lualine_y = {},
-    lualine_z = {},
-  },
-  tabline = {},
-  extensions = {},
-}
+-- require('lualine').setup {
+--   options = {
+--     icons_enabled = true,
+--     theme = 'codedark',
+--     component_separators = {},
+--     section_separators = {},
+--     disabled_filetypes = {},
+--     always_divide_middle = true,
+--   },
+--   sections = {
+--     lualine_a = { 'mode' },
+--     lualine_b = { 'branch', 'diagnostics' },
+--     lualine_c = { '%F' },
+--     lualine_x = {},
+--     lualine_y = { 'progress' },
+--     lualine_z = { 'location' },
+--   },
+--   inactive_sections = {
+--     lualine_a = {},
+--     lualine_b = {},
+--     lualine_c = { '%F' },
+--     lualine_x = {},
+--     lualine_y = {},
+--     lualine_z = {},
+--   },
+--   tabline = {},
+--   extensions = {},
+-- }
 
 -- TODO: formatexpr, foldexpr for lsp servers
 -- TODO: for null-ls create buflocal format command to call for each
