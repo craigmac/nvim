@@ -1,11 +1,16 @@
--- Neovim 0.6+ configuration
--- Utilities
+-- Neovim HEAD configuration
+
+-- My init.vim modeline
+vim.cmd 'setlocal foldmethod=marker nowrap foldlevel=0'
+
+-- Utilities {{{
 local map = vim.api.nvim_set_keymap
 local opts = { silent = true, noremap = true }
 map('', '<Space>', '<Nop>', opts)
 vim.g.mapleader = ' '
+-- }}}
 
--- Options
+-- Options {{{
 vim.opt.breakindent = true
 vim.opt.clipboard = { 'unnamed', 'unnamedplus' }
 vim.opt.complete:remove { 'd' }
@@ -34,8 +39,9 @@ vim.opt.termguicolors = false
 vim.opt.thesaurus = '~/.config/nvim/thesaurus/english.txt'
 vim.opt.updatetime = 250
 vim.opt.wrap = false
+-- }}}}
 
--- Packer
+-- Packer {{{
 require('packer').startup(function(use)
   use { 'wbthomason/packer.nvim' }
   use { 'nvim-telescope/telescope.nvim', requires = 'nvim-lua/plenary.nvim' }
@@ -54,8 +60,9 @@ require('packer').startup(function(use)
   use 'craigmac/vim-tmux-navigator'
   use 'romainl/apprentice'
 end)
+-- }}}
 
--- Keymaps
+-- Keymaps {{{
 map('n', '<Leader>w', ':update<CR>', opts)
 map('n', '<Leader>,', ':edit ~/.config/nvim/init.lua<CR>', opts)
 map('n', '<Leader>gg', '<Cmd>LazyGit<CR>', opts)
@@ -92,8 +99,9 @@ cnoremap <expr> <C-n> wildmenumode() ? '<C-n>' : '<Down>'
 cnoremap <expr> <C-p> wildmenumode() ? '<C-p>' : '<Up>'
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 ]]
+-- }}}
 
--- Autocommands
+-- Autocommands {{{
 vim.cmd [[
 augroup my_autocommands
   autocmd!
@@ -103,13 +111,15 @@ augroup my_autocommands
   autocmd BufWritePost ~/.config/nvim/init.lua source ~/.config/nvim/init.lua
 augroup END
 ]]
+-- }}}
 
--- Colors
+-- Colors {{{
 vim.cmd [[ colorscheme apprentice ]]
+-- }}}
 
--- Plugin Configuration
+-- Plugin Configuration {{{
 
--- Treesitter
+-- Treesitter {{{
 require('nvim-treesitter.configs').setup {
   highlight = { enable = true },
   incremental_selection = {
@@ -157,8 +167,9 @@ require('nvim-treesitter.configs').setup {
     },
   },
 }
+-- }}}
 
--- nvim-cmp
+-- nvim-cmp {{{
 local cmp = require 'cmp'
 cmp.setup {
   completion = {
@@ -176,8 +187,9 @@ cmp.setup {
     { name = 'path' },
   },
 }
+-- }}}
 
--- nvim-lspconfig
+-- nvim-lspconfig {{{
 local lspconfig = require 'lspconfig'
 vim.diagnostic.config { virtual_text = false }
 local my_on_attach = function(_, bufnr)
@@ -215,8 +227,9 @@ for _, lsp in ipairs(servers) do
     capabilities = capabilities,
   }
 end
+-- }}}
 
--- lua-language-server
+-- lua-language-server {{{
 local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, 'lua/?.lua')
 table.insert(runtime_path, 'lua/?/init.lua')
@@ -238,8 +251,9 @@ lspconfig.sumneko_lua.setup {
     },
   },
 }
+-- }}}
 
--- null-ls
+-- null-ls {{{
 local null_ls = require 'null-ls'
 local sources = {
   null_ls.builtins.formatting.stylua,
@@ -250,8 +264,9 @@ null_ls.setup {
   on_attach = my_on_attach,
   sources = sources,
 }
+-- }}}
 
--- telescope.nvim
+-- telescope.nvim {{{
 require('telescope').setup {
   defaults = {
     path_display = { 'absolute' },
@@ -309,8 +324,9 @@ map('n', 'z=', '<Cmd>Telescope spell_suggest<CR>', opts)
 map('n', '<M-.>', '<Cmd>Telescope lsp_code_actions<CR>', opts)
 map('n', '<Leader>o', '<Cmd>Telescope lsp_document_symbols<CR>', opts)
 map('n', '<Leader>O', '<Cmd>Telescope lsp_workspace_symbols<CR>', opts)
+-- }}}
 
--- comment.nvim
+-- comment.nvim {{{
 require('comment').setup {
   pre_hook = function(ctx)
     local U = require 'Comment.utils'
@@ -326,8 +342,9 @@ require('comment').setup {
     }
   end,
 }
+-- }}}
 
--- lualine.nvim
+-- lualine.nvim {{{
 -- require('lualine').setup {
 --   options = {
 --     icons_enabled = true,
@@ -356,9 +373,10 @@ require('comment').setup {
 --   tabline = {},
 --   extensions = {},
 -- }
+-- }}}
+-- }}}
 
 -- TODO: formatexpr, foldexpr for lsp servers
 -- TODO: for null-ls create buflocal format command to call for each
 -- TODO: custom lualine setup: no diff, absolute path, no icons, no EOL, shorter mode display
--- TODO: Gitsigns and setup codeactions with it too using null-ls?
 -- TODO: lazy load some packer stuff like Fugitive
