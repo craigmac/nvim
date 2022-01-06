@@ -35,7 +35,7 @@ vim.opt.smartindent = true
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.swapfile = false
-vim.opt.termguicolors = false
+vim.opt.termguicolors = true
 vim.opt.thesaurus = '~/.config/nvim/thesaurus/english.txt'
 vim.opt.updatetime = 250
 vim.opt.wrap = false
@@ -57,8 +57,10 @@ require('packer').startup(function(use)
   use { 'hrsh7th/cmp-path' }
   use 'tpope/vim-surround'
   use { 'tpope/vim-repeat', after = 'vim-surround' }
-  use 'craigmac/vim-tmux-navigator'
-  use 'romainl/apprentice'
+  use 'tpope/vim-fugitive'
+  use 'tpope/vim-rhubarb'
+  use 'craigmac/vim-tmux-navigator' -- my fork with neovim fix for <C-l>
+  use 'projekt0n/github-nvim-theme' -- better than lourenci/github-colors IMO
 end)
 -- }}}
 
@@ -114,7 +116,13 @@ augroup END
 -- }}}
 
 -- Colors {{{
-vim.cmd [[ colorscheme apprentice ]]
+require'github-theme'.setup {
+  theme_style = 'light',
+  hide_end_of_buffer = false, -- show '~' EOF in signcolumn
+}
+
+-- FIXME: put this in setup{} above and create PR for upstream
+vim.cmd [[ hi! StatusLineNC guifg=#24292e guibg=#dbe9f9 gui=none ]]
 -- }}}
 
 -- Plugin Configuration {{{
