@@ -111,6 +111,8 @@ augroup my_autocommands
   autocmd QuickFixCmdPost [^l]* cwindow
   autocmd QuickFixCmdPost  l* lwindow
   autocmd BufWritePost ~/.config/nvim/init.lua source ~/.config/nvim/init.lua
+  autocmd FileType fugitiveblame call feedkeys('A')
+  autocmd FileType gitcommit call feedkeys('i')
 augroup END
 ]]
 -- }}}
