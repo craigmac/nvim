@@ -60,7 +60,7 @@ require('packer').startup(function(use)
   use 'tpope/vim-fugitive'
   use 'tpope/vim-rhubarb'
   use 'craigmac/vim-tmux-navigator' -- my fork with neovim fix for <C-l>
-  use 'projekt0n/github-nvim-theme' -- better than lourenci/github-colors IMO
+  use 'projekt0n/github-nvim-theme'
 end)
 -- }}}
 
@@ -118,11 +118,15 @@ augroup END
 -- Colors {{{
 require'github-theme'.setup {
   theme_style = 'light',
+  dark_float = true, -- show float canvas doesn't blend w normal bg
+  -- TODO: create PR for this, can't see splits with this on in light mode
+  hide_inactive_statusline = false, -- true = difficult to see splits
+  keyword_style = 'NONE',
+  variable_style = 'NONE',
+  function_style = 'NONE',
+  comment_style = 'italic',
   hide_end_of_buffer = false, -- show '~' EOF in signcolumn
 }
-
--- FIXME: put this in setup{} above and create PR for upstream
-vim.cmd [[ hi! StatusLineNC guifg=#24292e guibg=#dbe9f9 gui=none ]]
 -- }}}
 
 -- Plugin Configuration {{{
@@ -381,6 +385,20 @@ require('comment').setup {
 --   tabline = {},
 --   extensions = {},
 -- }
+-- }}}
+
+-- vim-fugitive {{{
+vim.cmd [[
+nnoremap <Leader>gg :G<CR>
+nnoremap <Leader>gP :G push<CR>
+nnoremap <Leader>gp :G pull<CR>
+nnoremap <Leader>gd :Gvdiffsplit<CR>
+nnoremap <Leader>gb :G blame<CR>
+nnoremap <Leader>gl :Gclog<CR>
+nnoremap <Leader>gc :G commit -av<CR>
+nnoremap <Leader>g/ :Ggrep! --quiet<Space>
+]]
+
 -- }}}
 -- }}}
 
