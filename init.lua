@@ -1,9 +1,10 @@
--- Neovim HEAD configuration
+-- Neovim 0.6.0 configuration
 
 -- My init.vim modeline
 vim.cmd 'setlocal foldmethod=marker nowrap foldlevel=0'
 
 -- Utilities {{{
+vim.g.vimsyn_embed = 'l'
 local map = vim.api.nvim_set_keymap
 local opts = { silent = true, noremap = true }
 map('', '<Space>', '<Nop>', opts)
@@ -39,9 +40,10 @@ vim.opt.termguicolors = true
 vim.opt.thesaurus = '~/.config/nvim/thesaurus/english.txt'
 vim.opt.updatetime = 250
 vim.opt.wrap = false
--- }}}}
+-- }}}
 
 -- Packer {{{
+-- NOTE: changing something in config key requires :PackerCompile
 require('packer').startup(function(use)
   use { 'wbthomason/packer.nvim' }
   use { 'nvim-telescope/telescope.nvim', requires = 'nvim-lua/plenary.nvim' }
@@ -60,7 +62,15 @@ require('packer').startup(function(use)
   use 'tpope/vim-fugitive'
   use 'tpope/vim-rhubarb'
   use 'craigmac/vim-tmux-navigator' -- my fork with neovim fix for <C-l>
+  use { 'mcchrish/zenbones.nvim', requires = 'rktjmp/lush.nvim' }
   use 'projekt0n/github-nvim-theme'
+  use 'nvim-lualine/lualine.nvim'
+  use {
+    'lewis6991/gitsigns.nvim',
+    config = function()
+      require('gitsigns').setup()
+    end,
+  }
 end)
 -- }}}
 
@@ -72,10 +82,10 @@ map('n', ']q', ':cnext<CR>', opts)
 map('n', ']Q', ':clast<CR>', opts)
 map('n', '[q', ':cprevious<CR>', opts)
 map('n', '[Q', ':cfirst<CR>', opts)
-map('n', ']l', ':lnext<CR>', opts)
-map('n', ']L', ':llast<CR>', opts)
-map('n', '[l', ':lprevious<CR>', opts)
-map('n', '[L', ':lfirst<CR>', opts)
+map('n', ']e', ':lnext<CR>', opts)
+map('n', ']E', ':llast<CR>', opts)
+map('n', '[e', ':lprevious<CR>', opts)
+map('n', '[E', ':lfirst<CR>', opts)
 map('v', '>', '>gv', opts)
 map('v', '<', '<gv', opts)
 map('v', 'J', ":m '>+1<CR>gv=gv", opts)
@@ -85,7 +95,10 @@ map('n', '<M-k>', '<C-w>p<C-y><C-w>p', opts)
 map('n', '<M-J>', '<C-w>p<C-d><C-w>p', opts)
 map('n', '<M-K>', '<C-w>p<C-u><C-w>p', opts)
 map('n', '<Leader><Leader>', '<Cmd>buffer #<CR>', opts)
-map('n', '<Leader>k', '<Cmd>bdelete!<CR>', opts)
+map('n', '<Leader>dd', '<Cmd>bdelete!<CR>', opts)
+map('n', '<F12>', '<Cmd>set wrap!<CR>', opts)
+map('n', '}', ':keepjumps normal! }<CR>', opts)
+map('n', '{', ':keepjumps normal! {<CR>', opts)
 vim.cmd [[
 " Function keys
 nnoremap <F3> :call utils#ToggleQuickfixList()<CR>
@@ -94,7 +107,8 @@ nnoremap <F5> :silent make! % <bar> silent redraw!<CR>
 nnoremap <F6> :15Lexplore<CR>
 nnoremap <F9> :set list!<CR>
 nnoremap <F10> :set spell!<CR>
-nnoremap <Leader>ft :e <C-R>=expand('~/.vim/after/ftplugin/'.&ft.'.vim')<CR><CR>
+
+nnoremap <Leader>ft :edit <C-r>=expand('~/.config/nvim/after/ftplugin/'. &ft.'.vim')<CR><CR>
 nnoremap gh :diffget //2<CR>
 nnoremap gl :diffget //3<CR>
 cnoremap <expr> <C-n> wildmenumode() ? '<C-n>' : '<Down>'
@@ -113,12 +127,25 @@ augroup my_autocommands
   autocmd BufWritePost ~/.config/nvim/init.lua source ~/.config/nvim/init.lua
   autocmd FileType fugitiveblame call feedkeys('A')
   autocmd FileType gitcommit call feedkeys('i')
+  autocmd VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+  autocmd WinLeave * setlocal nocursorline
 augroup END
 ]]
 -- }}}
 
+-- Commands {{{
+vim.cmd [[
+  command! JekyllOpen call utils#JekyllOpenLive()
+  nnoremap <Leader>@ :JekyllOpen<CR>
+  command! Api :help list-functions<CR>
+  command! TodoLocal :botright lvimgrep /\v\CTODO|FIXME|HACK|DEV/ %<CR>
+  command! Todo :botright silent! vimgrep /\v\CTODO|FIXME|HACK|DEV/ *<CR>
+]]
+-- }}}
+
 -- Colors {{{
-require'github-theme'.setup {
+
+require('github-theme').setup {
   theme_style = 'light',
   dark_float = true, -- show float canvas doesn't blend w normal bg
   -- TODO: create PR for this, can't see splits with this on in light mode
@@ -231,6 +258,8 @@ local my_on_attach = function(_, bufnr)
   buf_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
   buf_set_keymap('n', '<Leader>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
   buf_set_keymap('n', '<Leader>gq', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+  -- mimic my <F4> toggle buffer location list, but put buffers' diagnostics into there
+  buf_set_keymap('n', '<Leader><F4>', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
 end
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
@@ -359,34 +388,41 @@ require('comment').setup {
 -- }}}
 
 -- lualine.nvim {{{
--- require('lualine').setup {
---   options = {
---     icons_enabled = true,
---     theme = 'codedark',
---     component_separators = {},
---     section_separators = {},
---     disabled_filetypes = {},
---     always_divide_middle = true,
---   },
---   sections = {
---     lualine_a = { 'mode' },
---     lualine_b = { 'branch', 'diagnostics' },
---     lualine_c = { '%F' },
---     lualine_x = {},
---     lualine_y = { 'progress' },
---     lualine_z = { 'location' },
---   },
---   inactive_sections = {
---     lualine_a = {},
---     lualine_b = {},
---     lualine_c = { '%F' },
---     lualine_x = {},
---     lualine_y = {},
---     lualine_z = {},
---   },
---   tabline = {},
---   extensions = {},
--- }
+
+require('lualine').setup {
+  options = {
+    icons_enabled = true,
+    theme = 'github',
+    always_divide_middle = true,
+  },
+  sections = {
+    lualine_a = {
+      -- changes mode indicator to single character for space savings
+      {
+        'mode',
+        fmt = function(str)
+          return str:sub(1, 1)
+        end,
+      },
+    },
+    lualine_b = { 'branch', 'diagnostics' },
+    lualine_c = { '%f' },
+    lualine_x = {},
+    lualine_y = { 'progress' },
+    lualine_z = { 'location' },
+  },
+  inactive_sections = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = { '%f' },
+    lualine_x = {},
+    lualine_y = {},
+    lualine_z = {},
+  },
+  tabline = {},
+  extensions = {},
+}
+
 -- }}}
 
 -- vim-fugitive {{{
@@ -404,7 +440,15 @@ nnoremap <Leader>g/ :Ggrep! --quiet<Space>
 -- }}}
 -- }}}
 
+-- TODO: stylua file for my nvim repo
 -- TODO: formatexpr, foldexpr for lsp servers
 -- TODO: for null-ls create buflocal format command to call for each
 -- TODO: custom lualine setup: no diff, absolute path, no icons, no EOL, shorter mode display
 -- TODO: lazy load some packer stuff like Fugitive
+-- TODO: look into coloring of liquid docs header final line tag: with underscore
+-- getting highlighted wrong because presumably thinks that it is a valid heading?
+-- TODO: Lfilter/Cfilter only use /{pat}/ for filename and message parts,
+-- how can I get it to pickup 'error/warning' from the middle location part
+-- TODO: get gf to work with Liquid syntax (some work done on this, not 100% working though)
+-- TODO: create show_toc() for markdown bound to gO to populate Location list for that buffer,
+-- see help ft implementation and adjust

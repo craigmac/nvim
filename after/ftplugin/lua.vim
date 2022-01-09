@@ -6,3 +6,5 @@ setlocal softtabstop=2
 " turn '.' into '/'
 setlocal includeexpr=substitute(v:fname,'\\.','/','g')
 
+" run stylua before saves
+autocmd! BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()

@@ -151,3 +151,33 @@ endfunction
 function! utils#Hello() abort
   echo 'hello from autoload/utils.vim -> hello() function'
 endfunction
+
+function! utils#JekyllOpenLive() abort
+  " Requires 'devx' as &pwd for '%:.' to work correctly with forming the final URL to open
+  if !getcwd() =~ 'devx' 
+    echoerr 'Command only works when &pwd is "devx"'
+    return
+  endif
+  let relpath = expand('%:.')
+        \ ->substitute('_ver_', '', '')
+        \ ->substitute('^docs', '', '')
+        \ ->substitute('\.md$', '/', '')
+
+  " cases:
+  " docs/_ver_6.14/path/to/file
+  " docs/release-details/file-with-version-6.8.md
+  let newversion = relpath->matchstr('\d\.\d\d\?')
+
+  " When relpath = version/path/to/topic we need to drop leading \d\.\d\d\? dir, otherwise we end
+  " up with 6.15/6.15/path/to/file. We only check up to first / to limit to first folder.
+  let newpath = newversion .. relpath->substitute('\d\.\d\d\?/', '', '')
+
+  " any version 6.14 and over requires localhost only
+  let host = str2float(newversion) >= 6.14 ? 'https://localhost.com:8080/' : 'https://developer-staging.youi.tv/'
+
+  let finalurl = host .. newpath
+  " TODO: make more robust, calling os-specific open like netrw does,
+  " like xdg-open on Linux
+  execute "silent! !open " . finalurl
+endfunction
+
