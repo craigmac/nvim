@@ -1,53 +1,43 @@
-local lspconfig = require("lspconfig")
+local nvim_lsp = require("lspconfig")
 
-vim.diagnostic.config({ virtual_text = false })
+local my_on_attach = function(client, bufnr)
+	local opts = { noremap = true, silent = true }
 
-local my_on_attach = function(_, bufnr)
-	local function buf_set_keymap(...)
-		vim.api.nvim_buf_set_keymap(bufnr, ...)
-	end
-	local function buf_set_option(...)
-		vim.api.nvim_buf_set_option(bufnr, ...)
-	end
-	local opts = { silent = true, noremap = true }
-	buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
-	buf_set_keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
-	buf_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
-	buf_set_keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
-	buf_set_keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
-	buf_set_keymap("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
-	buf_set_keymap("n", "<Leader>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
-	buf_set_keymap("n", "<Leader>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
-	buf_set_keymap("n", "<Leader>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", opts)
-	buf_set_keymap("n", "<Leader>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
-	buf_set_keymap("n", "<Leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
-	buf_set_keymap("n", "<Leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
-	buf_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-	buf_set_keymap("n", "<Leader>f", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
-	buf_set_keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
-	buf_set_keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
-	buf_set_keymap("n", "<Leader>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
-	buf_set_keymap("n", "<Leader>gq", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-	-- mimic my <F4> toggle buffer location list, but put buffers' diagnostics into there
-	buf_set_keymap("n", "<Leader><F4>", "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>", opts)
-end
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
-local servers = { "pyright", "tsserver" }
-for _, lsp in ipairs(servers) do
-	lspconfig[lsp].setup({
-		on_attach = my_on_attach,
-		capabilities = capabilities,
-	})
+	-- TODO: someday when lua has command API, change this
+	vim.cmd([[ command! Format execute 'lua vim.lsp.buf.formatting()' ]])
+	vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+
+	-- TODO: redo these to use vim.keymap API: signature is:
+	-- vim.keymap.set("n", "gD", "<cmd>vim.lsp.buf.declaration", { silent = true, buffer = bufnr })
+
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "<Leader>K", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "<Leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "<Leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "gO", "<cmd>lua vim.lsp.buf.workspace_symbols()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "<Leader>f", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "<Leader>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "<Leader>gq", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "<Leader><F4>", "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>", opts)
+	-- vim.api.nvim_buf_set_keymap("n", "<Leader>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
+	-- vim.api.nvim_buf_set_keymap("n", "<Leader>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
+	-- vim.api.nvim_buf_set_keymap("n", "<Leader>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", opts)
+	-- vim.api.nvim_buf_set_keymap("n", "<Leader>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
+	-- TODO: how to detect capabilities of current client and alter things?
 end
 
--- TODO: move to sumneko.lua file in my/lsp/
 local runtime_path = vim.split(package.path, ";")
 table.insert(runtime_path, "lua/?.lua")
 table.insert(runtime_path, "lua/?/init.lua")
-lspconfig.sumneko_lua.setup({
+
+nvim_lsp.sumneko_lua.setup({
 	on_attach = my_on_attach,
-	capabilities = capabilities,
 	settings = {
 		Lua = {
 			runtime = {
@@ -58,20 +48,20 @@ lspconfig.sumneko_lua.setup({
 				globals = { "vim" },
 			},
 			workspace = {
+				-- make server aware of neovim runtime files
 				library = vim.api.nvim_get_runtime_file("", true),
 			},
 		},
 	},
 })
 
--- TODO: move this its own file
-local null_ls = require("null-ls")
-local sources = {
-	null_ls.builtins.formatting.stylua,
-	null_ls.builtins.diagnostics.vale,
-	require("my.null_ls_custom.markdownlint_cli2"),
-}
-null_ls.setup({
-	on_attach = my_on_attach,
-	sources = sources,
+require("null-ls").setup({
+	-- on_attach = my_on_attach,
+	debug = false,
+	sources = {
+		-- For Lua, sumneko-lua server doesn't support formatting
+		require("null-ls").builtins.formatting.stylua,
+		require("null-ls").builtins.diagnostics.vale,
+		require("my.null_ls_custom.markdownlint_cli2"),
+	},
 })

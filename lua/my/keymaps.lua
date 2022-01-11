@@ -1,45 +1,61 @@
--- TODO: use new builtin keymap api
-local map = vim.api.nvim_set_keymap
-local opts = { silent = true, noremap = true }
+vim.keymap.set("n", "<Leader>w", "<Cmd>update<CR>")
+vim.keymap.set("n", "<Leader>,", "<Cmd>edit ~/.config/nvim/init.lua<CR>")
+vim.keymap.set("n", "]q", "<Cmd>cnext<CR>")
+vim.keymap.set("n", "]Q", "<Cmd>clast<CR>")
+vim.keymap.set("n", "[q", "<Cmd>cprevious<CR>")
+vim.keymap.set("n", "[Q", "<Cmd>cfirst<CR>")
+vim.keymap.set("n", "]e", "<Cmd>lnext<CR>")
+vim.keymap.set("n", "]E", "<Cmd>llast<CR>")
+vim.keymap.set("n", "[e", "<Cmd>lprevious<CR>")
+vim.keymap.set("n", "[E", "<Cmd>lfirst<CR>")
+vim.keymap.set("v", ">", ">gv")
+vim.keymap.set("n", "<M-j>", "<C-w>p<C-e><C-w>p")
+vim.keymap.set("n", "<M-k>", "<C-w>p<C-y><C-w>p")
+vim.keymap.set("n", "<M-J>", "<C-w>p<C-d><C-w>p")
+vim.keymap.set("n", "<M-K>", "<C-w>p<C-u><C-w>p")
+vim.keymap.set("n", "<Leader><Leader>", "<Cmd>buffer #<CR>")
+vim.keymap.set("n", "<Leader>dd", "<Cmd>bdelete!<CR>")
+vim.keymap.set("n", "<F12>", "<Cmd>set wrap!<CR>")
+vim.keymap.set("n", "}", "<Cmd>keepjumps normal! }<CR>")
+vim.keymap.set("n", "{", "<Cmd>keepjumps normal! {<CR>")
+vim.keymap.set("v", "<", "<gv")
 
-map("n", "<Leader>w", ":update<CR>", opts)
-map("n", "<Leader>,", ":edit ~/.config/nvim/init.lua<CR>", opts)
-map("n", "<Leader>gg", "<Cmd>LazyGit<CR>", opts)
-map("n", "]q", ":cnext<CR>", opts)
-map("n", "]Q", ":clast<CR>", opts)
-map("n", "[q", ":cprevious<CR>", opts)
-map("n", "[Q", ":cfirst<CR>", opts)
-map("n", "]e", ":lnext<CR>", opts)
-map("n", "]E", ":llast<CR>", opts)
-map("n", "[e", ":lprevious<CR>", opts)
-map("n", "[E", ":lfirst<CR>", opts)
-map("v", ">", ">gv", opts)
-map("v", "<", "<gv", opts)
-map("v", "J", ":m '>+1<CR>gv=gv", opts)
-map("v", "K", ":m '<-2<CR>gv=gv", opts)
-map("n", "<M-j>", "<C-w>p<C-e><C-w>p", opts)
-map("n", "<M-k>", "<C-w>p<C-y><C-w>p", opts)
-map("n", "<M-J>", "<C-w>p<C-d><C-w>p", opts)
-map("n", "<M-K>", "<C-w>p<C-u><C-w>p", opts)
-map("n", "<Leader><Leader>", "<Cmd>buffer #<CR>", opts)
-map("n", "<Leader>dd", "<Cmd>bdelete!<CR>", opts)
-map("n", "<F12>", "<Cmd>set wrap!<CR>", opts)
-map("n", "}", ":keepjumps normal! }<CR>", opts)
-map("n", "{", ":keepjumps normal! {<CR>", opts)
+vim.keymap.set("n", "<F3>", "<Cmd>call utils#ToggleQuickfixList()<CR>")
+vim.keymap.set("n", "<F4>", "<Cmd>call utils#ToggleLocationList()<CR>")
+vim.keymap.set("n", "<F6>", "<Cmd>15Lexplore<CR>")
+vim.keymap.set("n", "<F9>", "<Cmd>set list!<CR>")
+vim.keymap.set("n", "<F10>", "<Cmd>set spell!<CR>")
+
+-- TODO: tricky ones to convert
+-- vim.keymap.set("v", "J", "<Cmd>m '>+1<CR>gv=gv<CR>")
+-- vim.keymap.set("v", "K", "<Cmd>m '<-2<CR>gv=gv<CR>")
+
+vim.keymap.set("n", "gh", "<Cmd>diffget //2<CR>")
+vim.keymap.set("n", "gl", "<Cmd>diffget //3<CR>")
+vim.keymap.set("c", "<C-n>", function()
+	return vim.fn.wildmenumode() == 1 and "<C-n>" or "<Down>"
+end, { expr = true })
+vim.keymap.set("c", "<C-p>", function()
+	return vim.fn.wildmenumode() == 1 and "<C-p>" or "<Up>"
+end, { expr = true })
+
+-- keeps marks, settings, and you can still do e.g., <C-o> to jump to it
+vim.keymap.set("n", "<Leader>dd", "<Cmd>bdelete!<CR>")
+-- REALLY delete the buffer.
+vim.keymap.set("n", "<Leader>D", "<Cmd>bwipeout!<CR>")
+-- Make THIS the only buffer, mnemonic, alternate to D is Alt-D
+vim.keymap.set("n", "<Leader><M-d>", "<Cmd>only!<CR>")
+
+-- TODO: not working this way currently, :lua print(vim.inspect(vim.fn.getcmdtype|getcmdwintype|getcmdline
+-- all return empty string, is this because it's running a lua process and no access to getcmdtype?
+vim.keymap.set("c", "%%", function()
+	return vim.fn.getcmdtype() == ":" and vim.fn.expand("%:h") .. "/" or "%%"
+end, { expr = true })
 
 vim.cmd([[
-" Function keys
-nnoremap <F3> :call utils#ToggleQuickfixList()<CR>
-nnoremap <F4> :call utils#ToggleLocationList()<CR>
-nnoremap <F5> :silent make! % <bar> silent redraw!<CR>
-nnoremap <F6> :15Lexplore<CR>
-nnoremap <F9> :set list!<CR>
-nnoremap <F10> :set spell!<CR>
-
 nnoremap <Leader>ft :edit <C-r>=expand('~/.config/nvim/after/ftplugin/'. &ft.'.vim')<CR><CR>
-nnoremap gh :diffget //2<CR>
-nnoremap gl :diffget //3<CR>
-cnoremap <expr> <C-n> wildmenumode() ? '<C-n>' : '<Down>'
-cnoremap <expr> <C-p> wildmenumode() ? '<C-p>' : '<Up>'
-cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
+" cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
+vnoremap K :m '<-2<CR>gv=gv
+vnoremap J :m '>+1<CR>gv=gv
+
 ]])

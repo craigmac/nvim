@@ -1,6 +1,7 @@
--- Neovim 0.6.0 configuration
+-- Neovim master:g2818de8b7 configuration
 
 require("my.options")
+require("my.commands")
 require("my.keymaps")
 require("my.plugins")
 require("my.colorscheme")
@@ -13,8 +14,8 @@ require("my.gitsigns")
 require("my.lualine")
 require("my.autocommands")
 require("my.fugitive")
+require("my.indent-blankline")
 
--- TODO: stylua file for my nvim repo, what is the standard?
 -- TODO: formatexpr, foldexpr for lsp servers
 -- TODO: for null-ls create buflocal format command to call for each
 -- TODO: custom lualine setup: no diff, absolute path, no icons, no EOL, shorter mode display

@@ -1,5 +1,5 @@
 require("github-theme").setup({
-	theme_style = "light",
+	theme_style = "dark",
 	dark_float = true, -- show float canvas doesn't blend w normal bg
 	hide_inactive_statusline = false, -- true = difficult to see splits
 	keyword_style = "NONE",

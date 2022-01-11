@@ -3,13 +3,16 @@ require("telescope").setup({
 		path_display = { "absolute" },
 		mappings = {
 			i = {
-				-- TODO: fix this one
-				-- ["<esc>"] = require'telescope.actions.close',
-				["<M-p>"] = require("telescope.actions.layout").toggle_preview,
+				-- I don't want to go to Normal mode ever
+				["<esc>"] = require("telescope.actions").close,
+				["<C-o>"] = require("telescope.actions.layout").toggle_preview,
+				["<C-Down>"] = require("telescope.actions").cycle_history_next,
+				["<C-Up>"] = require("telescope.actions").cycle_history_prev,
 			},
 		},
 	},
 	pickers = {
+		-- default configs for each builtin picker
 		git_files = {
 			theme = "dropdown",
 			previewer = false,

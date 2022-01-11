@@ -147,7 +147,6 @@ function! utils#MaybeReplaceCrWithCrColon() abort
   endif
 endfunction
 
-
 function! utils#Hello() abort
   echo 'hello from autoload/utils.vim -> hello() function'
 endfunction
@@ -181,3 +180,9 @@ function! utils#JekyllOpenLive() abort
   execute "silent! !open " . finalurl
 endfunction
 
+function! utils#Redir(cmd) abort
+  let output = execute(a:cmd)
+  botright split +enew
+  setlocal nobuflisted nonumber norelativenumber buftype=nofile bufhidden=wipe noswapfile
+  call setline(1, split(output, "\n"))
+endfunction
