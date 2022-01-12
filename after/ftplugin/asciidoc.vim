@@ -1,6 +1,4 @@
 " ftplugin/asciidoc.vim
-" 2020-04-23
-" C.D. MacEachern <craigm@fastmail.com>
 
 " 'dts' expands to current date e.g., 2020-04-23
 iabbrev <expr> dts strftime('%Y-%m-%d')

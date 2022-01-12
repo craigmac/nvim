@@ -25,6 +25,7 @@ vim.keymap.set("n", "<F4>", "<Cmd>call utils#ToggleLocationList()<CR>")
 vim.keymap.set("n", "<F6>", "<Cmd>15Lexplore<CR>")
 vim.keymap.set("n", "<F9>", "<Cmd>set list!<CR>")
 vim.keymap.set("n", "<F10>", "<Cmd>set spell!<CR>")
+vim.keymap.set("n", "<Leader><CR>", "<Cmd>source %<CR>")
 
 -- TODO: tricky ones to convert
 -- vim.keymap.set("v", "J", "<Cmd>m '>+1<CR>gv=gv<CR>")

@@ -1,6 +1,4 @@
 " vim: set foldmethod=indent foldlevel=0 textwidth=100 filetype=vim :
-" Author: C.D. MacEachern <craigm@fastmail.com> vim 7.4+ config file.
-" Last Modified: 2020-09-17
 " local.vim -- utility functions that I use
 
 function! utils#SwitchSourceHeader() abort

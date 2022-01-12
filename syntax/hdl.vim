@@ -1,6 +1,5 @@
 " hdl.vim -- syntax file for *.hdl files (used in nand2tetris.org course)
 " Language:    HDL
-" Maintainer:  C.D. MacEachern <craigm@fastmail.com
 " Credits: original $VIM/syntax/vhdl.vim authors for inspiration and work
 " Last Modified: 2019-07-30
 "

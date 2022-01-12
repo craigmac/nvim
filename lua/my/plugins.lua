@@ -15,6 +15,8 @@ require("packer").startup(function(use)
 	-- Telescope related
 	use({ "nvim-telescope/telescope.nvim", requires = "nvim-lua/plenary.nvim" })
 	use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
+	use("nvim-telescope/telescope-ui-select.nvim")
+	use("nvim-telescope/telescope-github.nvim")
 
 	-- Treesitter and related
 	use({ "JoosepAlviste/nvim-ts-context-commentstring", after = "nvim-treesitter" })
@@ -35,6 +37,6 @@ require("packer").startup(function(use)
 
 	-- UI
 	use("projekt0n/github-nvim-theme")
-	use({ "nvim-lualine/lualine.nvim", after = "github-nvim-theme" })
+	use("nvim-lualine/lualine.nvim")
 	use("lukas-reineke/indent-blankline.nvim")
 end)

@@ -1,64 +1,79 @@
+local actions = require("telescope.actions")
+local previewers = require("telescope.previewers")
+local sorters = require("telescope.sorters")
+local finders = require("telescope.finders")
+local layouts = require("telescope.actions.layout")
+local pickers = require("telescope.pickers")
+local action_state = require("telescope.actions.state")
+local conf = require("telescope.config").values
+
 require("telescope").setup({
 	defaults = {
 		path_display = { "absolute" },
 		mappings = {
 			i = {
 				-- I don't want to go to Normal mode ever
-				["<esc>"] = require("telescope.actions").close,
-				["<C-o>"] = require("telescope.actions.layout").toggle_preview,
-				["<C-Down>"] = require("telescope.actions").cycle_history_next,
-				["<C-Up>"] = require("telescope.actions").cycle_history_prev,
+				["<esc>"] = actions.close,
+				["<C-o>"] = layouts.toggle_preview,
+				["<C-Down>"] = actions.cycle_history_next,
+				["<C-Up>"] = actions.cycle_history_prev,
 			},
 		},
 	},
 	pickers = {
-		-- default configs for each builtin picker
+		-- change configs for each builtin picker (each key is a picker name)
 		git_files = {
 			theme = "dropdown",
 			previewer = false,
-			prompt_title = false,
-		},
-		find_files = {
-			theme = "dropdown",
-		},
-		buffers = {
-			theme = "dropdown",
-			prompt_title = false,
 		},
 		spell_suggest = {
 			theme = "cursor",
 		},
-		help_tags = {
+		grep_string = {
 			theme = "dropdown",
+			previewer = false,
 		},
 		live_grep = {
 			theme = "dropdown",
-		},
-		tags = {
-			theme = "dropdown",
-		},
-		grep_string = {
-			theme = "ivy",
+			previewer = false,
 		},
 		lsp_code_actions = {
 			theme = "cursor",
 		},
+		find_files = {
+			theme = "dropdown",
+			previewer = false,
+		},
+		buffers = {
+			theme = "dropdown",
+			previewer = false,
+		},
 	},
-	extensions = {},
+	extensions = {
+		["ui-select"] = {
+			require("telescope.themes").get_dropdown({}),
+		},
+	},
 })
+
+-- these need to come after main setup() call
 require("telescope").load_extension("fzf")
+require("telescope").load_extension("ui-select")
+require("telescope").load_extension("gh")
 
-local map = vim.api.nvim_set_keymap
-local opts = { silent = true, noremap = true }
+vim.keymap.set("n", "<Leader>ff", "<Cmd>Telescope git_files<CR>")
+vim.keymap.set("n", "<Leader>ee", "<Cmd>Telescope find_files<CR>")
+vim.keymap.set("n", "<Leader>bb", "<Cmd>Telescope buffers<CR>")
+vim.keymap.set("n", "<Leader><F1>", "<Cmd>Telescope help_tags<CR>")
+vim.keymap.set("n", "<Leader>/", "<Cmd>Telescope live_grep<CR>")
+vim.keymap.set("n", "<Leader><C-]>", "<Cmd>Telescope tags<CR>")
+vim.keymap.set("n", "<Leader>?", "<Cmd>Telescope grep_string<CR>")
+vim.keymap.set("n", "<Leader>:", "<Cmd>Telescope commands<CR>")
+vim.keymap.set("n", "z=", "<Cmd>Telescope spell_suggest<CR>")
+vim.keymap.set("n", "<M-.>", "<Cmd>Telescope lsp_code_actions<CR>")
+vim.keymap.set("n", "<Leader>lo", "<Cmd>Telescope lsp_document_symbols<CR>")
+vim.keymap.set("n", "<Leader>lO", "<Cmd>Telescope lsp_workspace_symbols<CR>")
 
-map("n", "<C-p>", "<Cmd>Telescope git_files<CR>", opts)
-map("n", "<Leader>e", "<Cmd>Telescope find_files<CR>", opts)
-map("n", "<Leader>b", "<Cmd>Telescope buffers<CR>", opts)
-map("n", "<Leader><F1>", "<Cmd>Telescope help_tags<CR>", opts)
-map("n", "<Leader>/", "<Cmd>Telescope live_grep<CR>", opts)
-map("n", "<Leader><C-]>", "<Cmd>Telescope tags<CR>", opts)
-map("n", "<Leader>?", "<Cmd>Telescope grep_string<CR>", opts)
-map("n", "z=", "<Cmd>Telescope spell_suggest<CR>", opts)
-map("n", "<M-.>", "<Cmd>Telescope lsp_code_actions<CR>", opts)
-map("n", "<Leader>o", "<Cmd>Telescope lsp_document_symbols<CR>", opts)
-map("n", "<Leader>O", "<Cmd>Telescope lsp_workspace_symbols<CR>", opts)
+vim.keymap.set("n", "<Leader>gis", "<Cmd>Telescope gh issue theme=dropdown<CR>")
+vim.keymap.set("n", "<Leader>gpr", "<Cmd>Telescope gh pull_request theme=dropdown<CR>")
+-- vim.keymap.set("n", "<Leader>g.", "<Cmd>lua require('telescope').extensions.gh.gist()<CR>")
