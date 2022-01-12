@@ -59,7 +59,6 @@ require("telescope").setup({
 -- these need to come after main setup() call
 require("telescope").load_extension("fzf")
 require("telescope").load_extension("ui-select")
-require("telescope").load_extension("gh")
 
 vim.keymap.set("n", "<Leader>ff", "<Cmd>Telescope git_files<CR>")
 vim.keymap.set("n", "<Leader>ee", "<Cmd>Telescope find_files<CR>")
@@ -73,7 +72,3 @@ vim.keymap.set("n", "z=", "<Cmd>Telescope spell_suggest<CR>")
 vim.keymap.set("n", "<M-.>", "<Cmd>Telescope lsp_code_actions<CR>")
 vim.keymap.set("n", "<Leader>lo", "<Cmd>Telescope lsp_document_symbols<CR>")
 vim.keymap.set("n", "<Leader>lO", "<Cmd>Telescope lsp_workspace_symbols<CR>")
-
-vim.keymap.set("n", "<Leader>gis", "<Cmd>Telescope gh issue theme=dropdown<CR>")
-vim.keymap.set("n", "<Leader>gpr", "<Cmd>Telescope gh pull_request theme=dropdown<CR>")
--- vim.keymap.set("n", "<Leader>g.", "<Cmd>lua require('telescope').extensions.gh.gist()<CR>")
