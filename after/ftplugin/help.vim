@@ -1,3 +1,5 @@
 setlocal nonumber
 setlocal norelativenumber
 setlocal nospell
+setlocal nolist
+setlocal nofoldenable

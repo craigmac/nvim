@@ -46,7 +46,7 @@ setlocal define=^\\s*\\<\\(def\\\|class\\)\\>
 " Full unquoted version, for / search
 " ^\s*\(from\|import\)\s*\zs\(\S\+\s\{-}\)*\ze\($\| as\)
 " becomes when backslashed more here to work
-set include=^\\s*\\(from\\\|import\\)\\s*\\zs\\(\\S\\+\\s\\{-}\\)*\\ze\\($\\\|\ as\\)
+setlocal include=^\\s*\\(from\\\|import\\)\\s*\\zs\\(\\S\\+\\s\\{-}\\)*\\ze\\($\\\|\ as\\)
  
 " Case 1:
 " import foo.bar

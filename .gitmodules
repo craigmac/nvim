@@ -1,0 +1,33 @@
+[submodule "pack/third-party/opt/vim-commentary"]
+	path = pack/third-party/opt/vim-commentary
+	url = https://github.com/tpope/vim-commentary
+[submodule "pack/third-party/opt/vim-fugitive"]
+	path = pack/third-party/opt/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive
+[submodule "pack/third-party/opt/vim-rhubarb"]
+	path = pack/third-party/opt/vim-rhubarb
+	url = https://github.com/tpope/vim-rhubarb
+[submodule "pack/third-party/opt/vim-surround"]
+	path = pack/third-party/opt/vim-surround
+	url = https://github.com/tpope/vim-surround
+[submodule "pack/third-party/opt/vim-repeat"]
+	path = pack/third-party/opt/vim-repeat
+	url = https://github.com/tpope/vim-repeat
+[submodule "pack/third-party/opt/tagbar"]
+	path = pack/third-party/opt/tagbar
+	url = https://github.com/preservim/tagbar
+[submodule "pack/third-party/opt/vim-liquid"]
+	path = pack/third-party/opt/vim-liquid
+	url = https://github.com/tpope/vim-liquid
+[submodule "pack/third-party/opt/vim-dispatch"]
+	path = pack/third-party/opt/vim-dispatch
+	url = https://github.com/tpope/vim-dispatch
+[submodule "pack/third-party/opt/vim-textobj-entire"]
+	path = pack/third-party/opt/vim-textobj-entire
+	url = https://github.com/kana/vim-textobj-entire
+[submodule "pack/third-party/opt/vim-textobj-indent"]
+	path = pack/third-party/opt/vim-textobj-indent
+	url = https://github.com/kana/vim-textobj-indent
+[submodule "pack/third-party/opt/vim-textobj-user"]
+	path = pack/third-party/opt/vim-textobj-user
+	url = https://github.com/kana/vim-textobj-user
