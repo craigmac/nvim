@@ -303,6 +303,16 @@ function! Ghlistprs(ArgLead, CmdLine, CursorPos) abort
   return systemlist('gh pr list | cut -f1')
 endfunction
 
+function! RipgrepFzf(query, fullscreen)
+  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
+
+command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+
 " }}}
 
 " Autocmd {{{
@@ -310,6 +320,7 @@ endfunction
 " safe to be re-sourced, by clearing all first with autocmd!
 augroup myinit
   autocmd!
+  autocmd TextYankPost * silent! lua vim.highlight.on_yank()
   autocmd BufWritePost $MYVIMRC nested source $MYVIMRC
   autocmd BufWritePre /tmp/* setlocal noundofile
   autocmd QuickFixCmdPost [^l]* botright cwindow
@@ -329,11 +340,13 @@ augroup END
 
 " Colors/UI {{{
 
+let g:github_hide_inactive_statusline = 0
 let g:github_dark_float = 1
 let g:github_comment_style = 'italic'
 let g:github_keyword_style = 'NONE'
 let g:github_function_style = 'NONE'
 let g:github_variable_style = 'NONE'
+let g:github_hide_end_of_buffer = 0
 colorscheme github_light
 " TODO: look up the proper way to guard this in romainl gist
 hi! StatusLineNC guibg=#dddddd gui=NONE

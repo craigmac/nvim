@@ -1,0 +1,261 @@
+-- Lua configurations all in one place
+
+-- lualine
+require("lualine").setup({
+	options = {
+		icons_enabled = true,
+		theme = "github",
+		always_divide_middle = true,
+	},
+	sections = {
+		lualine_a = {
+			-- changes mode indicator to single character for space savings
+			{
+				"mode",
+				fmt = function(str)
+					return str:sub(1, 1)
+				end,
+			},
+		},
+		lualine_b = { "branch", "diagnostics" },
+		lualine_c = { "%f" },
+		lualine_x = {},
+		lualine_y = { "progress" },
+		lualine_z = { "location" },
+	},
+	inactive_sections = {
+		lualine_a = {},
+		lualine_b = {},
+		lualine_c = { "%f" },
+		lualine_x = {},
+		lualine_y = {},
+		lualine_z = {},
+	},
+	tabline = {},
+	extensions = {},
+})
+
+-- treesitter.nvim
+require("nvim-treesitter.configs").setup({
+	highlight = { enable = true },
+	incremental_selection = {
+		enable = true,
+		keymaps = {
+			init_selection = "gnn",
+			node_incremental = "grn",
+			scope_incremental = "grc",
+			node_decremental = "grm",
+		},
+	},
+	indent = {
+		enable = true,
+	},
+	textobjects = {
+		select = {
+			enable = true,
+			lookahead = true, -- jump ahead like targets.vim did
+			keymaps = {
+				["af"] = "@function.outer",
+				["if"] = "@function.inner",
+				["ac"] = "@class.outer",
+				["ic"] = "@class.inner",
+			},
+		},
+		move = {
+			enable = true,
+			set_jumps = false, -- whether to add jump to jumplist (:jumps)
+			goto_next_start = {
+				["]m"] = "@function.outer",
+				["]]"] = "@class.outer",
+			},
+			goto_next_end = {
+				["]M"] = "@function.outer",
+				["]["] = "@class.outer",
+			},
+			goto_previous_start = {
+				["[m"] = "@function.outer",
+				["[["] = "@class.outer",
+			},
+			goto_previous_end = {
+				["[M"] = "@function.outer",
+				["[]"] = "@class.outer",
+			},
+		},
+	},
+})
+
+-- telescope.nvim
+local actions = require("telescope.actions")
+local previewers = require("telescope.previewers")
+local sorters = require("telescope.sorters")
+local finders = require("telescope.finders")
+local layouts = require("telescope.actions.layout")
+local pickers = require("telescope.pickers")
+local action_state = require("telescope.actions.state")
+local conf = require("telescope.config").values
+
+require("telescope").setup({
+	defaults = {
+		path_display = { "absolute" },
+		mappings = {
+			i = {
+				-- I don't want to go to Normal mode ever
+				["<esc>"] = actions.close,
+				["<C-o>"] = layouts.toggle_preview,
+				["<C-Down>"] = actions.cycle_history_next,
+				["<C-Up>"] = actions.cycle_history_prev,
+			},
+		},
+	},
+	pickers = {
+		-- change configs for each builtin picker (each key is a picker name)
+		git_files = {
+			theme = "dropdown",
+			previewer = false,
+		},
+		spell_suggest = {
+			theme = "cursor",
+		},
+		grep_string = {
+			theme = "dropdown",
+			previewer = false,
+		},
+		live_grep = {
+			theme = "dropdown",
+			previewer = false,
+		},
+		lsp_code_actions = {
+			theme = "cursor",
+		},
+		find_files = {
+			theme = "dropdown",
+			previewer = false,
+		},
+		buffers = {
+			theme = "dropdown",
+			previewer = false,
+		},
+	},
+	extensions = {
+		["ui-select"] = {
+			require("telescope.themes").get_dropdown({}),
+		},
+	},
+})
+
+-- these need to come after main setup() call
+require("telescope").load_extension("fzf")
+require("telescope").load_extension("ui-select")
+
+vim.keymap.set("n", "<Leader>ff", "<Cmd>Telescope git_files<CR>")
+vim.keymap.set("n", "<Leader>ee", "<Cmd>Telescope find_files<CR>")
+vim.keymap.set("n", "<Leader>bb", "<Cmd>Telescope buffers<CR>")
+vim.keymap.set("n", "<Leader><F1>", "<Cmd>Telescope help_tags<CR>")
+vim.keymap.set("n", "<Leader>/", "<Cmd>Telescope live_grep<CR>")
+vim.keymap.set("n", "<Leader><C-]>", "<Cmd>Telescope tags<CR>")
+vim.keymap.set("n", "<Leader>?", "<Cmd>Telescope grep_string<CR>")
+vim.keymap.set("n", "<Leader>:", "<Cmd>Telescope commands<CR>")
+vim.keymap.set("n", "z=", "<Cmd>Telescope spell_suggest<CR>")
+vim.keymap.set("n", "<M-.>", "<Cmd>Telescope lsp_code_actions<CR>")
+vim.keymap.set("n", "<Leader>lo", "<Cmd>Telescope lsp_document_symbols<CR>")
+vim.keymap.set("n", "<Leader>lO", "<Cmd>Telescope lsp_workspace_symbols<CR>")
+
+-- nvim-cmp
+local cmp = require("cmp")
+cmp.setup({
+  completion = {
+    autocomplete = false,
+  },
+  mapping = {
+    ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+    ["<C-u>"] = cmp.mapping.scroll_docs(4),
+    ["<C-Space>"] = cmp.mapping.complete(),
+    ["<CR>"] = cmp.mapping.confirm({ select = false }),
+  },
+	sources = cmp.config.sources({
+		{ name = "nvim_lsp" },
+		-- { name = 'luasnip' },
+		{ name = "path" },
+	}),
+})
+
+-- nvim-lspconfig
+local nvim_lsp = require("lspconfig")
+local my_on_attach = function(client, bufnr)
+	local opts = { noremap = true, silent = true }
+	-- TODO: someday when lua has command API, change this
+	vim.cmd([[ command! Format execute 'lua vim.lsp.buf.formatting()' ]])
+	vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+	-- TODO: redo these to use vim.keymap API: signature is:
+	-- vim.keymap.set("n", "gD", "<cmd>vim.lsp.buf.declaration", { silent = true, buffer = bufnr })
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "<Leader>K", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "<Leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "<Leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "gO", "<cmd>lua vim.lsp.buf.workspace_symbols()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "<Leader>f", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "<Leader>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "<Leader>gq", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "<Leader><F4>", "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>", opts)
+end
+
+local runtime_path = vim.split(package.path, ";")
+table.insert(runtime_path, "lua/?.lua")
+table.insert(runtime_path, "lua/?/init.lua")
+
+nvim_lsp.sumneko_lua.setup({
+	on_attach = my_on_attach,
+	settings = {
+		Lua = {
+			runtime = {
+				version = "LuaJIT",
+				path = runtime_path,
+			},
+			diagnostics = {
+				globals = { "vim" },
+			},
+			workspace = {
+				-- make server aware of neovim runtime files
+				library = vim.api.nvim_get_runtime_file("", true),
+			},
+		},
+	},
+})
+
+-- null-ls
+require("null-ls").setup({
+	-- on_attach = my_on_attach,
+	debug = false,
+	sources = {
+		-- For Lua, sumneko-lua server doesn't support formatting
+		require("null-ls").builtins.formatting.stylua,
+		require("null-ls").builtins.diagnostics.vale,
+		require("my.null_ls_custom.markdownlint_cli2"),
+	},
+})
+
+-- Comment.nvim
+require("comment").setup({
+	pre_hook = function(ctx)
+		local U = require("Comment.utils")
+		local location = nil
+		if ctx.ctype == U.ctype.block then
+			location = require("ts_context_commentstring.utils").get_cursor_location()
+		elseif ctx.cmotion == U.cmotion.v or ctx.cmotion == U.cmotion.V then
+			location = require("ts_context_commentstring.utils").get_visual_start_location()
+		end
+		return require("ts_context_commentstring.internal").calculate_commentstring({
+			key = ctx.ctype == U.ctype.line and "__default" or "__multiline",
+			location = location,
+		})
+	end,
+})
+
+-- gitsigns.nvim
+require("gitsigns").setup()
