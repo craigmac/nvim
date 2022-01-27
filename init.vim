@@ -63,7 +63,7 @@ nnoremap <Leader><C-]> :Tags<CR>
 command! -bang -bar -nargs=? -complete=dir FZFCd
   \ call fzf#run(fzf#wrap(
   \ {'source': 'find '.( empty("<args>") ? ( <bang>0 ? "~" : "." ) : "<args>" ) .' -type d',
-  \ 'sink': 'cd'}))
+  \ 'sink': 'tcd'}))
 " Function used to populate Quickfix with selected lines
 function! s:build_quickfix_list(lines)
   call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
