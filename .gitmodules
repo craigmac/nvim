@@ -31,3 +31,36 @@
 [submodule "pack/third-party/opt/vim-textobj-user"]
 	path = pack/third-party/opt/vim-textobj-user
 	url = https://github.com/kana/vim-textobj-user
+[submodule "pack/third-party/opt/telescope.nvim"]
+	path = pack/third-party/opt/telescope.nvim
+	url = https://github.com/nvim-telescope/telescope.nvim
+[submodule "pack/third-party/opt/plenary.nvim"]
+	path = pack/third-party/opt/plenary.nvim
+	url = https://github.com/nvim-lua/plenary.nvim
+[submodule "pack/third-party/opt/telescope-fzf-native.nvim"]
+	path = pack/third-party/opt/telescope-fzf-native.nvim
+	url = https://github.com/nvim-telescope/telescope-fzf-native.nvim
+[submodule "pack/third-party/opt/telescope-ui-select.nvim"]
+	path = pack/third-party/opt/telescope-ui-select.nvim
+	url = https://github.com/nvim-telescope/telescope-ui-select.nvim
+[submodule "pack/third-party/opt/nvim-lspconfig"]
+	path = pack/third-party/opt/nvim-lspconfig
+	url = https://github.com/neovim/nvim-lspconfig
+[submodule "pack/third-party/opt/null-ls.nvim"]
+	path = pack/third-party/opt/null-ls.nvim
+	url = https://github.com/jose-elias-alvarez/null-ls.nvim
+[submodule "pack/third-party/opt/nvim-cmp"]
+	path = pack/third-party/opt/nvim-cmp
+	url = https://github.com/hrsh7th/nvim-cmp
+[submodule "pack/third-party/opt/cmp-nvim-lsp"]
+	path = pack/third-party/opt/cmp-nvim-lsp
+	url = https://github.com/hrsh7th/cmp-nvim-lsp
+[submodule "pack/third-party/opt/cmp-path"]
+	path = pack/third-party/opt/cmp-path
+	url = https://github.com/hrsh7th/cmp-path
+[submodule "pack/third-party/opt/fzf.vim"]
+	path = pack/third-party/opt/fzf.vim
+	url = https://github.com/junegunn/fzf.vim
+[submodule "pack/third-party/opt/github-nvim-theme"]
+	path = pack/third-party/opt/github-nvim-theme
+	url = https://github.com/projekt0n/github-nvim-theme

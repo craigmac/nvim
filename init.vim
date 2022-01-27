@@ -16,6 +16,11 @@ let g:loaded_tarPlugin = 1
 let g:loaded_2html_plugin = 1
 packadd! cfilter
 
+" brew install fzf first
+if executable('fzf') && has('mac')
+    set runtimepath+=/usr/local/opt/fzf
+endif
+
 " Plugins in ./pack/third-party/opt
 packadd! tagbar
 packadd! vim-commentary
@@ -28,6 +33,70 @@ packadd! vim-surround
 packadd! vim-textobj-user
 packadd! vim-textobj-entire
 packadd! vim-textobj-indent
+packadd! fzf.vim
+
+" neovim-only
+packadd! github-nvim-theme
+packadd! plenary.nvim
+" TODO: using fzf.vim until feature match possible
+" packadd! telescope.nvim
+" packadd! telescope-fzf-native.nvim
+" packadd! telescope-ui-select.nvim
+packadd! nvim-lspconfig
+packadd! null-ls.nvim
+packadd! nvim-cmp
+packadd! cmp-nvim-lsp
+packadd! cmp-path
+
+" fzf.vim
+nnoremap <C-p> :GFiles<CR>
+" FZF from directory buffer is in, use this when not in Git repo
+nnoremap <Leader>e. :FZF %:h<CR>
+" Jump to buffer in existing window if possible with this option
+let g:fzf_buffers_jump = 1
+nnoremap <Leader><Tab> :Buffers<CR>
+
+" Change to git project directory
+nnoremap <Leader>c :FZFCd ~/git<CR>
+nnoremap <Leader>C :FZFCd!<CR>
+nnoremap <Leader><C-]> :Tags<CR>
+command! -bang -bar -nargs=? -complete=dir FZFCd
+  \ call fzf#run(fzf#wrap(
+  \ {'source': 'find '.( empty("<args>") ? ( <bang>0 ? "~" : "." ) : "<args>" ) .' -type d',
+  \ 'sink': 'cd'}))
+" Function used to populate Quickfix with selected lines
+function! s:build_quickfix_list(lines)
+  call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
+  copen
+  cc
+endfunction
+let g:fzf_action = {
+  \ 'ctrl-q': function('s:build_quickfix_list'),
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-s': 'split',
+  \ 'ctrl-v': 'vsplit' }
+" Layout of fzf UI
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+" Default toggle preview window key of <C-/> is not widely supported on
+" terminal emulators. Also it slows things down. Off until toggled on.
+let g:fzf_preview_window = ['right:60%:hidden', 'ctrl-o']
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['bg', 'Error'],
+  \ 'fg+':     ['fg', 'Pmenu'],
+  \ 'bg+':     ['bg', 'Pmenu'],
+  \ 'hl+':     ['bg', 'Error'],
+  \ 'info':    ['fg', 'Normal'],
+  \ 'border':  ['fg', 'Normal'],
+  \ 'prompt':  ['fg', 'Statement'],
+  \ 'pointer': ['fg', 'Statement'],
+  \ 'marker':  ['fg', 'Statement'],
+  \ 'gutter':  ['bg', 'Normal'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'preview-fg': ['fg', 'Normal'],
+  \ 'preview-bg': ['bg', 'Normal'],
+  \ 'header':  ['fg', 'Comment'] }
 
 " vim-fugitive
 nnoremap <silent><Leader>gg :G<CR>
@@ -75,7 +144,7 @@ set shortmess-=cS
 set showtabline=2
 set signcolumn=number
 set splitbelow splitright
-" set tabline=%!utils#mytabline()
+set tabline=%!utils#MyTabLine()
 set tags=./tags;,tags;
 set thesaurus=~/.config/nvim/thesaurus/english.txt
 set termguicolors
@@ -266,6 +335,8 @@ let g:github_keyword_style = 'NONE'
 let g:github_function_style = 'NONE'
 let g:github_variable_style = 'NONE'
 colorscheme github_light
+" TODO: look up the proper way to guard this in romainl gist
+hi! StatusLineNC guibg=#dddddd gui=NONE
 
 " }}}
 
