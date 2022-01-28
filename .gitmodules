@@ -64,3 +64,21 @@
 [submodule "pack/third-party/opt/github-nvim-theme"]
 	path = pack/third-party/opt/github-nvim-theme
 	url = https://github.com/projekt0n/github-nvim-theme
+[submodule "pack/third-party/opt/LuaSnip"]
+	path = pack/third-party/opt/LuaSnip
+	url = https://github.com/L3mON4D3/LuaSnip
+[submodule "pack/third-party/opt/cmp_luasnip"]
+	path = pack/third-party/opt/cmp_luasnip
+	url = https://github.com/saadparwaiz1/cmp_luasnip
+[submodule "pack/third-party/opt/telescope-github.nvim"]
+	path = pack/third-party/opt/telescope-github.nvim
+	url = https://github.com/nvim-telescope/telescope-github.nvim
+[submodule "pack/third-party/opt/nvim-treesitter"]
+	path = pack/third-party/opt/nvim-treesitter
+	url = https://github.com/nvim-treesitter/nvim-treesitter
+[submodule "nvim-treesitter-textobjects"]
+	path = nvim-treesitter-textobjects
+	url = https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+[submodule "pack/third-party/opt/nvim-treesitter-textobjects"]
+	path = pack/third-party/opt/nvim-treesitter-textobjects
+	url = https://github.com/nvim-treesitter/nvim-treesitter-textobjects

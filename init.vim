@@ -33,70 +33,22 @@ packadd! vim-surround
 packadd! vim-textobj-user
 packadd! vim-textobj-entire
 packadd! vim-textobj-indent
-packadd! fzf.vim
 
 " neovim-only
 packadd! github-nvim-theme
 packadd! plenary.nvim
 " TODO: using fzf.vim until feature match possible
-" packadd! telescope.nvim
-" packadd! telescope-fzf-native.nvim
-" packadd! telescope-ui-select.nvim
+packadd! telescope.nvim
+packadd! telescope-fzf-native.nvim
+packadd! telescope-ui-select.nvim
+packadd! telescope-github.nvim
 packadd! nvim-lspconfig
 packadd! null-ls.nvim
 packadd! nvim-cmp
 packadd! cmp-nvim-lsp
 packadd! cmp-path
-
-" fzf.vim
-nnoremap <C-p> :GFiles<CR>
-" FZF from directory buffer is in, use this when not in Git repo
-nnoremap <Leader>e. :FZF %:h<CR>
-" Jump to buffer in existing window if possible with this option
-let g:fzf_buffers_jump = 1
-nnoremap <Leader><Tab> :Buffers<CR>
-
-" Change to git project directory
-nnoremap <Leader>c :FZFCd ~/git<CR>
-nnoremap <Leader>C :FZFCd!<CR>
-nnoremap <Leader><C-]> :Tags<CR>
-command! -bang -bar -nargs=? -complete=dir FZFCd
-  \ call fzf#run(fzf#wrap(
-  \ {'source': 'find '.( empty("<args>") ? ( <bang>0 ? "~" : "." ) : "<args>" ) .' -type d',
-  \ 'sink': 'tcd'}))
-" Function used to populate Quickfix with selected lines
-function! s:build_quickfix_list(lines)
-  call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
-  copen
-  cc
-endfunction
-let g:fzf_action = {
-  \ 'ctrl-q': function('s:build_quickfix_list'),
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-s': 'split',
-  \ 'ctrl-v': 'vsplit' }
-" Layout of fzf UI
-let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
-" Default toggle preview window key of <C-/> is not widely supported on
-" terminal emulators. Also it slows things down. Off until toggled on.
-let g:fzf_preview_window = ['right:60%:hidden', 'ctrl-o']
-let g:fzf_colors =
-\ { 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['bg', 'Error'],
-  \ 'fg+':     ['fg', 'Pmenu'],
-  \ 'bg+':     ['bg', 'Pmenu'],
-  \ 'hl+':     ['bg', 'Error'],
-  \ 'info':    ['fg', 'Normal'],
-  \ 'border':  ['fg', 'Normal'],
-  \ 'prompt':  ['fg', 'Statement'],
-  \ 'pointer': ['fg', 'Statement'],
-  \ 'marker':  ['fg', 'Statement'],
-  \ 'gutter':  ['bg', 'Normal'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'preview-fg': ['fg', 'Normal'],
-  \ 'preview-bg': ['bg', 'Normal'],
-  \ 'header':  ['fg', 'Comment'] }
+packadd! nvim-treesitter
+packadd! nvim-treesitter-textobjects
 
 " vim-fugitive
 nnoremap <silent><Leader>gg :G<CR>
@@ -124,11 +76,12 @@ set completeopt=menuone
 set diffopt+=algorithm:patience
 set exrc
 set foldlevelstart=99
+set grepprg=grep\ -Hnri
 set ignorecase smartcase
 set listchars=tab:\│\ ,space:·,trail:·,eol:¬
 set mouse=nvi
 set nowrap
-set number relativenumber
+set number 
 set path-=/usr/include |  set path+=**
 set secure
 set showmatch
@@ -154,11 +107,6 @@ set wildignore+=*.exe,*.dylib,%*
 set wildignore+=*.png,*.jpeg,*.bmp,*.jpg
 set wildignore+=*.pyc
 
-if executable('git')
-  set grepprg=git\ grep\ -Hnri\ 
-else
-  set grepprg=grep\ -Hnri
-endif
 
 let g:markdown_folding = 1
 
@@ -166,7 +114,8 @@ let g:markdown_folding = 1
 
 " Mappings {{{
 
-" manual expansions, when I want it
+inoremap <C-Space> <C-x><C-o>
+
 inoremap (<CR> (<CR>)<Esc>O
 inoremap (; (<CR>);<Esc>O
 inoremap (, (<CR>),<Esc>O
@@ -200,19 +149,9 @@ nnoremap <Leader>dd <Cmd>bdelete!<CR>
 " REALLY delete the buffer.
 nnoremap <Leader>D <Cmd>bwipeout!<CR>
 
-" :find (&path aware) and :edit niceties
-nnoremap <Leader>ff :find *
-nnoremap <Leader>fs :sfind *
-nnoremap <Leader>fv :vert sfind *
-
-" Tab-expand to show wildmenu then untab to unselect but still see menu
-nnoremap <Leader>ee :edit *<C-z><S-Tab>
-nnoremap <Leader>es :split *<C-z><S-Tab>
-nnoremap <Leader>ev :vert split *<C-z><S-Tab>
-
 " Tmux-like mappings
 " TODO: start in insert mode and close when exited
-nnoremap <C-b>s :terminal<CR>
+nnoremap <C-b>s :split +terminal<CR>
 nnoremap <C-b>v :vsplit +terminal<CR>
 nnoremap <C-b>! <C-w>T
 tnoremap <C-b>s :terminal<CR>
@@ -227,6 +166,16 @@ nnoremap <A-h> <C-\><C-n><C-w>h
 nnoremap <A-j> <C-\><C-n><C-w>j
 nnoremap <A-k> <C-\><C-n><C-w>k
 nnoremap <A-l> <C-\><C-n><C-w>l
+" BUG: copy of above but alternate chars sent by iTerm depending on settings of
+" option/meta key
+tnoremap ˙ <C-\><C-n><C-w>h
+nnoremap ˙ <C-\><C-n><C-w>h
+tnoremap ∆ <C-\><C-n><C-w>j
+nnoremap ∆ <C-\><C-n><C-w>j
+tnoremap ˚ <C-\><C-n><C-w>k
+nnoremap ˚ <C-\><C-n><C-w>k
+tnoremap ¬ <C-\><C-n><C-w>l
+nnoremap ¬ <C-\><C-n><C-w>l
 
 " resizing windows
 nnoremap <silent><S-Up> <Cmd>2wincmd+<CR>
@@ -242,9 +191,6 @@ xmap > >gv
 xnoremap J :m '>+1<CR>gv=gv
 xnoremap K :m '<-2<CR>gv=gv
 
-nnoremap <silent> [l :silent! lprevious<CR>
-nnoremap <silent> ]l :silent! lnext<CR>
-"
 " '%%' in command-line mode maybe expands to path of current buffer.
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 
@@ -253,16 +199,14 @@ nnoremap <silent><F3> :call utils#ToggleQuickfixList()<CR>
 nnoremap <silent><F4> :call utils#ToggleLocationList()<CR>
 nnoremap <silent><F7> :15Lexplore<CR>
 nnoremap <silent><F8> :TagbarOpenAutoClose<CR>
-nnoremap <silent>gO :TagbarOpenAutoClose<CR>
 nnoremap <silent><F9> :set list!<CR>
 nnoremap <silent><F10> :set spell!<CR>
-nnoremap <silent><Leader>* :grep <cword><CR>
+nnoremap <Leader>* :grep <C-r><C-w> 
 
 " Vimdiff
 nnoremap gh :diffget //2<CR>
 nnoremap gl :diffget //3<CR>
 
-" vim-unimpaired style
 nnoremap [q :cprevious<CR>
 nnoremap ]q :cnext<CR>
 nnoremap [Q :cfirst<CR>
@@ -296,22 +240,6 @@ command! JekyllOpen call utils#JekyllOpenLive()
 
 " https://vi.stackexchange.com/questions/13433/how-to-load-list-of-files-in-commit-into-quickfix
 command! -nargs=? -bar Gshow call setqflist(map(systemlist("git show --pretty='' --name-only <args>"), '{"filename": v:val, "lnum": 1}')) | copen
-
-" Check out PR # using gh pr checkout command and completion
-command! -complete=customlist,Ghlistprs -nargs=1 Ghprcheckout silent! !gh pr checkout <args>
-function! Ghlistprs(ArgLead, CmdLine, CursorPos) abort
-  return systemlist('gh pr list | cut -f1')
-endfunction
-
-function! RipgrepFzf(query, fullscreen)
-  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
-  let initial_command = printf(command_fmt, shellescape(a:query))
-  let reload_command = printf(command_fmt, '{q}')
-  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
-  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
-endfunction
-
-command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 
 " }}}
 
@@ -353,3 +281,218 @@ hi! StatusLineNC guibg=#dddddd gui=NONE
 
 " }}}
 
+" Lua {{{
+
+lua << EOF
+
+-- nvim-cmp
+local cmp = require("cmp")
+cmp.setup({
+  completion = {
+    autocomplete = false,
+  },
+  mapping = {
+    ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+    ["<C-u>"] = cmp.mapping.scroll_docs(4),
+    ["<C-Space>"] = cmp.mapping.complete(),
+    ["<CR>"] = cmp.mapping.confirm({ select = false }),
+  },
+	sources = cmp.config.sources({
+		{ name = "nvim_lsp" },
+		{ name = "path" },
+	}),
+})
+
+-- Inside foo.setup() for each language server config, we
+-- pass this to 'on_attach' function to run after connected to server. 
+local my_on_attach = function(client)
+
+  vim.cmd([[ command! Format execute 'lua vim.lsp.buf.formatting()' ]])
+
+  vim.api.nvim_buf_set_option(0, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+  vim.api.nvim_buf_set_option(0, 'formatexpr', 'v:lua.vim.lsp.formatexpr()')
+
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = 0 })
+  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { buffer = 0})
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = 0})
+  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { buffer = 0})
+  vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, { buffer = 0})
+  vim.keymap.set('n', '<F2>', vim.lsp.buf.rename, { buffer = 0})
+  vim.keymap.set('n', 'g.', "<cmd>Telescope lsp_code_actions<CR>", { buffer = 0})
+  vim.keymap.set('n', 'gO', "<cmd>Telescope lsp_document_symbols<CR>", { buffer = 0})
+  vim.keymap.set('n', 'gr', vim.lsp.buf.references, { buffer = 0})
+  vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { buffer = 0})
+  vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { buffer = 0})
+  vim.keymap.set('n', 'gq', vim.lsp.buf.formatting, { buffer = 0})
+  vim.keymap.set('n', '<F4>', vim.lsp.diagnostic.set_loclist, { buffer = 0})
+end
+
+-- Lua language server (sumneko)
+local sumneko_root_path = '/Users/cmaceach/git/lsp-servers/lua-language-server'
+local sumneko_binary = sumneko_root_path.."/bin/".."/lua-language-server"
+require('lspconfig').sumneko_lua.setup({
+  cmd = {sumneko_binary, "-E", sumneko_root_path .. "/main.lua"};
+  settings = {
+    Lua = {
+      runtime = {
+        version = "LuaJIT",
+        path = vim.split(package.path, ';'),
+      },
+      diagnostics = {
+        globals = { "vim" },
+      },
+      workspace = {
+        -- make server aware of Neovim runtime files
+        library = {
+          [vim.fn.expand('$VIMRUNTIME/lua')] = true,
+          [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
+        },
+      },
+    },
+  },
+  on_attach = my_on_attach,
+  capabilities = my_capabilities,
+})
+
+-- null-ls setup
+require("null-ls").setup({
+	debug = false,
+	sources = {
+		-- For Lua, sumneko-lua server doesn't support formatting
+		require("null-ls").builtins.formatting.stylua,
+		require("null-ls").builtins.diagnostics.vale,
+		require("my.null_ls_custom.markdownlint_cli2"),
+	},
+	on_attach = my_on_attach,
+  capabilities = my_capabilities,
+})
+
+-- telescope.nvim
+local actions = require("telescope.actions")
+local previewers = require("telescope.previewers")
+local sorters = require("telescope.sorters")
+local finders = require("telescope.finders")
+local layouts = require("telescope.actions.layout")
+local pickers = require("telescope.pickers")
+local action_state = require("telescope.actions.state")
+local conf = require("telescope.config").values
+require("telescope").setup({
+	defaults = {
+		path_display = { "absolute" },
+		mappings = {
+			i = {
+				["<C-o>"] = layouts.toggle_preview,
+        -- œ is char iTerm may send for M-q, depending on settings, M-q
+        -- already bound to this action by default
+        ["œ"] = actions.send_selected_to_qflist + actions.open_qflist,
+				["<C-Down>"] = actions.cycle_history_next,
+				["<C-Up>"] = actions.cycle_history_prev,
+			},
+		},
+	},
+	pickers = {
+		-- change configs for each builtin picker (each key is a picker name)
+		git_files = {
+			theme = "dropdown",
+			previewer = false,
+		},
+		spell_suggest = {
+			theme = "cursor",
+		},
+		grep_string = {
+			theme = "dropdown",
+			previewer = false,
+		},
+		live_grep = {
+			theme = "dropdown",
+			previewer = false,
+		},
+		lsp_code_actions = {
+			theme = "cursor",
+		},
+		find_files = {
+			theme = "dropdown",
+			previewer = false,
+		},
+		buffers = {
+			theme = "dropdown",
+			previewer = false,
+		},
+	},
+	extensions = {
+		["ui-select"] = {
+			require("telescope.themes").get_dropdown({}),
+		},
+	},
+})
+
+-- TODO: try out nvim-telescope/telescope-github.nvim
+-- these need to come after main setup() call
+require("telescope").load_extension("fzf")
+-- sets vim.ui.select to use telescope so things like vim.lsp.buf.code_action()
+-- will use telescope interface instead
+require("telescope").load_extension("ui-select")
+require("telescope").load_extension('gh')
+
+
+vim.keymap.set("n", "<C-p>", require('telescope.builtin').git_files)
+vim.keymap.set("n", "<Leader>ff", require('telescope.builtin').find_files)
+vim.keymap.set("n", "<Leader><Tab>", require('telescope.builtin').buffers)
+vim.keymap.set("n", "<Leader><F1>", require('telescope.builtin').help_tags)
+vim.keymap.set("n", "<Leader><C-]>", require('telescope.builtin').tags)
+vim.keymap.set("n", "<Leader>:", require('telescope.builtin').commands)
+vim.keymap.set("n", "z=", require('telescope.builtin').spell_suggest)
+vim.keymap.set("n", '<Leader>"', require('telescope.builtin').registers)
+
+-- treesitter.nvim
+require("nvim-treesitter.configs").setup({
+	highlight = { enable = true },
+	incremental_selection = {
+		enable = false,
+		--keymaps = {
+		--	init_selection = "gnn",
+		--	node_incremental = "grn",
+		--	scope_incremental = "grc",
+		--	node_decremental = "grm",
+		--},
+	},
+	indent = {
+		enable = true,
+	},
+	textobjects = {
+		select = {
+			enable = true,
+			lookahead = true, -- jump ahead like targets.vim did
+			keymaps = {
+				["af"] = "@function.outer",
+				["if"] = "@function.inner",
+				["ac"] = "@class.outer",
+				["ic"] = "@class.inner",
+			},
+		},
+		move = {
+			enable = true,
+			set_jumps = false, -- whether to add jump to jumplist (:jumps)
+			goto_next_start = {
+				["]m"] = "@function.outer",
+				["]]"] = "@class.outer",
+			},
+			goto_next_end = {
+				["]M"] = "@function.outer",
+				["]["] = "@class.outer",
+			},
+			goto_previous_start = {
+				["[m"] = "@function.outer",
+				["[["] = "@class.outer",
+			},
+			goto_previous_end = {
+				["[M"] = "@function.outer",
+				["[]"] = "@class.outer",
+			},
+		},
+	},
+})
+
+EOF
+
+" }}}
