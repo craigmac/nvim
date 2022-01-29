@@ -96,7 +96,7 @@ set statusline+=\ %P
 set statusline+=\ %l:%c\ 
 set shortmess-=cS
 set showtabline=2
-set signcolumn=number
+set signcolumn=yes
 set splitbelow splitright
 set tabline=%!utils#MyTabLine()
 set tags=./tags;,tags;
