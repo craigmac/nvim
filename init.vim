@@ -167,16 +167,6 @@ nnoremap <A-h> <C-\><C-n><C-w>h
 nnoremap <A-j> <C-\><C-n><C-w>j
 nnoremap <A-k> <C-\><C-n><C-w>k
 nnoremap <A-l> <C-\><C-n><C-w>l
-" BUG: copy of above but alternate chars sent by iTerm depending on settings of
-" option/meta key
-tnoremap ˙ <C-\><C-n><C-w>h
-nnoremap ˙ <C-\><C-n><C-w>h
-tnoremap ∆ <C-\><C-n><C-w>j
-nnoremap ∆ <C-\><C-n><C-w>j
-tnoremap ˚ <C-\><C-n><C-w>k
-nnoremap ˚ <C-\><C-n><C-w>k
-tnoremap ¬ <C-\><C-n><C-w>l
-nnoremap ¬ <C-\><C-n><C-w>l
 
 " resizing windows
 nnoremap <silent><S-Up> <Cmd>2wincmd+<CR>
