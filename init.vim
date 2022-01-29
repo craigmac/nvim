@@ -257,6 +257,7 @@ augroup myinit
   autocmd TermOpen * setlocal statusline=%{b:term_title}
   " Auto close terminal buffers if exit status was 0 (no errors)
   autocmd TermClose * if !v:event.status | execute 'bdelete! ' .. expand('<abuf>') | endif
+  autocmd BufEnter term://* startinsert
 augroup END
 
 " }}}
