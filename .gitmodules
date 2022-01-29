@@ -16,9 +16,6 @@
 [submodule "pack/third-party/opt/tagbar"]
 	path = pack/third-party/opt/tagbar
 	url = https://github.com/preservim/tagbar
-[submodule "pack/third-party/opt/vim-liquid"]
-	path = pack/third-party/opt/vim-liquid
-	url = https://github.com/tpope/vim-liquid
 [submodule "pack/third-party/opt/vim-dispatch"]
 	path = pack/third-party/opt/vim-dispatch
 	url = https://github.com/tpope/vim-dispatch
@@ -82,3 +79,6 @@
 [submodule "pack/third-party/opt/nvim-treesitter-textobjects"]
 	path = pack/third-party/opt/nvim-treesitter-textobjects
 	url = https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+[submodule "pack/third-party/opt/lualine.nvim"]
+	path = pack/third-party/opt/lualine.nvim
+	url = https://github.com/nvim-lualine/lualine.nvim

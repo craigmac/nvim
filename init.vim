@@ -27,7 +27,6 @@ packadd! vim-commentary
 packadd! vim-fugitive
 packadd! vim-repeat
 packadd! vim-rhubarb
-packadd vim-liquid | " no ! so ftdetect scripts are run
 packadd! vim-surround
 " TODO: eventually replace with Treesitter text objects?
 packadd! vim-textobj-user
@@ -49,6 +48,7 @@ packadd! cmp-nvim-lsp
 packadd! cmp-path
 packadd! nvim-treesitter
 packadd! nvim-treesitter-textobjects
+packadd! lualine.nvim
 
 " vim-fugitive
 nnoremap <silent><Leader>gg :G<CR>
@@ -71,45 +71,25 @@ xnoremap <Leader>g@ :GBrowse<CR>
 
 set breakindent
 set clipboard+=unnamedplus
-set complete-=d
-set completeopt=menuone
+set complete-=d completeopt=menuone
 set diffopt+=algorithm:patience
-set exrc
+set exrc secure
 set foldlevelstart=99
 set grepprg=grep\ -Hnri
 set ignorecase smartcase
 set listchars=tab:\│\ ,space:·,trail:·,eol:¬
-set mouse=nvi
+set mouse=a
 set nowrap
 set number 
 set path-=/usr/include |  set path+=**
-set secure
 set showmatch
-" TODO: replace with a function call for finer grain
-set statusline=\ %f | " buffer name relative to :pwd
-set statusline+=%m%r%h | " [+] when modified, [-] no modify [RO] and [help]
-set statusline+=%= 
-set statusline+=%{FugitiveStatusline()}
-set statusline+=%= 
-set statusline+=\ [%Y]
-set statusline+=\ %P
-set statusline+=\ %l:%c\ 
 set shortmess-=cS
 set showtabline=2
 set signcolumn=yes
 set splitbelow splitright
 set tabline=%!utils#MyTabLine()
 set tags=./tags;,tags;
-set thesaurus=~/.config/nvim/thesaurus/english.txt
 set termguicolors
-set wildcharm=<C-z>
-set wildignore=*.o,*.obj
-set wildignore+=*.exe,*.dylib,%*
-set wildignore+=*.png,*.jpeg,*.bmp,*.jpg
-set wildignore+=*.pyc
-
-
-let g:markdown_folding = 1
 
 " }}}
 
@@ -265,15 +245,30 @@ augroup END
 " Colors/UI {{{
 
 let g:github_hide_inactive_statusline = 0
-let g:github_dark_float = 1
+let g:github_dark_float = 0
 let g:github_comment_style = 'italic'
 let g:github_keyword_style = 'NONE'
 let g:github_function_style = 'NONE'
 let g:github_variable_style = 'NONE'
 let g:github_hide_end_of_buffer = 0
 colorscheme github_light
-" TODO: look up the proper way to guard this in romainl gist
-hi! StatusLineNC guibg=#dddddd gui=NONE
+
+hi! link DiagnosticFloatingWarn Normal
+hi! link DiagnosticFloatingInfo Normal
+hi! link DiagnosticFloatingHint Normal
+hi! link DiagnosticFloatingError Normal
+
+hi! DiagnosticUnderlineWarn gui=undercurl guisp=Orange
+hi! DiagnosticUnderlineInfo gui=undercurl guisp=LightBlue
+hi! DiagnosticUnderlineHint gui=undercurl guisp=LightGrey
+hi! DiagnosticUnderlineError gui=undercurl guisp=Red
+
+hi! SpellBad gui=undercurl guisp=Blue
+hi! SpellRare gui=undercurl guisp=Blue
+hi! SpellCap gui=undercurl guisp=Blue
+hi! SpellLocal gui=undercurl guisp=Blue
+
+
 
 " }}}
 
@@ -320,7 +315,7 @@ local my_on_attach = function(client)
   vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { buffer = 0})
   vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { buffer = 0})
   vim.keymap.set('n', 'gq', vim.lsp.buf.formatting, { buffer = 0})
-  vim.keymap.set('n', '<F4>', vim.lsp.diagnostic.set_loclist, { buffer = 0})
+  vim.keymap.set('n', '<F4>', vim.diagnostic.setloclist, { buffer = 0})
 end
 
 -- Lua language server (sumneko)
@@ -378,9 +373,6 @@ require("telescope").setup({
 		mappings = {
 			i = {
 				["<C-o>"] = layouts.toggle_preview,
-        -- œ is char iTerm may send for M-q, depending on settings, M-q
-        -- already bound to this action by default
-        ["œ"] = actions.send_selected_to_qflist + actions.open_qflist,
 				["<C-Down>"] = actions.cycle_history_next,
 				["<C-Up>"] = actions.cycle_history_prev,
 			},
@@ -487,6 +479,58 @@ require("nvim-treesitter.configs").setup({
 			},
 		},
 	},
+})
+
+-- vim.diagnostic settings
+-- TODO: popup shown on mouse hover 
+vim.diagnostic.config({ 
+  virtual_text = false,
+  underline = true,
+  signs = false,
+  float = {
+    scope = 'cursor',
+    source = false,
+    header = '',
+    border = 'double',
+  },
+})
+
+-- lualine.nvim
+-- TODO: add truncation of parts for <81 chars width:
+-- https://github.com/nvim-lualine/lualine.nvim/wiki/Component-snippets#truncating-components-in-smaller-window
+require("lualine").setup({
+	options = {
+		icons_enabled = true,
+		theme = "github",
+		always_divide_middle = true,
+	},
+	sections = {
+    -- If I want to see single char showing  current mode:
+		--lualine_a = {
+		--	{
+		--		"mode",
+		--		fmt = function(str)
+		--			return str:sub(1, 1)
+		--		end,
+		--	},
+		--},
+    lualine_a = {},
+		lualine_b = { "branch", "diagnostics" },
+		lualine_c = { "%f" },
+		lualine_x = {},
+		lualine_y = { "progress" },
+		lualine_z = { "location" },
+	},
+	inactive_sections = {
+		lualine_a = {},
+		lualine_b = {},
+		lualine_c = { "%f" },
+		lualine_x = {},
+		lualine_y = {},
+		lualine_z = {},
+	},
+	tabline = {},
+	extensions = {},
 })
 
 EOF
