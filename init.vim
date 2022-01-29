@@ -88,8 +88,9 @@ set showmatch
 " TODO: replace with a function call for finer grain
 set statusline=\ %f | " buffer name relative to :pwd
 set statusline+=%m%r%h | " [+] when modified, [-] no modify [RO] and [help]
-set statusline+=%= | " Start right-hand side of statusline
+set statusline+=%= 
 set statusline+=%{FugitiveStatusline()}
+set statusline+=%= 
 set statusline+=\ [%Y]
 set statusline+=\ %P
 set statusline+=\ %l:%c\ 
@@ -262,6 +263,10 @@ augroup myinit
   autocmd BufEnter * if &buftype ==# 'nofile' | nnoremap <buffer> q :bwipeout!<CR> | endif
   autocmd BufEnter * if &buftype ==# 'nofile' | setlocal nocursorcolumn | endif
   autocmd BufWinEnter * if &previewwindow | setlocal nonumber norelativenumber nolist | endif
+  autocmd TermOpen * startinsert | setlocal nonumber norelativenumber
+  autocmd TermOpen * setlocal statusline=%{b:term_title}
+  " Auto close terminal buffers if exit status was 0 (no errors)
+  autocmd TermClose * if !v:event.status | execute 'bdelete! ' .. expand('<abuf>') | endif
 augroup END
 
 " }}}

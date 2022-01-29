@@ -17,8 +17,6 @@ nnoremap <buffer> gf :call utils#LiquidInclude()<CR>
 " /{{\s*page.version\s*}}\zs\/[^\.\)]\+\|\.\.\zs\/[^\.\)]\+
 setlocal include={{\\s*page.version\\s*}}\\zs\\/[^\\.\\)]\\+\\\|\\.\\.\\zs\\/[^\\.\\)]\\+
 
-compiler liquid
-
 " tagbar plugin support
 " Used ':TagbarGetTypeConfig markdown' to dump dict for markdown
 " and then just changed 'markdown' to 'liquid' to use the same for ft=liquid
