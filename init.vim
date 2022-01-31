@@ -119,11 +119,11 @@ cnoremap <expr> <C-n> wildmenumode() ? "<C-N>" : "<Down>"
 cnoremap <expr> <C-j> wildmenumode() ? "\<Down>\<C-z>" : "\<C-j>"
 cnoremap <expr> <C-k> wildmenumode() ? "\<Up>\<C-z>" : "\<C-k>"
 
-nnoremap <Leader><CR> :source %<CR>
-nnoremap <Leader>w :update<CR>
-nnoremap <Leader>, :edit $MYVIMRC<CR>
-nnoremap <Leader>ft :e <C-R>=expand('~/.config/nvim/after/ftplugin/'.&ft.'.vim')<CR><CR>
-nnoremap <Leader><Leader> :buffer #<CR>
+nnoremap <Leader><CR> <cmd>source %<CR>
+nnoremap <Leader>w <cmd>update<CR>
+nnoremap <Leader>, <cmd>edit $MYVIMRC<CR>
+nnoremap <Leader>ft <cmd>e <C-R>=expand('~/.config/nvim/after/ftplugin/'.&ft.'.vim')<CR><CR>
+nnoremap <Leader><Leader> <cmd>buffer #<CR>
 
 " keeps marks, settings, and you can still do e.g., <C-o> to jump to it
 nnoremap <Leader>dd <Cmd>bdelete!<CR> 
@@ -166,38 +166,39 @@ xnoremap K :m '<-2<CR>gv=gv
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 
 " Function keys
-nnoremap <silent><F3> :call utils#ToggleQuickfixList()<CR>
-nnoremap <silent><F4> :call utils#ToggleLocationList()<CR>
-nnoremap <silent><F7> :15Lexplore<CR>
-nnoremap <silent><F8> :TagbarOpenAutoClose<CR>
-nnoremap <silent><F9> :set list!<CR>
-nnoremap <silent><F10> :set spell!<CR>
+nnoremap <silent><F3> <cmd>call utils#ToggleQuickfixList()<CR>
+nnoremap <silent><F4> <cmd>call utils#ToggleLocationList()<CR>
+nnoremap <silent><F7> <cmd>15Lexplore<CR>
+nnoremap <silent><F8> <cmd>TagbarOpenAutoClose<CR>
+nnoremap <silent><F9> <cmd>set list!<CR>
 nnoremap <Leader>* :grep <C-r><C-w> 
 
 " Vimdiff
 nnoremap gh :diffget //2<CR>
 nnoremap gl :diffget //3<CR>
 
-nnoremap [q :cprevious<CR>
-nnoremap ]q :cnext<CR>
-nnoremap [Q :cfirst<CR>
-nnoremap ]Q :clast<CR>
-nnoremap [l :lprevious<CR>
-nnoremap ]l :lnext<CR>
-nnoremap ]t :tabnext<CR>
-nnoremap [t :tabprev<CR>
-nnoremap ]T :tablast<CR>
-nnoremap [t :tabfirst<CR>
+nnoremap [q <cmd>cprevious<CR>
+nnoremap ]q <cmd>cnext<CR>
+nnoremap [Q <cmd>cfirst<CR>
+nnoremap ]Q <cmd>clast<CR>
+nnoremap [e <cmd>lprevious<CR>
+nnoremap ]e <cmd>lnext<CR>
+nnoremap ]E <cmd>llast<CR>
+nnoremap [E <cmd>lfirst<CR>
+nnoremap ]t <cmd>tabnext<CR>
+nnoremap [t <cmd>tabprev<CR>
+nnoremap ]T <cmd>tablast<CR>
+nnoremap [t <cmd>tabfirst<CR>
 
 nnoremap g; g;zv
 nnoremap g, g,zv
-nnoremap <silent> } :keepjumps normal! }<CR>
-nnoremap <silent> { :keepjumps normal! {<CR>
+nnoremap <silent> } <cmd>keepjumps normal! }<CR>
+nnoremap <silent> { <cmd>keepjumps normal! {<CR>
 
 nmap <Leader>/ :grep<Space>
 nnoremap <Leader>? :vimgrep //j **/*.md<S-Left><S-Left><Right>
 
-nnoremap <Leader>@ :JekyllOpen<CR> 
+nnoremap <Leader>@ <cmd>JekyllOpen<CR> 
 
 " }}}
 
