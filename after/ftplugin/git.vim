@@ -2,3 +2,4 @@
 " commit header, move that line to top of screen to see more
 inoremap <buffer> [[ [[zt
 inoremap <buffer> ]] ]]zt
+setlocal nonumber norelativenumber
