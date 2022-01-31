@@ -28,10 +28,8 @@ packadd! vim-textobj-user
 packadd! vim-textobj-entire
 packadd! vim-textobj-indent
 
-" neovim-only
 packadd! github-nvim-theme
 packadd! plenary.nvim
-" TODO: using fzf.vim until feature match possible
 packadd! telescope.nvim
 packadd! telescope-fzf-native.nvim
 packadd! telescope-ui-select.nvim
@@ -430,13 +428,13 @@ vim.keymap.set("n", '<Leader>"', require('telescope.builtin').registers)
 require("nvim-treesitter.configs").setup({
 	highlight = { enable = true },
 	incremental_selection = {
-		enable = false,
-		--keymaps = {
-		--	init_selection = "gnn",
-		--	node_incremental = "grn",
-		--	scope_incremental = "grc",
-		--	node_decremental = "grm",
-		--},
+		enable = true,
+		keymaps = {
+			init_selection = "<CR>",
+			node_incremental = "gn",
+			scope_incremental = "gs",
+			node_decremental = "gp",
+		},
 	},
 	indent = {
 		enable = true,
