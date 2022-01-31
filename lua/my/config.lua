@@ -65,13 +65,28 @@ require("lspconfig").sumneko_lua.setup {
   on_attach = my_on_attach,
 }
 
+-- vim-ls server (npm install -g vim-language-server)
+require("lspconfig").vimls.setup {
+  init_options = {
+    isNeovim = true,
+  },
+  on_attach = my_on_attach,
+}
+
 -- null-ls setup
 require("null-ls").setup {
   debug = false,
   sources = {
     -- For Lua, sumneko-lua server doesn't support formatting
     require("null-ls").builtins.formatting.stylua,
+    require("null-ls").builtins.formatting.prettier.with {
+      disabled_filetypes = { "markdown" },
+    },
     require("null-ls").builtins.diagnostics.vale,
+    require("null-ls").builtins.diagnostics.vint,
+    require("null-ls").builtins.diagnostics.yamllint,
+
+    -- custom creating by me
     require "my.null_ls.markdownlint_cli2",
   },
   on_attach = my_on_attach,

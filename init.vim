@@ -1,6 +1,6 @@
 " Plugins {{{
 
-let mapleader = " "
+let mapleader = ' '
 
 " defaults I never use
 let g:loaded_getscriptPlugin = 1
@@ -82,6 +82,7 @@ set splitbelow splitright
 set tabline=%!utils#MyTabLine()
 set tags=./tags;,tags;
 set termguicolors
+set updatetime=250
 
 " }}}
 
@@ -228,6 +229,7 @@ augroup myinit
   " Auto close terminal buffers if exit status was 0 (no errors)
   autocmd TermClose * if !v:event.status | execute 'bdelete! ' .. expand('<abuf>') | endif
   autocmd BufEnter term://* startinsert
+  autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focus=false, scope="cursor"})
 augroup END
 
 " }}}
