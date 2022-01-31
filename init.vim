@@ -67,6 +67,9 @@ set clipboard+=unnamedplus
 set complete-=d completeopt=menuone
 set diffopt+=algorithm:patience
 set exrc secure
+" Experimental, per-window, not per-buffer
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
 set foldlevelstart=99
 set grepprg=grep\ -Hnri
 set ignorecase smartcase
