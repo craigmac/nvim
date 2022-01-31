@@ -16,11 +16,6 @@ let g:loaded_tarPlugin = 1
 let g:loaded_2html_plugin = 1
 packadd! cfilter
 
-" brew install fzf first
-if executable('fzf') && has('mac')
-    set runtimepath+=/usr/local/opt/fzf
-endif
-
 " Plugins in ./pack/third-party/opt
 packadd! tagbar
 packadd! vim-commentary
