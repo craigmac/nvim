@@ -7,3 +7,4 @@ setlocal softtabstop=2
 setlocal includeexpr=substitute(v:fname,'\\.','/','g')
 setlocal foldmethod=indent
 
+" autocmd! BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()

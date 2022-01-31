@@ -16,6 +16,14 @@ cmp.setup {
   },
 }
 
+-- Draw floating windows with double borders
+local my_handlers = {
+  ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "double" }),
+  ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "double" }),
+}
+
+-- nvim-lspconfig [https://github.com/neovim/nvim-lspconfig]
+--
 -- Inside foo.setup() for each language server config, we
 -- pass this to 'on_attach' function to run after connected to server.
 local my_on_attach = function(_)
@@ -63,6 +71,7 @@ require("lspconfig").sumneko_lua.setup {
     },
   },
   on_attach = my_on_attach,
+  handlers = my_handlers,
 }
 
 -- vim-ls server (npm install -g vim-language-server)
@@ -71,6 +80,7 @@ require("lspconfig").vimls.setup {
     isNeovim = true,
   },
   on_attach = my_on_attach,
+  handlers = my_handlers,
 }
 
 -- null-ls setup
@@ -94,6 +104,7 @@ require("null-ls").setup {
     require "my.null_ls.markdownlint_cli2",
   },
   on_attach = my_on_attach,
+  handlers = my_handlers,
 }
 
 -- telescope.nvim
@@ -219,7 +230,6 @@ require("nvim-treesitter.configs").setup {
 }
 
 -- vim.diagnostic settings
--- TODO: popup shown on mouse hover
 vim.diagnostic.config {
   virtual_text = false,
   underline = true,
