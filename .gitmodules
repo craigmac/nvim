@@ -67,3 +67,6 @@
 [submodule "pack/third-party/opt/lualine.nvim"]
 	path = pack/third-party/opt/lualine.nvim
 	url = https://github.com/nvim-lualine/lualine.nvim
+[submodule "pack/third-party/opt/nvim-luaref"]
+	path = pack/third-party/opt/nvim-luaref
+	url = https://github.com/milisims/nvim-luaref
