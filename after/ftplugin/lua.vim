@@ -5,3 +5,5 @@ setlocal tabstop=2
 setlocal softtabstop=2
 " turn '.' into '/'
 setlocal includeexpr=substitute(v:fname,'\\.','/','g')
+setlocal foldmethod=indent
+
