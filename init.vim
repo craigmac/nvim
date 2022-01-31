@@ -40,21 +40,24 @@ packadd! cmp-path
 packadd! nvim-treesitter
 packadd! nvim-treesitter-textobjects
 packadd! lualine.nvim
+packadd! nvim-luaref " https://github.com/milisims/nvim-luaref
 
+" quick reference for lua
+nnoremap <silent><Leader><F1> <cmd>help lua_reference_toc<CR>
 " vim-fugitive
-nnoremap <silent><Leader>gg :G<CR>
-noremap <silent><Leader>gb :G blame<CR>
-nnoremap <silent><Leader>gl :Gclog<CR>
-nnoremap <silent><Leader>gc :G commit -av<CR>
-nnoremap <silent><Leader>gd :Gvdiffsplit<CR>
+nnoremap <silent><Leader>gg <cmd>G<CR>
+noremap <silent><Leader>gb <cmd>G blame<CR>
+nnoremap <silent><Leader>gl <cmd>Gclog<CR>
+nnoremap <silent><Leader>gc <cmd>G commit -av<CR>
+nnoremap <silent><Leader>gd <cmd>Gvdiffsplit<CR>
 nnoremap <Leader>g/ :Ggrep! -Hnri --quiet<Space>
-nnoremap <silent><Leader>gP :G push<CR>
-nnoremap <silent><Leader>gp :G pull<CR>
+nnoremap <silent><Leader>gP <cmd>G push<CR>
+nnoremap <silent><Leader>gp <cmd>G pull<CR>
 " Requires vim-rhubarb, visual selection appends anchors to URL to highlight
 " Reminder: ["x]y<C-g> to yank relative path to clipboard
 " Reminder: :GBrowse! doesn't open URL just yanks it to clipboard
-nnoremap <Leader>g@ :GBrowse<CR>
-xnoremap <Leader>g@ :GBrowse<CR>
+nnoremap <Leader>g@ <cmd>GBrowse<CR>
+xnoremap <Leader>g@ <cmd>GBrowse<CR>
 
 " }}}
 
