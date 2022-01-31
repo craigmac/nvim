@@ -1,5 +1,7 @@
 " Plugins {{{
 
+let mapleader = " "
+
 " defaults I never use
 let g:loaded_getscriptPlugin = 1
 let g:loaded_logiPat = 1
@@ -58,16 +60,12 @@ xnoremap <Leader>g@ :GBrowse<CR>
 
 " Options {{{
 
-let mapleader = " "
 
 set breakindent
 set clipboard+=unnamedplus
 set complete-=d completeopt=menuone
 set diffopt+=algorithm:patience
 set exrc secure
-" Experimental, per-window, not per-buffer
-set foldmethod=expr
-set foldexpr=nvim_treesitter#foldexpr()
 set foldlevelstart=99
 set grepprg=grep\ -Hnri
 set ignorecase smartcase
@@ -211,7 +209,7 @@ command! JekyllOpen call utils#JekyllOpenLive()
 augroup myinit
   autocmd!
   autocmd TextYankPost * silent! lua vim.highlight.on_yank()
-  autocmd BufWritePost $MYVIMRC nested source $MYVIMRC | setlocal fdm=marker
+  autocmd BufWritePost $MYVIMRC nested source $MYVIMRC
   autocmd BufWritePre /tmp/* setlocal noundofile
   autocmd QuickFixCmdPost [^l]* botright cwindow
   autocmd QuickFixCmdPost  l* botright lwindow
@@ -271,4 +269,4 @@ colorscheme github_light
 
 " }}}
 
-lua require"my.config"
+lua require'my.config'
