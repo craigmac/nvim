@@ -82,10 +82,14 @@ require("null-ls").setup {
     require("null-ls").builtins.formatting.prettier.with {
       disabled_filetypes = { "markdown" },
     },
-    require("null-ls").builtins.diagnostics.vale,
     require("null-ls").builtins.diagnostics.vint,
     require("null-ls").builtins.diagnostics.yamllint,
 
+    -- writing
+    require("null-ls").builtins.diagnostics.vale,
+    require("null-ls").builtins.diagnostics.cspell.with {
+      filetypes = { "markdown", "text", "gitcommit", "asciidoc" },
+    },
     -- custom creating by me
     require "my.null_ls.markdownlint_cli2",
   },

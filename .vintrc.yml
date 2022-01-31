@@ -1,0 +1,12 @@
+---
+cmdargs:
+  severity: warning
+
+  # Enable Neovim syntax
+  env:
+    neovim: true
+
+policies:
+  ProhibitMissingScriptEncoding:
+    # default is uft-8 by neovim anyway
+    enabled: False
