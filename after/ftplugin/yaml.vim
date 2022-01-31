@@ -1,2 +1,2 @@
-
-
+setlocal expandtab
+setlocal list
