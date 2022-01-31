@@ -107,6 +107,7 @@ require("null-ls").setup {
   handlers = my_handlers,
 }
 
+require "my/gitsigns-config"
 require "my/telescope-config"
 require "my/diagnostics-config"
 require "my/lualine-config"

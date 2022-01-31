@@ -70,3 +70,6 @@
 [submodule "pack/third-party/opt/nvim-luaref"]
 	path = pack/third-party/opt/nvim-luaref
 	url = https://github.com/milisims/nvim-luaref
+[submodule "pack/third-party/opt/gitsigns.nvim"]
+	path = pack/third-party/opt/gitsigns.nvim
+	url = https://github.com/lewis6991/gitsigns.nvim

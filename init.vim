@@ -41,6 +41,7 @@ packadd! nvim-treesitter
 packadd! nvim-treesitter-textobjects
 packadd! lualine.nvim
 packadd! nvim-luaref " https://github.com/milisims/nvim-luaref
+packadd! gitsigns.nvim " https://github.com/lewis6991/gitsigns.nvim
 
 " quick reference for lua
 nnoremap <silent><Leader><F1> <cmd>help lua_reference_toc<CR>
