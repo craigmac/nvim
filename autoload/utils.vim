@@ -137,7 +137,7 @@ endfunction
 
 " NOTES: false positives currently for .zip/.pdf/.html links because we
 " chop at the first period found (to remove the .md)
-function! utils#LiquidInclude() abort
+function! utils#MarkdownInclude() abort
   " finds:
   " '/snippets/target-platform-before-start'
   " '/cpp/platform-roku/roku-cloud-solution/'
