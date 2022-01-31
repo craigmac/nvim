@@ -122,7 +122,7 @@ cnoremap <expr> <C-k> wildmenumode() ? "\<Up>\<C-z>" : "\<C-k>"
 nnoremap <Leader><CR> <cmd>source %<CR>
 nnoremap <Leader>w <cmd>update<CR>
 nnoremap <Leader>, <cmd>edit $MYVIMRC<CR>
-nnoremap <Leader>ft <cmd>e <C-R>=expand('~/.config/nvim/after/ftplugin/'.&ft.'.vim')<CR><CR>
+nnoremap <Leader>ft :e <C-R>=expand('~/.config/nvim/after/ftplugin/'.&ft.'.vim')<CR><CR>
 nnoremap <Leader><Leader> <cmd>buffer #<CR>
 
 " keeps marks, settings, and you can still do e.g., <C-o> to jump to it
@@ -149,10 +149,10 @@ nnoremap <A-k> <C-\><C-n><C-w>k
 nnoremap <A-l> <C-\><C-n><C-w>l
 
 " resizing windows
-nnoremap <silent><S-Up> <Cmd>2wincmd+<CR>
-nnoremap <silent><S-Down> <Cmd>2wincmd-<CR>
-nnoremap <silent><S-Left> <Cmd>2wincmd <<CR>
-nnoremap <silent><S-Right> <Cmd>2wincmd ><CR>
+nnoremap <silent><C-Up> <Cmd>2wincmd+<CR>
+nnoremap <silent><C-Down> <Cmd>2wincmd-<CR>
+nnoremap <silent><C-Left> <Cmd>2wincmd <<CR>
+nnoremap <silent><C-Right> <Cmd>2wincmd ><CR>
 
 " Re-select visually selected area after indenting/dedenting.
 xmap < <gv
@@ -268,8 +268,6 @@ hi! SpellBad gui=undercurl guisp=Blue
 hi! SpellRare gui=undercurl guisp=Blue
 hi! SpellCap gui=undercurl guisp=Blue
 hi! SpellLocal gui=undercurl guisp=Blue
-
-
 
 " }}}
 
