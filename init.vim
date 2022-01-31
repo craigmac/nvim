@@ -45,6 +45,7 @@ packadd! gitsigns.nvim " https://github.com/lewis6991/gitsigns.nvim
 
 " quick reference for lua
 nnoremap <silent><Leader><F1> <cmd>help lua_reference_toc<CR>
+
 " vim-fugitive
 nnoremap <silent><Leader>gg <cmd>G<CR>
 noremap <silent><Leader>gb <cmd>G blame<CR>
@@ -54,6 +55,8 @@ nnoremap <silent><Leader>gd <cmd>Gvdiffsplit<CR>
 nnoremap <Leader>g/ :Ggrep! -Hnri --quiet<Space>
 nnoremap <silent><Leader>gP <cmd>G push<CR>
 nnoremap <silent><Leader>gp <cmd>G pull<CR>
+nnoremap <silent><Leader>gf <cmd>G fetch<CR>
+nnoremap <Leader>g<Space> :G<space>
 " Requires vim-rhubarb, visual selection appends anchors to URL to highlight
 " Reminder: ["x]y<C-g> to yank relative path to clipboard
 " Reminder: :GBrowse! doesn't open URL just yanks it to clipboard
