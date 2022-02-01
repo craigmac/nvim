@@ -47,18 +47,46 @@ packadd! gitsigns.nvim " https://github.com/lewis6991/gitsigns.nvim
 nnoremap <silent><Leader><F1> <cmd>help lua_reference_toc<CR>
 
 " vim-fugitive
+
+" Status and quick one-off :G commands
 nnoremap <silent><Leader>gg <cmd>G<CR>
+nnoremap <Leader>g<Space> :G<space>
+
+" Add <cfile> to index and save, gW useful in 3 way merge diffs: choose
+" a buffer and use gW to use all that versions' changes, i.e., --ours/theirs
+nnoremap <silent><Leader>gw <cmd>Gwrite<CR>
+nnoremap <silent><Leader>gW <cmd>Gwrite!<CR>
+" Blames
 noremap <silent><Leader>gb <cmd>G blame<CR>
-nnoremap <silent><Leader>gl <cmd>Gclog<CR>
+
+" Location list no jump log of current file and general commit log
+nnoremap <silent><Leader>gl <cmd>0Gllog!<CR>
+nnoremap <silent><Leader>gL <cmd>Gllog!<CR>
+
+" :Gedit is 'git checkout %' => reverts work tree file to index, be careful!
+nnoremap <Leader>ge :Gedit<Space>
+nnoremap <silent><Leader>gE <cmd>Gedit<CR>
+
+" Add all and start commit message with --verbose flag to show patches
 nnoremap <silent><Leader>gc <cmd>G commit -av<CR>
+
+" Vertical diffs on current file or any git object SHA.
+" :h fugitive-object helpers: @ aka HEAD, :% index version of <cfile>
 nnoremap <silent><Leader>gd <cmd>Gvdiffsplit<CR>
+nnoremap <Leader>gD :Gvdiffsplit<space>
+
+" git grep
 nnoremap <Leader>g/ :Ggrep! -Hnri --quiet<Space>
+" TODO: add grepping log here with pickaxe -S?
+
+" git push/pull/fetching
+" TODO: maybe use Dispatch for this?
 nnoremap <silent><Leader>gP <cmd>G push<CR>
 nnoremap <silent><Leader>gp <cmd>G pull<CR>
 nnoremap <silent><Leader>gf <cmd>G fetch<CR>
-nnoremap <Leader>g<Space> :G<space>
+
 " Requires vim-rhubarb, visual selection appends anchors to URL to highlight
-" Reminder: ["x]y<C-g> to yank relative path to clipboard
+" Reminder: ["register]y<C-g> to yank relative path to clipboard
 " Reminder: :GBrowse! doesn't open URL just yanks it to clipboard
 nnoremap <Leader>g@ <cmd>GBrowse<CR>
 xnoremap <Leader>g@ <cmd>GBrowse<CR>
@@ -66,7 +94,6 @@ xnoremap <Leader>g@ <cmd>GBrowse<CR>
 " }}}
 
 " Options {{{
-
 
 set breakindent
 set clipboard+=unnamedplus
