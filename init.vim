@@ -65,7 +65,7 @@ nnoremap <silent><Leader>gL <cmd>Gllog!<CR>
 
 " :Gedit is 'git checkout %' => reverts work tree file to index, be careful!
 nnoremap <Leader>ge :Gedit<Space>
-nnoremap <silent><Leader>gE <cmd>Gedit<CR>
+nnoremap <silent><Leader>gE :Gedit <bar> only<CR>
 
 " Add all and start commit message with --verbose flag to show patches
 nnoremap <silent><Leader>gc <cmd>G commit -av<CR>
@@ -236,6 +236,7 @@ command! Cd :lcd %:h
 command! TodoLocal :botright silent! lvimgrep /\v\CTODO|FIXME|HACK|DEV/ %<CR>
 command! Todo :botright silent! vimgrep /\v\CTODO|FIXME|HACK|DEV/ *<CR>
 command! JekyllOpen call utils#JekyllOpenLive()
+command! -nargs=* Redir call utils#Redir(<args>)
 
 " }}}
 
@@ -264,6 +265,8 @@ augroup myinit
   autocmd TermClose * if !v:event.status | execute 'bdelete! ' .. expand('<abuf>') | endif
   autocmd BufEnter term://* startinsert
   autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focus=false, scope="cursor"})
+  " Stop fugitive from littering buffer list
+  autocmd BufReadPost fugitive://* set bufhidden=delete
 augroup END
 
 " }}}
