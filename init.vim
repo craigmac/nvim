@@ -56,12 +56,13 @@ nnoremap <Leader>g<Space> :G<space>
 " a buffer and use gW to use all that versions' changes, i.e., --ours/theirs
 nnoremap <silent><Leader>gw <cmd>Gwrite<CR>
 nnoremap <silent><Leader>gW <cmd>Gwrite!<CR>
+
 " Blames
-noremap <silent><Leader>gb <cmd>G blame<CR>
+nnoremap <silent><Leader>gb <cmd>G blame<CR>
 
 " Location list no jump log of current file and general commit log
-nnoremap <silent><Leader>gl <cmd>0Gllog!<CR>
-nnoremap <silent><Leader>gL <cmd>Gllog!<CR>
+nnoremap <silent><Leader>gl <cmd>0Git log<CR>
+nnoremap <silent><Leader>gL <cmd>Git log<CR>
 
 " :Gedit is 'git checkout %' => reverts work tree file to index, be careful!
 nnoremap <Leader>ge :Gedit<Space>
@@ -75,9 +76,14 @@ nnoremap <silent><Leader>gc <cmd>G commit -av<CR>
 nnoremap <silent><Leader>gd <cmd>Gvdiffsplit<CR>
 nnoremap <Leader>gD :Gvdiffsplit<space>
 
-" git grep
+" Grepping git trees and commits messages. '!' to run it async.
+" git grep 'foo bar' [branch/SHA]
+" git log --grep='foobar' to search commit messages
+" git log -Sfoobar (when 'foobar' was added/removed)
 nnoremap <Leader>g/ :Ggrep! -Hnri --quiet<Space>
-" TODO: add grepping log here with pickaxe -S?
+nnoremap <Leader>g? :Git! log --grep=
+nnoremap <Leader>gS :Git! log -S
+nnoremap <Leader>g* :Ggrep! -Hnri --quiet <C-r>=expand("<cword>")<CR><CR>
 
 " git push/pull/fetching
 " TODO: maybe use Dispatch for this?
@@ -193,8 +199,7 @@ xnoremap K :m '<-2<CR>gv=gv
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 
 " Function keys
-nnoremap <silent><F3> <cmd>call utils#ToggleQuickfixList()<CR>
-nnoremap <silent><F4> <cmd>call utils#ToggleLocationList()<CR>
+
 nnoremap <silent><F7> <cmd>15Lexplore<CR>
 nnoremap <silent><F8> <cmd>TagbarOpenAutoClose<CR>
 nnoremap <silent><F9> <cmd>set list!<CR>
@@ -305,6 +310,17 @@ let g:github_function_style = 'NONE'
 let g:github_variable_style = 'NONE'
 let g:github_hide_end_of_buffer = 0
 colorscheme github_light
+
+" }}}
+
+" Experimental {{{
+
+" nnoremap <silent><F3> <cmd>call utils#ToggleQuickfixList()<CR>
+" nnoremap <silent><F4> <cmd>call utils#ToggleLocationList()<CR>
+nnoremap <Leader>cw <cmd>cwindow<CR>
+nnoremap <Leader>cc <cmd>cclose<CR>
+nnoremap <Leader>lc <cmd>lclose<CR>
+nnoremap <Leader>lw <cmd>lwindow<CR>
 
 " }}}
 
