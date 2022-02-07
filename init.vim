@@ -114,6 +114,7 @@ set mouse=a
 set nowrap
 set number 
 set path-=/usr/include |  set path+=**
+set scrolloff=5
 set showmatch
 set shortmess-=cS
 set showtabline=2

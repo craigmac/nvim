@@ -2,6 +2,7 @@ setlocal list
 setlocal foldlevel=99
 setlocal expandtab
 setlocal suffixesadd=.md
+setlocal iskeyword+=-
 
 let &l:define = '\v^#+\s*.+$'
 

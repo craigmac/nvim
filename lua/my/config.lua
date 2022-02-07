@@ -83,6 +83,12 @@ require("lspconfig").vimls.setup {
   handlers = my_handlers,
 }
 
+-- pyright setup
+require("lspconfig").pyright.setup {
+  on_attach = my_on_attach,
+  handlers = my_handlers,
+}
+
 -- null-ls setup
 require("null-ls").setup {
   debug = false,
