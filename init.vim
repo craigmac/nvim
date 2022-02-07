@@ -109,10 +109,11 @@ set exrc secure
 set foldlevelstart=99
 set grepprg=grep\ -Hnri
 set ignorecase smartcase
+" Hex codes: eol:\\00ac 
 set listchars=tab:\│\ ,space:·,trail:·,eol:¬
 set mouse=a
 set nowrap
-set number 
+set number
 set path-=/usr/include |  set path+=**
 set scrolloff=5
 set showmatch
@@ -296,6 +297,8 @@ function! GithubLightHighlights() abort
   highlight! SpellRare gui=undercurl guisp=Blue
   highlight! SpellCap gui=undercurl guisp=Blue
   highlight! SpellLocal gui=undercurl guisp=Blue
+  " Unhides @ symbols for EOF and things like EOL char in listchars
+  highlight! NonText guifg=#C3C7CB
 endfunction
 
 augroup MyColorOverrides
