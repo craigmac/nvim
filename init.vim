@@ -109,8 +109,7 @@ set exrc secure
 set foldlevelstart=99
 set grepprg=grep\ -Hnri
 set ignorecase smartcase
-" Hex codes: eol:\\00ac 
-set listchars=tab:\│\ ,space:·,trail:·,eol:¬
+set listchars=tab:\│\ ,lead:·,trail:█,eol:
 set mouse=a
 set nowrap
 set number
@@ -145,7 +144,7 @@ inoremap [, [<CR>],<Esc>O
 " goes to previous entry, but ':help g<Up>' will search history for previous
 " pattern matching ':help g'. Also Up/Down go in/out of subfolders listings
 " when wildmenu showing - default C-n/p here is to traverse results, equivalent
-" to <Tab>/<S-Tab>. 
+" to <Tab>/<S-Tab>.
 cnoremap <expr> <C-p> wildmenumode() ? "<C-P>" : "<Up>"
 cnoremap <expr> <C-n> wildmenumode() ? "<C-N>" : "<Down>"
 
@@ -161,7 +160,7 @@ nnoremap <Leader>ft :e <C-R>=expand('~/.config/nvim/after/ftplugin/'.&ft.'.vim')
 nnoremap <Leader><Leader> <cmd>buffer #<CR>
 
 " keeps marks, settings, and you can still do e.g., <C-o> to jump to it
-nnoremap <Leader>dd <Cmd>bdelete!<CR> 
+nnoremap <Leader>dd <Cmd>bdelete!<CR>
 " REALLY delete the buffer.
 nnoremap <Leader>D <Cmd>bwipeout!<CR>
 
@@ -205,7 +204,7 @@ cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 nnoremap <silent><F7> <cmd>15Lexplore<CR>
 nnoremap <silent><F8> <cmd>TagbarOpenAutoClose<CR>
 nnoremap <silent><F9> <cmd>set list!<CR>
-nnoremap <Leader>* :grep <C-r><C-w> 
+nnoremap <Leader>* :grep <C-r><C-w>
 
 " Vimdiff
 nnoremap gh :diffget //2<CR>
@@ -232,7 +231,7 @@ nnoremap <silent> { <cmd>keepjumps normal! {<CR>
 nmap <Leader>/ :grep<Space>
 nnoremap <Leader>? :vimgrep //j **/*.md<S-Left><S-Left><Right>
 
-nnoremap <Leader>@ <cmd>JekyllOpen<CR> 
+nnoremap <Leader>@ <cmd>JekyllOpen<CR>
 
 " }}}
 
