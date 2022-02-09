@@ -34,9 +34,10 @@ packadd! telescope-ui-select.nvim
 packadd! telescope-github.nvim
 packadd! nvim-lspconfig
 packadd! null-ls.nvim
+packadd! LuaSnip " https://github.com/L3MON4D3/LuaSnip
 packadd! nvim-cmp
 packadd! cmp-nvim-lsp
-packadd! cmp-path
+packadd! cmp_luasnip " https://github.com/saadparwaiz1/cmp_luasnip
 packadd! nvim-treesitter
 packadd! nvim-treesitter-textobjects
 packadd! lualine.nvim
@@ -47,7 +48,6 @@ packadd! gitsigns.nvim " https://github.com/lewis6991/gitsigns.nvim
 nnoremap <silent><Leader><F1> <cmd>help lua_reference_toc<CR>
 
 " vim-fugitive
-
 " Status and quick one-off :G commands
 nnoremap <silent><Leader>gg <cmd>G<CR>
 nnoremap <Leader>g<Space> :G<space>
@@ -130,6 +130,9 @@ set updatetime=250
 " Mappings {{{
 
 inoremap <C-Space> <C-x><C-o>
+
+nnoremap <silent><F3> <cmd>call utils#ToggleQuickfixList()<CR>
+nnoremap <silent><F4> <cmd>call utils#ToggleLocationList()<CR>
 
 inoremap (<CR> (<CR>)<Esc>O
 inoremap (; (<CR>);<Esc>O
@@ -318,13 +321,31 @@ colorscheme github_light
 
 " Experimental {{{
 
-" nnoremap <silent><F3> <cmd>call utils#ToggleQuickfixList()<CR>
-" nnoremap <silent><F4> <cmd>call utils#ToggleLocationList()<CR>
-nnoremap <Leader>cw <cmd>cwindow<CR>
-nnoremap <Leader>cc <cmd>cclose<CR>
-nnoremap <Leader>lc <cmd>lclose<CR>
-nnoremap <Leader>lw <cmd>lwindow<CR>
+" Takes an array of strings to display in scratch popup win at current cursor
+" location.
+function! MyPopup(msg) abort
+  let l:buf_handle = nvim_create_buf(v:false, v:true) " setlocal nobuflisted ft=scratch
+  " Targets whole buffer
+  let l:buf_start_line = 0
+  let l:buf_end_line = -1
+  " call nvim_buf_set_lines(l:buf_handle, l:buf_start_line, l:buf_end_line, v:true, ['test', 'text'])
+  call nvim_buf_set_lines(l:buf_handle, l:buf_start_line, l:buf_end_line, v:true, a:msg)
+  let l:opts = {'relative': 'cursor', 'width': 10, 'height': 2, 'col': 0,
+      \ 'row': 1, 'anchor': 'NW', 'style': 'minimal'}
+  let win = nvim_open_win(l:buf_handle, 0, l:opts)
+  " optional: change highlight, otherwise Pmenu is used
+  " call nvim_win_set_option(win, 'winhl', 'Normal:ExistingHighlightGroupName')
+endfunction
 
+function! AltMyPopup(msg) abort
+  let l:opts = {'relative': 'cursor', 'width': 10, 'height': 2, 'col': 0,
+      \ 'row': 1, 'anchor': 'NW', 'style': 'minimal'}
+  let l:win = nvim_open_win(0, 0, l:opts)
+  let l:buf_handle = nvim_win_get_buf(l:win)
+  let l:buf_start_line = 0
+  let l:buf_end_line = -1
+  call nvim_buf_set_lines(l:buf_handle, l:buf_start_line, l:buf_end_line, v:true, a:msg)
+endfunction
 " }}}
 
 lua require'my.config'

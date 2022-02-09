@@ -1,6 +1,14 @@
+-- luasnip
+local luasnip = require "luasnip"
+
 -- nvim-cmp
 local cmp = require "cmp"
 cmp.setup {
+  snippet = {
+    expand = function(args)
+      luasnip.lsp_expand(args.body)
+    end,
+  },
   completion = {
     autocomplete = false,
   },
@@ -9,12 +17,35 @@ cmp.setup {
     ["<C-u>"] = cmp.mapping.scroll_docs(4),
     ["<C-Space>"] = cmp.mapping.complete(),
     ["<CR>"] = cmp.mapping.confirm { select = false },
+    ["<C-j"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
+    -- I never use digraphs anyway, so repurpose the key
+    ["<C-k>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
   },
   sources = cmp.config.sources {
     { name = "nvim_lsp" },
-    { name = "path" },
+    { name = "luasnip" },
   },
 }
+
+-- tell setup() to pass along to server what our cmp plugin can do
+-- so server knows we can do things like snippets and auto imports with cmp
+local my_capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 -- Draw floating windows with double borders
 local my_handlers = {
@@ -72,6 +103,7 @@ require("lspconfig").sumneko_lua.setup {
   },
   on_attach = my_on_attach,
   handlers = my_handlers,
+  capabilities = my_capabilities,
 }
 
 -- vim-ls server (npm install -g vim-language-server)
@@ -81,12 +113,14 @@ require("lspconfig").vimls.setup {
   },
   on_attach = my_on_attach,
   handlers = my_handlers,
+  capabilities = my_capabilities,
 }
 
 -- pyright setup
 require("lspconfig").pyright.setup {
   on_attach = my_on_attach,
   handlers = my_handlers,
+  capabilities = my_capabilities,
 }
 
 -- null-ls setup
@@ -111,6 +145,7 @@ require("null-ls").setup {
   },
   on_attach = my_on_attach,
   handlers = my_handlers,
+  capabilities = my_capabilities,
 }
 
 require "my/gitsigns-config"
@@ -118,6 +153,7 @@ require "my/telescope-config"
 require "my/diagnostics-config"
 require "my/lualine-config"
 require "my/treesitter-config"
+-- require "my/luasnip-config"
 
 -- TODO: gitsigns
 -- TODO: lua-snip setup
