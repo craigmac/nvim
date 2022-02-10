@@ -17,25 +17,6 @@ cmp.setup {
     ["<C-u>"] = cmp.mapping.scroll_docs(4),
     ["<C-Space>"] = cmp.mapping.complete(),
     ["<CR>"] = cmp.mapping.confirm { select = false },
-    ["<C-j"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
-      else
-        fallback()
-      end
-    end, { "i", "s" }),
-    -- I never use digraphs anyway, so repurpose the key
-    ["<C-k>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
-    end, { "i", "s" }),
   },
   sources = cmp.config.sources {
     { name = "nvim_lsp" },
@@ -67,7 +48,7 @@ local my_on_attach = function(_)
   vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = 0 })
   vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = 0 })
   vim.keymap.set("n", "gI", vim.lsp.buf.implementation, { buffer = 0 })
-  vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, { buffer = 0 })
+  vim.keymap.set({"i","n"}, "<A-k>", vim.lsp.buf.signature_help, { buffer = 0 })
   vim.keymap.set("n", "<F2>", vim.lsp.buf.rename, { buffer = 0 })
   vim.keymap.set("n", "g.", "<cmd>Telescope lsp_code_actions<CR>", { buffer = 0 })
   vim.keymap.set("n", "gO", "<cmd>Telescope lsp_document_symbols<CR>", { buffer = 0 })
@@ -153,7 +134,7 @@ require "my/telescope-config"
 require "my/diagnostics-config"
 require "my/lualine-config"
 require "my/treesitter-config"
--- require "my/luasnip-config"
+require "my/luasnip-config"
 
 -- TODO: gitsigns
 -- TODO: lua-snip setup
