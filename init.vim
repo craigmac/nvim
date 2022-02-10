@@ -104,7 +104,7 @@ xnoremap <Leader>g@ <cmd>GBrowse<CR>
 set breakindent
 set clipboard+=unnamedplus
 set complete-=d completeopt=menuone
-set diffopt+=algorithm:patience
+set diffopt=internal,filler,closeoff,foldcolumn:99,algorithm:patience
 set exrc secure
 set foldlevelstart=99
 set grepprg=grep\ -Hnri
@@ -176,15 +176,6 @@ tnoremap <C-b>s :terminal<CR>
 tnoremap <C-b>v :vsplit +terminal<CR>
 tnoremap <C-b>! <C-w>T
 
-tnoremap <A-h> <C-\><C-n><C-w>h
-tnoremap <A-j> <C-\><C-n><C-w>j
-tnoremap <A-k> <C-\><C-n><C-w>k
-tnoremap <A-l> <C-\><C-n><C-w>l
-nnoremap <A-h> <C-\><C-n><C-w>h
-nnoremap <A-j> <C-\><C-n><C-w>j
-nnoremap <A-k> <C-\><C-n><C-w>k
-nnoremap <A-l> <C-\><C-n><C-w>l
-
 " resizing windows
 nnoremap <silent><C-Up> <Cmd>2wincmd+<CR>
 nnoremap <silent><C-Down> <Cmd>2wincmd-<CR>
@@ -223,8 +214,8 @@ nnoremap ]E <cmd>llast<CR>
 nnoremap [E <cmd>lfirst<CR>
 nnoremap ]t <cmd>tabnext<CR>
 nnoremap [t <cmd>tabprev<CR>
+nnoremap [T <cmd>tabfirst<CR>
 nnoremap ]T <cmd>tablast<CR>
-nnoremap [t <cmd>tabfirst<CR>
 
 nnoremap g; g;zv
 nnoremap g, g,zv
@@ -321,31 +312,6 @@ colorscheme github_light
 
 " Experimental {{{
 
-" Takes an array of strings to display in scratch popup win at current cursor
-" location.
-function! MyPopup(msg) abort
-  let l:buf_handle = nvim_create_buf(v:false, v:true) " setlocal nobuflisted ft=scratch
-  " Targets whole buffer
-  let l:buf_start_line = 0
-  let l:buf_end_line = -1
-  " call nvim_buf_set_lines(l:buf_handle, l:buf_start_line, l:buf_end_line, v:true, ['test', 'text'])
-  call nvim_buf_set_lines(l:buf_handle, l:buf_start_line, l:buf_end_line, v:true, a:msg)
-  let l:opts = {'relative': 'cursor', 'width': 10, 'height': 2, 'col': 0,
-      \ 'row': 1, 'anchor': 'NW', 'style': 'minimal'}
-  let win = nvim_open_win(l:buf_handle, 0, l:opts)
-  " optional: change highlight, otherwise Pmenu is used
-  " call nvim_win_set_option(win, 'winhl', 'Normal:ExistingHighlightGroupName')
-endfunction
-
-function! AltMyPopup(msg) abort
-  let l:opts = {'relative': 'cursor', 'width': 10, 'height': 2, 'col': 0,
-      \ 'row': 1, 'anchor': 'NW', 'style': 'minimal'}
-  let l:win = nvim_open_win(0, 0, l:opts)
-  let l:buf_handle = nvim_win_get_buf(l:win)
-  let l:buf_start_line = 0
-  let l:buf_end_line = -1
-  call nvim_buf_set_lines(l:buf_handle, l:buf_start_line, l:buf_end_line, v:true, a:msg)
-endfunction
 " }}}
 
 lua require'my.config'
