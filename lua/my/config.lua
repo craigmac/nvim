@@ -48,7 +48,7 @@ local my_on_attach = function(_)
   vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = 0 })
   vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = 0 })
   vim.keymap.set("n", "gI", vim.lsp.buf.implementation, { buffer = 0 })
-  vim.keymap.set({"i","n"}, "<A-k>", vim.lsp.buf.signature_help, { buffer = 0 })
+  vim.keymap.set({ "i", "n" }, "<A-k>", vim.lsp.buf.signature_help, { buffer = 0 })
   vim.keymap.set("n", "<F2>", vim.lsp.buf.rename, { buffer = 0 })
   vim.keymap.set("n", "g.", "<cmd>Telescope lsp_code_actions<CR>", { buffer = 0 })
   vim.keymap.set("n", "gO", "<cmd>Telescope lsp_document_symbols<CR>", { buffer = 0 })
@@ -128,6 +128,45 @@ require("null-ls").setup {
   handlers = my_handlers,
   capabilities = my_capabilities,
 }
+
+-- - provides :ClangdSwitchSourceHeader command too
+require("lspconfig").clangd.setup{
+  on_attach = my_on_attach,
+  handlers = my_handlers,
+  capabilities = my_capabilities,
+}
+
+-- Setup for https://github.com/p00f/clangd_extensions.nvim
+-- Off-spec LSP extensions with clangd, calls require'lspconfig'.cland.setup{}
+-- require("clangd_extensions").setup {
+--   server = {
+--     on_attach = my_on_attach,
+--     handlers = my_handlers,
+--     capabilities = my_capabilities
+--   },
+--   extensions = {
+--     autoSetHints = true, -- inlay hints
+--     -- Whether to show hover actions inside the hover window
+--     -- This overrides the default hover handler
+--     hover_with_actions = true,
+--     -- These apply to the default ClangdSetInlayHints command
+--     inlay_hints = {
+--       only_current_line = false, -- Only show inlay hints for the current line
+--       -- Used when only_current_line and autoSetHints are true.
+--       -- Can be: "CursorMoved" or "CursorMoved,CursorMovedI"
+--       only_current_line_autocmd = "CursorHold", -- inlay hint refresh event
+--       show_parameter_hints = true, -- show param hints in inlay?
+--       show_variable_name = false, -- show var name before type hints in inlay?
+--       parameter_hints_prefix = "<- ", -- param prefix for param hints
+--       other_hints_prefix = "=> ", -- prefix other hints, e.g. type and chaining
+--       max_len_align = false, -- align inlays to longest line?
+--       max_len_align_padding = 1, -- if above true, add this amount of padding
+--       right_align = false, -- align inlays all the way right?
+--       right_align_padding = 7, -- opposite of max_len_align_padding
+--       highlight = "Comment", -- highlight group for hints
+--     },
+--   },
+-- }
 
 require "my/gitsigns-config"
 require "my/telescope-config"

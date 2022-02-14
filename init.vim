@@ -14,35 +14,46 @@ let g:loaded_tarPlugin = 1
 let g:loaded_2html_plugin = 1
 packadd! cfilter
 
-" Plugins in ./pack/third-party/opt
-packadd! tagbar
-packadd! vim-commentary
-packadd! vim-fugitive
+" Editing
 packadd! vim-repeat
-packadd! vim-rhubarb
 packadd! vim-surround
 " TODO: eventually replace with Treesitter text objects?
 packadd! vim-textobj-user
 packadd! vim-textobj-entire
 packadd! vim-textobj-indent
+" TODO: change to comment.nvim
+packadd! vim-commentary
+packadd! nvim-treesitter
+packadd! nvim-treesitter-textobjects
 
+" Git
+packadd! vim-fugitive
+packadd! vim-rhubarb
+packadd! gitsigns.nvim " https://github.com/lewis6991/gitsigns.nvim
+
+" UI
 packadd! github-nvim-theme
+packadd! tagbar
+packadd! nvim-luaref " https://github.com/milisims/nvim-luaref
+packadd! lualine.nvim
+
+" Finding/Switching/Jumping/Searching
 packadd! plenary.nvim
 packadd! telescope.nvim
 packadd! telescope-fzf-native.nvim
-packadd! telescope-ui-select.nvim
 packadd! telescope-github.nvim
-packadd! nvim-lspconfig
-packadd! null-ls.nvim
-packadd! LuaSnip " https://github.com/L3MON4D3/LuaSnip
+packadd! telescope-ui-select.nvim
+
+" Completions
 packadd! nvim-cmp
-packadd! cmp-nvim-lsp
+packadd! LuaSnip " https://github.com/L3MON4D3/LuaSnip
 packadd! cmp_luasnip " https://github.com/saadparwaiz1/cmp_luasnip
-packadd! nvim-treesitter
-packadd! nvim-treesitter-textobjects
-packadd! lualine.nvim
-packadd! nvim-luaref " https://github.com/milisims/nvim-luaref
-packadd! gitsigns.nvim " https://github.com/lewis6991/gitsigns.nvim
+
+" LSP: linting/completing/extras
+packadd! nvim-lspconfig
+packadd! cmp-nvim-lsp
+packadd! null-ls.nvim
+" packadd! clangd_extensions " https://github.com/p00f/clangd_extensions.nvim
 
 " quick reference for lua
 nnoremap <silent><Leader><F1> <cmd>help lua_reference_toc<CR>

@@ -73,3 +73,6 @@
 [submodule "pack/third-party/opt/gitsigns.nvim"]
 	path = pack/third-party/opt/gitsigns.nvim
 	url = https://github.com/lewis6991/gitsigns.nvim
+[submodule "pack/third-party/opt/clangd_extensions.nvim"]
+	path = pack/third-party/opt/clangd_extensions.nvim
+	url = https://github.com/p00f/clangd_extensions.nvim
