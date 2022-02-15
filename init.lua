@@ -172,6 +172,59 @@ local my_on_attach = function(_)
 end
 -- }}}
 
+-- Treesitter {{{
+
+require("nvim-treesitter.configs").setup {
+	context_commentstring = { enable = true },
+	highlight = { enable = true },
+	incremental_selection = {
+		enable = true,
+		keymaps = {
+			init_selection = "ss",
+			node_incremental = "sn",
+			scope_incremental = "sc",
+			node_decremental = "sp",
+		},
+	},
+	indent = {
+		enable = true,
+	},
+	textobjects = {
+		select = {
+			enable = true,
+			lookahead = true, -- jump ahead like targets.vim did
+			keymaps = {
+				["af"] = "@function.outer",
+				["if"] = "@function.inner",
+				["ac"] = "@class.outer",
+				["ic"] = "@class.inner",
+			},
+		},
+		move = {
+			enable = true,
+			set_jumps = false, -- whether to add jump to jumplist (:jumps)
+			goto_next_start = {
+				["]m"] = "@function.outer",
+				["]]"] = "@class.outer",
+			},
+			goto_next_end = {
+				["]M"] = "@function.outer",
+				["]["] = "@class.outer",
+			},
+			goto_previous_start = {
+				["[m"] = "@function.outer",
+				["[["] = "@class.outer",
+			},
+			goto_previous_end = {
+				["[M"] = "@function.outer",
+				["[]"] = "@class.outer",
+			},
+		},
+	},
+}
+
+-- }}}
+
 -- Specific Servers {{{
 
 -- Clangd {{{
