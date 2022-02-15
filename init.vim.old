@@ -14,46 +14,33 @@ let g:loaded_tarPlugin = 1
 let g:loaded_2html_plugin = 1
 packadd! cfilter
 
-" Editing
-packadd! vim-repeat
-packadd! vim-surround
-" TODO: eventually replace with Treesitter text objects?
-packadd! vim-textobj-user
-packadd! vim-textobj-entire
-packadd! vim-textobj-indent
-" TODO: change to comment.nvim
-packadd! vim-commentary
-packadd! nvim-treesitter
-packadd! nvim-treesitter-textobjects
+call plug#begin()
+  Plug 'tpope/vim-surround'
+  Plug 'tpope/vim-commentary'
+  Plug 'tpope/vim-repeat'
+  Plug 'tpope/vim-fugitive'
+  Plug 'tpope/vim-rhubarb'
+  Plug 'nvim-lua/plenary.nvim'
 
-" Git
-packadd! vim-fugitive
-packadd! vim-rhubarb
-packadd! gitsigns.nvim " https://github.com/lewis6991/gitsigns.nvim
+  Plug 'nvim-telescope/telescope.nvim'
+  Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+  Plug 'nvim-telescope/telescope-ui-select.nvim'
+  Plug 'nvim-telescope/telescope-github.nvim'
 
-" UI
-packadd! github-nvim-theme
-packadd! tagbar
-packadd! nvim-luaref " https://github.com/milisims/nvim-luaref
-packadd! lualine.nvim
+  Plug 'nvim-treesitter/nvim-treesitter'
+  Plug 'JoosepAlviste/nvim-ts-context-commentstring'
+  Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+  Plug 'neovim/nvim-lspconfig'
+  Plug 'jose-elias-alvarez/null-ls.nvim'
+  Plug 'hrsh7th/nvim-cmp'
+  Plug 'hrsh7th/cmp-nvim-lsp'
+  Plug 'L3MON4D3/LuaSnip'
+  Plug 'saadparwaiz1/cmp_luasnip'
 
-" Finding/Switching/Jumping/Searching
-packadd! plenary.nvim
-packadd! telescope.nvim
-packadd! telescope-fzf-native.nvim
-packadd! telescope-github.nvim
-packadd! telescope-ui-select.nvim
-
-" Completions
-packadd! nvim-cmp
-packadd! LuaSnip " https://github.com/L3MON4D3/LuaSnip
-packadd! cmp_luasnip " https://github.com/saadparwaiz1/cmp_luasnip
-
-" LSP: linting/completing/extras
-packadd! nvim-lspconfig
-packadd! cmp-nvim-lsp
-packadd! null-ls.nvim
-" packadd! clangd_extensions " https://github.com/p00f/clangd_extensions.nvim
+  Plug 'lewis6991/gitsigns.nvim'
+  Plug 'projekt0n/github-nvim-theme'
+  Plug 'nvim-lualine/lualine.nvim'
+call plug#end()
 
 " quick reference for lua
 nnoremap <silent><Leader><F1> <cmd>help lua_reference_toc<CR>
@@ -131,8 +118,7 @@ set shortmess-=cS
 set showtabline=2
 set signcolumn=yes
 set splitbelow splitright
-set tabline=%!utils#MyTabLine()
-set tags=./tags;,tags;
+" set tabline=%!utils#MyTabLine()
 set termguicolors
 set updatetime=250
 
@@ -171,7 +157,7 @@ nnoremap <Leader><CR> <cmd>source %<CR>
 nnoremap <Leader>w <cmd>update<CR>
 nnoremap <Leader>, <cmd>edit $MYVIMRC<CR>
 nnoremap <Leader>ft :e <C-R>=expand('~/.config/nvim/after/ftplugin/'.&ft.'.vim')<CR><CR>
-nnoremap <Leader><Leader> <cmd>buffer #<CR>
+nnoremap <Leader>bb <cmd>buffer #<CR>
 
 " keeps marks, settings, and you can still do e.g., <C-o> to jump to it
 nnoremap <Leader>dd <Cmd>bdelete!<CR>
@@ -255,6 +241,7 @@ command! -nargs=* Redir call utils#Redir(<args>)
 
 augroup myinit
   autocmd!
+  autocmd BufReadPost ~/.config/nvim/init.vim setlocal fdm=marker
   autocmd TextYankPost * silent! lua vim.highlight.on_yank()
   autocmd BufWritePost $MYVIMRC nested source $MYVIMRC
   autocmd BufWritePre /tmp/* setlocal noundofile
@@ -321,8 +308,4 @@ colorscheme github_light
 
 " }}}
 
-" Experimental {{{
-
-" }}}
-
-lua require'my.config'
+" lua require'my.config'
