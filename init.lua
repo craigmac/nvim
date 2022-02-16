@@ -7,13 +7,13 @@ vim.opt.breakindent = true
 vim.opt.clipboard = { "unnamed", "unnamedplus" }
 vim.opt.complete:remove { "d", "i" }
 vim.opt.completeopt = { "menuone" }
-vim.opt.diffopt = { "internal", "filler", "closeoff", "foldcolumn:99", "algorithm:patience" }
+vim.opt.diffopt = { "internal", "filler", "closeoff", "algorithm:patience" }
 vim.opt.exrc = true
 vim.opt.foldlevelstart = 99
 vim.opt.grepprg = "grep -Hnri"
 vim.opt.ignorecase = true
 vim.opt.iskeyword:append { "-" }
-vim.opt.listchars = { lead = "·", trail = "█", tab = "| " }
+vim.opt.listchars = { lead = "·", trail = "█", tab = "| ", eol = "" }
 vim.opt.mouse = "a"
 vim.opt.number = true
 vim.opt.path:remove { "/usr/include" }
@@ -80,11 +80,13 @@ require("packer").startup(function()
   use { "nvim-telescope/telescope-fzf-native.nvim", run = "make" }
   use "nvim-telescope/telescope-github.nvim"
   use "nvim-telescope/telescope-ui-select.nvim"
+  use { "nvim-telescope/telescope-smart-history.nvim", requires = "tami5/sqlite.lua" }
 
   -- UI
   use "nvim-lualine/lualine.nvim"
   use "projekt0n/github-nvim-theme"
-  use "lukas-reineke/indent-blankline.nvim"
+  -- TODO: remove this, is makes it a pain to work with listchars and figure out what things ACTUALLY are...
+  -- use "lukas-reineke/indent-blankline.nvim"
 
   -- Treesitter and related
   use "nvim-treesitter/nvim-treesitter"
@@ -165,8 +167,8 @@ local my_on_attach = function(_)
   vim.keymap.set("n", "g.", "<cmd>Telescope lsp_code_actions<CR>", { buffer = 0 })
   vim.keymap.set("n", "gO", "<cmd>Telescope lsp_document_symbols<CR>", { buffer = 0 })
   vim.keymap.set("n", "gr", vim.lsp.buf.references, { buffer = 0 })
-  vim.keymap.set("n", "<C-n>", vim.diagnostic.goto_prev, { buffer = 0 })
-  vim.keymap.set("n", "<C-p>", vim.diagnostic.goto_next, { buffer = 0 })
+  vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { buffer = 0 })
+  vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { buffer = 0 })
   vim.keymap.set("n", "gq", vim.lsp.buf.formatting, { buffer = 0 })
   vim.keymap.set("n", "<F4>", vim.diagnostic.setloclist, { buffer = 0 })
 end
@@ -175,52 +177,52 @@ end
 -- Treesitter {{{
 
 require("nvim-treesitter.configs").setup {
-	context_commentstring = { enable = true },
-	highlight = { enable = true },
-	incremental_selection = {
-		enable = true,
-		keymaps = {
-			init_selection = "ss",
-			node_incremental = "sn",
-			scope_incremental = "sc",
-			node_decremental = "sp",
-		},
-	},
-	indent = {
-		enable = true,
-	},
-	textobjects = {
-		select = {
-			enable = true,
-			lookahead = true, -- jump ahead like targets.vim did
-			keymaps = {
-				["af"] = "@function.outer",
-				["if"] = "@function.inner",
-				["ac"] = "@class.outer",
-				["ic"] = "@class.inner",
-			},
-		},
-		move = {
-			enable = true,
-			set_jumps = false, -- whether to add jump to jumplist (:jumps)
-			goto_next_start = {
-				["]m"] = "@function.outer",
-				["]]"] = "@class.outer",
-			},
-			goto_next_end = {
-				["]M"] = "@function.outer",
-				["]["] = "@class.outer",
-			},
-			goto_previous_start = {
-				["[m"] = "@function.outer",
-				["[["] = "@class.outer",
-			},
-			goto_previous_end = {
-				["[M"] = "@function.outer",
-				["[]"] = "@class.outer",
-			},
-		},
-	},
+  context_commentstring = { enable = true },
+  highlight = { enable = true },
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = "ss",
+      node_incremental = "sn",
+      scope_incremental = "sc",
+      node_decremental = "sp",
+    },
+  },
+  indent = {
+    enable = true,
+  },
+  textobjects = {
+    select = {
+      enable = true,
+      lookahead = true, -- jump ahead like targets.vim did
+      keymaps = {
+        ["af"] = "@function.outer",
+        ["if"] = "@function.inner",
+        ["ac"] = "@class.outer",
+        ["ic"] = "@class.inner",
+      },
+    },
+    move = {
+      enable = true,
+      set_jumps = false, -- whether to add jump to jumplist (:jumps)
+      goto_next_start = {
+        ["]m"] = "@function.outer",
+        ["]]"] = "@class.outer",
+      },
+      goto_next_end = {
+        ["]M"] = "@function.outer",
+        ["]["] = "@class.outer",
+      },
+      goto_previous_start = {
+        ["[m"] = "@function.outer",
+        ["[["] = "@class.outer",
+      },
+      goto_previous_end = {
+        ["[M"] = "@function.outer",
+        ["[]"] = "@class.outer",
+      },
+    },
+  },
 }
 
 -- }}}
@@ -385,46 +387,88 @@ xnoremap <Leader>g@ <cmd>GBrowse<CR>
 -- }}}
 
 -- telescope.nvim {{{
-local actions = require "telescope.actions"
-local layouts = require "telescope.actions.layout"
-
 require("telescope").setup {
   defaults = {
+    history = {
+      path = vim.fn.stdpath "data" .. "/databases/telescope_history.sqlite3",
+      limit = 100,
+    },
     path_display = { "absolute" },
+    -- TODO: someday try again, this was bugging out on devx w/ "macos.md$"
+    -- path_display = { "smart" },
     mappings = {
+      -- TODO map <C-w>r to cycle_layout_list to cycle between
+      -- "horizontal" and "vertical" layout strategies
       i = {
-        ["<C-o>"] = layouts.toggle_preview,
-        ["<C-Down>"] = actions.cycle_history_next,
-        ["<C-Up>"] = actions.cycle_history_prev,
+        ["<C-o>"] = require("telescope.actions.layout").toggle_preview,
+        ["<C-Down>"] = "cycle_history_next",
+        ["<C-Up>"] = "cycle_history_prev",
       },
     },
+    -- Details for each strategy in: :h telescope.layout
+    -- Allows setting defaults for all layout strategy as top level options and
+    -- overriding specific options.
+    layout_config = {
+      -- strategies builtin: bottom_pane, center, cursor, horizontal, vertical
+      horizontal = {
+        height = 0.4,
+        prompt_position = "top",
+        preview_cutoff = 120,
+        width = 0.5,
+      },
+    },
+    preview = {
+      hide_on_startup = true, -- toggle with my C-o binding
+    },
+    prompt_prefix = " ",
+    selection_caret = "  ",
+
+    -- TODO: ornate borders with utf?
+    -- borderchars = { "-", "|", "-", "|", "-", "|", "-", "|"}
+
+    -- TODO: how to put this on left-hand side instead?
+    -- get_status_text = function(picker) return "Search files by name" end,
   },
   pickers = {
     git_files = {
       theme = "dropdown",
-      previewer = false,
+      get_status_text = function(_)
+        return "Search git ls-files"
+      end,
     },
     spell_suggest = {
       theme = "cursor",
+      get_status_text = function(_)
+        return "Choose spell suggestion"
+      end,
     },
     grep_string = {
       theme = "dropdown",
-      previewer = false,
+      get_status_text = function(_)
+        return "Grep using &grepprg"
+      end,
     },
     live_grep = {
+      preview = true,
       theme = "dropdown",
-      previewer = false,
+      get_status_text = function(_)
+        return "Live update grep"
+      end,
     },
     lsp_code_actions = {
       theme = "cursor",
     },
     find_files = {
       theme = "dropdown",
-      previewer = false,
+      get_status_text = function(_)
+        return "Search files by name"
+      end,
     },
     buffers = {
       theme = "dropdown",
-      previewer = false,
+      get_status_text = function(_)
+        return "Switch buffer"
+      end,
     },
   },
   extensions = {
@@ -434,13 +478,30 @@ require("telescope").setup {
   },
 }
 
+-- VS Code style:
+-- When first opened, show list of most recently opened files until you start
+-- typing, then when typing, most recently are at the top and below that are
+-- filename matches of your entered text.
+-- needs: frecency plugin probably
+-- needs: autocmd! FileType TelescopePrompt setlocal nocursorline nocursorcolumn nolist
+-- needs: custom functions for caret prefixes
+-- shows:
+--  * Filetype icon first
+--  * Tail filename, then
+--  * remainder of the path from pwd such as "docs/_ver_6.15/rn"
+--  * button to open it in a split (cannot do)
+--  * close X button to remove it from "recently opened" list (cannot do)
+
 -- these need to come after main setup() call
 require("telescope").load_extension "fzf"
 require("telescope").load_extension "ui-select"
 require("telescope").load_extension "gh"
+-- context sensitive history (cwd + picker using)
+require("telescope").load_extension "smart_history"
 
+-- specific picker overrides in require("telescope")setup.pickers table
 vim.keymap.set("n", "<Leader><Leader>", require("telescope.builtin").git_files)
-vim.keymap.set("n", "<Leader>f", require("telescope.builtin").find_files)
+vim.keymap.set("n", "<Leader>ff", require("telescope.builtin").find_files)
 vim.keymap.set("n", "<Leader><Tab>", require("telescope.builtin").buffers)
 vim.keymap.set("n", "<Leader><C-]>", require("telescope.builtin").tags)
 vim.keymap.set("n", "<Leader>:", require("telescope.builtin").commands)
@@ -476,13 +537,6 @@ require("lualine").setup {
   tabline = {},
   extensions = {},
 }
--- }}}
-
---  Indentline-blankline.nvim {{{
-vim.g.indent_blankline_char = "┊"
-vim.g.indent_blankline_filetype_exclude = { "help", "packer" }
-vim.g.indent_blankline_buftype_exclude = { "terminal", "nofile" }
-vim.g.indent_blankline_show_trailing_blankline_indent = false
 -- }}}
 
 -- luasnips {{{
@@ -659,6 +713,7 @@ augroup myinit
   autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focus=false, scope="cursor"})
   " Stop fugitive from littering buffer list
   autocmd BufReadPost fugitive://* set bufhidden=delete
+	autocmd FileType TelescopePrompt setlocal nocursorline
 augroup END
 ]]
 -- }}}
