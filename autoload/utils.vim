@@ -119,7 +119,7 @@ function! utils#JekyllOpenLive() abort
   let newpath = newversion .. relpath->substitute('\d\.\d\d\?/', '', '')
 
   " any version 6.14 and over requires localhost only
-  let host = str2float(newversion) >= 6.14 ? 'https://localhost.com:8080/' : 'https://developer-staging.youi.tv/'
+  let host = str2float(newversion) >= 6.14 ? 'http://127.0.0.1:4000/' : 'https://developer-staging.youi.tv/'
 
   let finalurl = host .. newpath
   " TODO: make more robust, calling os-specific open like netrw does,

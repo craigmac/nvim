@@ -23,7 +23,7 @@ vim.opt.scrolloff = 5
 vim.opt.secure = false
 vim.opt.shortmess:remove { "c", "S" }
 vim.opt.showmatch = true
-vim.opt.showtabline = 2
+-- TODO: make a K for lua that tries ":h on <cword>"
 vim.opt.signcolumn = "number"
 vim.opt.smartcase = true
 vim.opt.smartindent = true
@@ -33,6 +33,10 @@ vim.opt.swapfile = false
 -- TODO: how would you do this?
 -- set tabline=%!utils#MyTabLine()
 vim.opt.termguicolors = true
+-- default is : "filename [+=-] (path) - NVIM"
+vim.opt.title = true
+-- vim.opt.titlestring = vim.fn.getcwd()
+vim.opt.titlestring = vim.fn.fnamemodify(vim.fn.getcwd(), ":~")
 vim.opt.updatetime = 250
 vim.opt.wrap = false
 
@@ -105,6 +109,9 @@ require("packer").startup(function()
   use "tpope/vim-fugitive"
   use "tpope/vim-rhubarb"
   use { "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } }
+
+	-- mine
+	use "/Users/cmaceach/git/nvim-stackmap"
 end)
 -- }}}
 
@@ -238,33 +245,34 @@ require("lspconfig").clangd.setup {
 }
 -- }}}
 
+-- TODO: rebuild sumneko with newer version, keeps throwing LSP errors!
 -- Lua language server (sumneko) {{{
-local sumneko_root_path = "/Users/cmaceach/git/lsp-servers/lua-language-server"
-local sumneko_binary = sumneko_root_path .. "/bin/" .. "/lua-language-server"
-require("lspconfig").sumneko_lua.setup {
-  cmd = { sumneko_binary, "-E", sumneko_root_path .. "/main.lua" },
-  settings = {
-    Lua = {
-      runtime = {
-        version = "LuaJIT",
-        path = vim.split(package.path, ";"),
-      },
-      diagnostics = {
-        globals = { "vim" },
-      },
-      workspace = {
-        -- make server aware of Neovim runtime files
-        library = {
-          [vim.fn.expand "$VIMRUNTIME/lua"] = true,
-          [vim.fn.expand "$VIMRUNTIME/lua/vim/lsp"] = true,
-        },
-      },
-    },
-  },
-  on_attach = my_on_attach,
-  handlers = my_handlers,
-  capabilities = my_capabilities,
-}
+-- local sumneko_root_path = "/Users/cmaceach/git/lsp-servers/lua-language-server"
+-- local sumneko_binary = sumneko_root_path .. "/bin/" .. "/lua-language-server"
+-- require("lspconfig").sumneko_lua.setup {
+--   cmd = { sumneko_binary, "-E", sumneko_root_path .. "/main.lua" },
+--   settings = {
+--     Lua = {
+--       runtime = {
+--         version = "LuaJIT",
+--         path = vim.split(package.path, ";"),
+--       },
+--       diagnostics = {
+--         globals = { "vim" },
+--       },
+--       workspace = {
+--         -- make server aware of Neovim runtime files
+--         library = {
+--           [vim.fn.expand "$VIMRUNTIME/lua"] = true,
+--           [vim.fn.expand "$VIMRUNTIME/lua/vim/lsp"] = true,
+--         },
+--       },
+--     },
+--   },
+--   on_attach = my_on_attach,
+--   handlers = my_handlers,
+--   capabilities = my_capabilities,
+-- }
 -- }}}
 
 -- vim-ls (npm install -g vim-language-server) {{{
@@ -387,15 +395,58 @@ xnoremap <Leader>g@ <cmd>GBrowse<CR>
 -- }}}
 
 -- telescope.nvim {{{
+
+-- WIP: build a custom layout strategy and register it for "vscode"
+-- copy one of strategies that resembles what I'd like from:
+-- ~/.local/share/nvim/site/pack/packer/start/telescope.nvim/lua/telescope/pickers/layout_strategies.lua
+local function vscode(picker, columns, lines, layout_config)
+	-- do calculations here
+	return {
+		preview = {}, -- preview panel config
+		results = {}, -- results panel config
+		prompt = {}, -- prompt config
+}
+end
+
 require("telescope").setup {
   defaults = {
     history = {
       path = vim.fn.stdpath "data" .. "/databases/telescope_history.sqlite3",
       limit = 100,
     },
-    path_display = { "absolute" },
-    -- TODO: someday try again, this was bugging out on devx w/ "macos.md$"
-    -- path_display = { "smart" },
+    -- horizontal when wide enough, otherwise stacked panels
+    layout_strategy = "flex",
+    layout_config = {
+      bottom_pane = {
+        height = 10,
+        preview_cutoff = 120,
+        prompt_position = "bottom"
+      },
+      center = {
+        height = 0.4,
+        preview_cutoff = 40,
+        prompt_position = "top",
+        width = 0.5,
+        anchor = "N",
+      },
+      cursor = {
+        height = 0.9,
+        preview_cutoff = 40,
+        width = 0.8
+      },
+      horizontal = {
+        height = 0.9,
+        preview_cutoff = 120,
+        prompt_position = "top",
+        width = 0.8,
+      },
+      vertical = {
+        height = 0.9,
+        preview_cutoff = 40,
+        prompt_position = "top",
+        width = 0.8
+      }
+    },
     mappings = {
       -- TODO map <C-w>r to cycle_layout_list to cycle between
       -- "horizontal" and "vertical" layout strategies
@@ -405,18 +456,9 @@ require("telescope").setup {
         ["<C-Up>"] = "cycle_history_prev",
       },
     },
-    -- Details for each strategy in: :h telescope.layout
-    -- Allows setting defaults for all layout strategy as top level options and
-    -- overriding specific options.
-    layout_config = {
-      -- strategies builtin: bottom_pane, center, cursor, horizontal, vertical
-      horizontal = {
-        height = 0.4,
-        prompt_position = "top",
-        preview_cutoff = 120,
-        width = 0.5,
-      },
-    },
+    -- TODO: someday try again, this was bugging out on devx w/ "macos.md$"
+    -- path_display = { "smart" },
+    path_display = { "absolute" },
     preview = {
       hide_on_startup = true, -- toggle with my C-o binding
     },
@@ -430,45 +472,14 @@ require("telescope").setup {
     -- get_status_text = function(picker) return "Search files by name" end,
   },
   pickers = {
-    git_files = {
-      theme = "dropdown",
-      get_status_text = function(_)
-        return "Search git ls-files"
-      end,
-    },
+		-- global defaults are in setup.layout_config table above
+		git_files = {
+		},
     spell_suggest = {
       theme = "cursor",
-      get_status_text = function(_)
-        return "Choose spell suggestion"
-      end,
-    },
-    grep_string = {
-      theme = "dropdown",
-      get_status_text = function(_)
-        return "Grep using &grepprg"
-      end,
-    },
-    live_grep = {
-      preview = true,
-      theme = "dropdown",
-      get_status_text = function(_)
-        return "Live update grep"
-      end,
     },
     lsp_code_actions = {
       theme = "cursor",
-    },
-    find_files = {
-      theme = "dropdown",
-      get_status_text = function(_)
-        return "Search files by name"
-      end,
-    },
-    buffers = {
-      theme = "dropdown",
-      get_status_text = function(_)
-        return "Switch buffer"
-      end,
     },
   },
   extensions = {
@@ -507,6 +518,14 @@ vim.keymap.set("n", "<Leader><C-]>", require("telescope.builtin").tags)
 vim.keymap.set("n", "<Leader>:", require("telescope.builtin").commands)
 vim.keymap.set("n", "z=", require("telescope.builtin").spell_suggest)
 vim.keymap.set("n", '<Leader>"', require("telescope.builtin").registers)
+vim.keymap.set("n", "<Leader>t", "<cmd>Telescope<CR>")
+vim.keymap.set("n", "<Leader>hf", require("telescope").extensions.gh.pull_request_files)
+vim.keymap.set("n", "<Leader>hp", require("telescope").extensions.gh.pull_request)
+vim.keymap.set("n", "<Leader>hi", require("telescope").extensions.gh.issues)
+vim.keymap.set("n", "<Leader>hg", require("telescope").extensions.gh.gist)
+
+-- TODO: create a new telescope.themes.vscode
+
 -- }}}
 
 -- lualine {{{
@@ -573,106 +592,31 @@ ls.snippets = {
     ls.parser.parse_snippet("lf", "local $1 = function($2)\n $0\nend"),
   },
   markdown = {
-    ls.parser.parse_snippet("wm-dan", "{% alert_box danger %}\n$1\n{% endalert_box %}\n$0"),
-    ls.parser.parse_snippet("wm-imp", "{% alert_box important %}\n$1\n{% endalert_box %}\n$0"),
-    ls.parser.parse_snippet("wm-not", "{% alert_box note %}\n$1\n{% endalert_box %}\n$0"),
-    ls.parser.parse_snippet("wm-war", "{% alert_box warning %}\n$1\n{% endalert_box %}\n$0"),
+    ls.parser.parse_snippet("wm-danger", "{% alert_box danger %}\n$1\n{% endalert_box %}\n$0"),
+    ls.parser.parse_snippet("wm-important", "{% alert_box important %}\n$1\n{% endalert_box %}\n$0"),
+    ls.parser.parse_snippet("wm-note", "{% alert_box note %}\n$1\n{% endalert_box %}\n$0"),
+    ls.parser.parse_snippet("wm-warning", "{% alert_box warning %}\n$1\n{% endalert_box %}\n$0"),
     ls.parser.parse_snippet("wm-tip", "{% alert_box tip %}\n$1\n{% endalert_box %}\n$0"),
-  },
+
+    ls.parser.parse_snippet("wm-image", "[$1]({{ site.baseurl}}{{ page.images_folder}}/$2)$0"),
+    ls.parser.parse_snippet("wm-figure", "{% include figure src=\"$1\" alt=\"$2\" width=\"$3\" align=\"left\" class=\"img-fluid\" caption=\"$4\" %} $0"),
+		ls.parser.parse_snippet("wm-snippet", "{% include {{ page.version }}/snippets/$1.md %} $0"),
+		ls.parser.parse_snippet("wm-pageversion", "{{ page.version }}$0"),
+		ls.parser.parse_snippet("wm-relativelink", "[$1](../$2/) $0"),
+		ls.parser.parse_snippet("wm-externallink", "[$1](https://$2) $0"),
+		ls.parser.parse_snippet("wm-link", "[$1](/{{ page.version }}/$2/) $0"),
+		ls.parser.parse_snippet("wm-newpage", "---\ntitle: $1\nexcerpt: $2\ncategory: $3\nsub-category: $4\ntags: $5\n---\n$0"),
+		ls.parser.parse_snippet("wm-codeblock", "{% raw %}\n\n```$1\n$2\n```\n\n{% endraw %}\n\n$0"),
+	},
 }
 
--- TODO:
---
--- "Jekyll Image": {
---    "scope": "markdown",
---    "prefix": "wm-img",
---    "body": [
---       "![${1:Descriptive alt text}]({{ site.baseurl }}{{ page.images_folder }}/${2:filename.ext})$0"
---    ],
---    "description": "Insert image with alternate text."
--- },
--- "Jekyll Figure": {
---    "scope": "markdown",
---    "prefix": "wm-fig",
---    "body": [
---       "{% include figure src=\"${1:name.jpg}\" alt=\"${2:text to describe image}\" width=\"${3:100}\" align=\"${4:left}\" class=\"${5:img-fluid}\" caption=\"${6:text to display below the image}\" %} $0"
---    ],
---    "description": "Like an image but greater control."
--- },
--- "Jekyll Snippet Include": {
---    "scope": "markdown",
---    "prefix": "wm-snip",
---    "body": [
---       "{% include {{ page.version }}/snippets/${1:filename-extension-required.md} %} $0"
---    ],
---    "description": "Insert a snippet file."
--- },
--- "Jekyll Page Version": {
---    "scope": "markdown",
---    "prefix": "wm-pv",
---    "body": [
---       "{{ page.version }}$0"
---    ],
---    "description": "Insert appropriate doc version value based on page."
--- },
--- "Jekyll New Markdown Page": {
---    "scope": "markdown",
---    "prefix": "wm-new",
---    "body": [
---       "---",
+-- TODO: placeholders for the snippets
 --       "title: \"${1:Set up macOS for C++ App Development}\"",
 --       "excerpt: \"${2:Get started with installing Engine on macOS platform.\"}",
 --       "category: ${3:cpp | rn | designer (choose just 1)}",
 --       "sub_category: ${4:guides}",
 --       "tags: ${5:CPP RN Designer (choose up to 3, but at least 1)}",
---       "---",
---       "",
---       "$0"
---    ],
---    "description": "Use for new Markdown page YAML frontmatter setup."
--- },
--- "Jekyll Relative Link": {
---    "scope": "markdown",
---    "prefix": "wm-rel",
---    "body": [
---       "[${1:Text displayed for link}](../${2:page name without extension}/) $0"
---    ],
---    "description": "Insert a link relative to current page."
--- },
--- "Jekyll Link": {
---    "scope": "markdown",
---    "prefix": "wm-ln",
---    "body": [
---       "[${1:link display text}](/{{ page.version }}/${2:path-to-file-without-extension}/) $0"
---    ],
---    "description": "Link incorporating correct version according to current page version."
--- },
--- "Jekyll External Link": {
---    "scope": "markdown",
---    "prefix": "wm-exln",
---    "body": [
---       "[${1:link display text}](${2:http://someplace.com}) $0"
---    ],
---    "description": "Link to external site. External links in tables require further trickery, check docs."
--- },
--- "Jekyll Codeblock with Raw": {
---    "scope": "markdown",
---    "prefix": "wm-code",
---    "body": [
---       "{% raw %}",
---       "",
 --       "```${1:jsx|shell|cpp|make mostly}",
---       "${2:code here}",
---       "```",
---       "",
---       "{% endraw %}",
---       "",
---       "$0"
---    ],
---    "description": "Code block wrapped with raw Liquid tag to ensure that text inside a code block isn't interpreted as Liquid syntax."
--- }
--- }
-
 -- }}}
 
 -- Commands {{{
@@ -713,7 +657,7 @@ augroup myinit
   autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focus=false, scope="cursor"})
   " Stop fugitive from littering buffer list
   autocmd BufReadPost fugitive://* set bufhidden=delete
-	autocmd FileType TelescopePrompt setlocal nocursorline
+  autocmd FileType TelescopePrompt setlocal nocursorline
 augroup END
 ]]
 -- }}}
@@ -753,9 +697,9 @@ nnoremap <Leader>dd <Cmd>bdelete!<CR>
 nnoremap <C-b>s :split +terminal<CR>
 nnoremap <C-b>v :vsplit +terminal<CR>
 nnoremap <C-b>! <C-w>T
-tnoremap <C-b>s :terminal<CR>
-tnoremap <C-b>v :vsplit +terminal<CR>
-tnoremap <C-b>! <C-w>T
+tnoremap <C-b>s <C-\><C-n>:split +terminal<CR>
+tnoremap <C-b>v <C-\><C-n>:vsplit +terminal<CR>
+tnoremap <C-b>! <C-\><C-n><C-w>T
 
 " resizing windows
 nnoremap <silent><C-Up> <Cmd>2wincmd+<CR>
@@ -805,8 +749,12 @@ nnoremap <silent> { <cmd>keepjumps normal! {<CR>
 
 nmap <Leader>/ :grep<Space>
 nnoremap <Leader>? :vimgrep //j **/*.md<S-Left><S-Left><Right>
-
 nnoremap <Leader>@ <cmd>JekyllOpen<CR>
+
+tnoremap <C-w>h <C-\><C-n><C-w>h
+tnoremap <C-w>k <C-\><C-n><C-w>k
+tnoremap <C-w>j <C-\><C-n><C-w>j
+tnoremap <C-w>l <C-\><C-n><C-w>l
 ]]
 -- }}}
 
