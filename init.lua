@@ -1,5 +1,7 @@
 -- craigmac Neovim HEAD config
 
+require("my.globals")
+
 -- Options {{{
 vim.g.mapleader = " "
 vim.api.nvim_set_keymap("", "<Space>", "<Nop>", { silent = true, noremap = true })
@@ -589,7 +591,9 @@ ls.snippets = {
     -- Available in all ft
   },
   lua = {
-    ls.parser.parse_snippet("lf", "local $1 = function($2)\n $0\nend"),
+    ls.parser.parse_snippet("lua-local-function", "local $1 = function($2)\n	$3\nend\n\n$0"),
+    ls.parser.parse_snippet("lua-module-function", "M.$1 = function(opts)\n	opts = opts or {}\n	$2\nend\n\n$0"),
+		ls.parser.parse_snippet("lua-setup-M", "local M = {}\n\n$1\n\nreturn M\n")
   },
   markdown = {
     ls.parser.parse_snippet("wm-danger", "{% alert_box danger %}\n$1\n{% endalert_box %}\n$0"),
