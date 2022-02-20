@@ -634,131 +634,195 @@ command! -nargs=* Redir call utils#Redir(<args>)
 ]]
 -- }}}
 
--- Autocommands {{{
+-- vim.keymap.set() automatically handles the 'noremap' sensibly, if the LHS
+-- has 'plug' in it, it sets remap = true in opts, otherwise false. It also handles
+-- correctly translating termcodes such as <Tab> and <Leader> which are vimscript only
+-- representations of characters that don't display (unless listchars is on).
+--
+-- inoremaps like:
+-- inoremap <C-Space> <C-x><C-o>
+-- 
+-- maps that call autoload commands, issue is with # character which is invalid Lua, you'll
+-- need to do:
+-- nnoremap <silent><F3> <cmd>call utils#ToggleQuickfixList()<CR>
+--
+-- standard inoremaps become:
+vim.keymap.set('i', "<C-Space>", "<C-x><C-o>")
+
+local silent = { silent = true }
+
+-- Get started with:
+-- :%s/^nnoremap\s\+/vim.keymap.set("n",/
+vim.keymap.set("n", "<Leader><CR>", "<cmd>source %<CR>")
+vim.keymap.set("n", "<Leader>w", "<cmd>update<CR>")
+vim.keymap.set("n", "<Leader>,", "<cmd>edit $MYVIMRC<CR>")
+vim.keymap.set("n", "<Leader>ft", ":e <C-R>=expand('~/.config/nvim/after/ftplugin/'.&ft.'.vim')<CR><CR>")
+vim.keymap.set("n", "<Leader>bb", "<cmd>buffer #<CR>")
+
+vim.keymap.set("n", "<Leader>dd", "<Cmd>bdelete!<CR>")
+
+vim.keymap.set("n", "<C-b>s", ":split +terminal<CR>")
+vim.keymap.set("n", "<C-b>v", ":vsplit +terminal<CR>")
+vim.keymap.set("n", "<C-b>!", "<C-w>T")
+
+-- using a literal backslash in the RHS string like <C-\> for example, will
+-- require a double backslash! like <C-\\>
+--
+-- vimscript:
+-- nnoremap <C-b>s :split +terminal<CR>
+-- nnoremap <C-b>v :vsplit +terminal<CR>
+-- nnoremap <C-b>! <C-w>T
+-- tnoremap <C-b>s <C-\><C-n>:split +terminal<CR>
+-- tnoremap <C-b>v <C-\><C-n>:vsplit +terminal<CR>
+-- tnoremap <C-b>! <C-\><C-n><C-w>T
+--
+-- lua:
+-- TODO: I think we need to enable autocmds to fire with this in options somehow?
+vim.keymap.set("t", "<C-b>s", "<C-\\><C-n>:split +terminal<CR>")
+vim.keymap.set("t", "<C-b>v", "<C-\\><C-n>:vsplit +terminal<CR>")
+vim.keymap.set("t", "<C-b>!", "<C-\\><C-n><C-w>T")
+
+-- vimscript:
+-- nnoremap <silent><C-Up> <Cmd>2wincmd+<CR>
+-- nnoremap <silent><C-Down> <Cmd>2wincmd-<CR>
+-- nnoremap <silent><C-Left> <Cmd>2wincmd <<CR>
+-- nnoremap <silent><C-Right> <Cmd>2wincmd ><CR>
+--
+-- lua:
+vim.keymap.set("n", "<C-Up>", "<Cmd>2windcmd+<CR>", silent)
+vim.keymap.set("n", "<C-Down>", "<Cmd>2windcmd-<CR>", silent)
+vim.keymap.set("n", "<C-Left>", "<Cmd>2windcmd<<CR>", silent)
+vim.keymap.set("n", "<C-Right>", "<Cmd>2windcmd><CR>", silent)
+
+-- vimscript:
+-- xmap < <gv
+-- xmap > >gv
+--
+-- lua:
+vim.keymap.set("x", "<", "<gv")
+vim.keymap.set("x", ">", ">gv")
+
+-- vimscript:
+-- Move visual selection up/down lines.
+-- xnoremap J :m '>+1<CR>gv=gv
+-- xnoremap K :m '<-2<CR>gv=gv
+--
+-- lua:
+vim.keymap.set("x", "J", ":m '>+1<CR>gv=gv")
+vim.keymap.set("x", "K", ":m '<-2<CR>gv=gv")
+
+
+-- vimscript:
+-- nnoremap <silent><F7> <cmd>15Lexplore<CR>
+-- nnoremap <silent><F8> <cmd>TagbarOpenAutoClose<CR>
+-- nnoremap <silent><F9> <cmd>set list!<CR>
+-- nnoremap <Leader>* :grep <C-r><C-w><Space>
+--
+-- lua:
+vim.keymap.set("n", "<F7>", "<Cmd>25Lexplore<CR>", { silent = true })
+vim.keymap.set("n", "<F8>", "<Cmd>TagbarOpenAutoClose<CR>", { silent = true })
+vim.keymap.set("n", "<F9>", "<Cmd>set list!<CR>")
+-- note: whitespace is significant in RHS strings so technically we don't need to use
+-- <Space> here we could just end with a space, but better to be explicit
+vim.keymap.set("n", "<Leader>*", ":grep <C-r><C-w><Space>")
+
+
+-- vimscript:
+--nnoremap gh :diffget //2<CR>
+--nnoremap gl :diffget //3<CR>
+--nnoremap [q <cmd>cprevious<CR>
+--nnoremap ]q <cmd>cnext<CR>
+--nnoremap [Q <cmd>cfirst<CR>
+--nnoremap ]Q <cmd>clast<CR>
+--nnoremap <C-p> <cmd>lprevious<CR>
+--nnoremap <C-n> <cmd>lnext<CR>
+--nnoremap <M-n> <cmd>llast<CR>
+--nnoremap <M-p> <cmd>lfirst<CR>
+--nnoremap ]t <cmd>tabnext<CR>
+--nnoremap [t <cmd>tabprev<CR>
+--nnoremap [T <cmd>tabfirst<CR>
+--nnoremap ]T <cmd>tablast<CR>
+--
+-- lua:
+vim.keymap.set("n", "gh", "<Cmd>diffget //2<CR>")
+vim.keymap.set("n", "gl", "<Cmd>diffget //3<CR>")
+vim.keymap.set("n", "[q", "<Cmd>cprevious<CR>")
+vim.keymap.set("n", "]q", "<Cmd>cnext<CR>")
+vim.keymap.set("n", "[Q", "<Cmd>cfirst<CR>")
+vim.keymap.set("n", "]Q", "<Cmd>clast<CR>")
+vim.keymap.set("n", "<C-p>", "<Cmd>lprevious<CR>")
+vim.keymap.set("n", "<C-n>", "<Cmd>lnext<CR>")
+vim.keymap.set("n", "<M-n>", "<Cmd>llast<CR>")
+vim.keymap.set("n", "<M-p>", "<Cmd>lfirst<CR>")
+vim.keymap.set("n", "]t", "<Cmd>tabnext<CR>")
+vim.keymap.set("n", "[t", "<Cmd>tabprev<CR>")
+vim.keymap.set("n", "[T", "<Cmd>tabfirst<CR>")
+vim.keymap.set("n", "]T", "<Cmd>tablast<CR>")
+
+-- vimscript:
+-- nnoremap g; g;zv
+-- nnoremap g, g,zv
+-- nnoremap <silent> } <cmd>keepjumps normal! }<CR>
+-- nnoremap <silent> { <cmd>keepjumps normal! {<CR>
+--
+-- lua:
+vim.keymap.set("n", "g;", "g;zv")
+vim.keymap.set("n", "g,", "g,zv")
+vim.keymap.set("n", "}", "<Cmd>keepjumps normal! }<CR>")
+vim.keymap.set("n", "{", "<Cmd>keepjumps normal! {<CR>")
+
+-- vimscript:
+-- nnoremap <Leader>/ :grep<Space>
+-- nnoremap <Leader>? :vimgrep //j **/*.md<S-Left><S-Left><Right>
+-- nnoremap <Leader>@ <cmd>JekyllOpen<CR>
+--
+-- lua:
+vim.keymap.set("n", "<Leader>/", ":grep<Space>")
+vim.keymap.set("n", "<Leader>?", ":vimgrep //j **/*.md<S-Left><S-Left><Right>")
+vim.keymap.set("n", "<Leader>@", "<Cmd>JekyllOpen<CR>")
+
+-- vimscript:
+-- tnoremap <Esc> <C-\><C-n>
+-- tnoremap <C-v><Esc> <Esc>
+-- tnoremap <C-w>h <C-\><C-n><C-w>h
+-- tnoremap <C-w>k <C-\><C-n><C-w>k
+-- tnoremap <C-w>j <C-\><C-n><C-w>j
+-- tnoremap <C-w>l <C-\><C-n><C-w>l
+--
+-- lua:
+vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
+vim.keymap.set("t", "<C-v><Esc>", "<Esc>")
+vim.keymap.set("t", "<C-w>h", "<C-\\><C-n><C-w>h")
+vim.keymap.set("t", "<C-w>k", "<C-\\><C-n><C-w>k")
+vim.keymap.set("t", "<C-w>j", "<C-\\><C-n><C-w>j")
+vim.keymap.set("t", "<C-w>l", "<C-\\><C-n><C-w>l")
+
+-- vimscript:
+-- nmap <Leader>T <Plug>PlenaryTestFile
+--
+-- lua:
+vim.keymap.set("n", "<Leader>T", "<Plug>PlenaryTestFile")
+
+-- vimscript autoload command calls:
+-- nnoremap <silent><F3> <cmd>call utils#ToggleQuickfixList()<CR>
+-- nnoremap <silent><F4> <cmd>call utils#ToggleLocationList()<CR>
+
+-- vimscript command-line setting a map using a conditional expression
+-- cnoremap <expr> <C-p> wildmenumode() ? "<C-P>" : "<Up>"
+-- cnoremap <expr> <C-n> wildmenumode() ? "<C-N>" : "<Down>"
+--
+-- lua:
+-- vim.keymap.set("c", "<C-p>", "", { expr = true })
+-- vim.keymap.set("c", "<C-p>", "", { expr = true })
+
 vim.cmd [[
-augroup myinit
-  autocmd!
-  autocmd TextYankPost * silent! lua vim.highlight.on_yank()
-  autocmd BufWritePost $MYVIMRC nested source $MYVIMRC
-  autocmd BufWritePre /tmp/* setlocal noundofile
-  autocmd QuickFixCmdPost [^l]* botright cwindow
-  autocmd QuickFixCmdPost  l* botright lwindow
-  autocmd VimEnter * cwindow
-  autocmd FileType gitcommit call feedkeys('i')
-  autocmd VimEnter,WinEnter,BufWinEnter * setlocal cursorline
-  autocmd WinLeave * setlocal nocursorline
-  " I also set this in utils#Redir because it does 'nobuflisted'
-  " This one catches other things that open 'nofile' buffers
-  autocmd BufEnter * if &buftype ==# 'nofile' | nnoremap <buffer> q :bwipeout!<CR> | endif
-  autocmd BufEnter * if &buftype ==# 'nofile' | setlocal nocursorcolumn | endif
-  autocmd BufEnter $MYVIMRC setlocal fdm=marker
-  autocmd BufWinEnter * if &previewwindow | setlocal nonumber norelativenumber nolist | endif
-  autocmd TermOpen * startinsert | setlocal nonumber norelativenumber
-  autocmd TermOpen * setlocal statusline=%{b:term_title}
-  " Auto close terminal buffers if exit status was 0 (no errors)
-  autocmd TermClose * if !v:event.status | execute 'bdelete! ' .. expand('<abuf>') | endif
-  autocmd BufEnter term://* startinsert
-  autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focus=false, scope="cursor"})
-  " Stop fugitive from littering buffer list
-  autocmd BufReadPost fugitive://* set bufhidden=delete
-  autocmd FileType TelescopePrompt setlocal nocursorline
-augroup END
-]]
--- }}}
 
--- Keymaps {{{
--- TODO: convert to vim.set.keymap()
-vim.cmd [[
-inoremap <C-Space> <C-x><C-o>
-
-nnoremap <silent><F3> <cmd>call utils#ToggleQuickfixList()<CR>
-nnoremap <silent><F4> <cmd>call utils#ToggleLocationList()<CR>
-
-" e.g. typing ':help g<C-p>' by default does not search history and simply
-" goes to previous entry, but ':help g<Up>' will search history for previous
-" pattern matching ':help g'. Also Up/Down go in/out of subfolders listings
-" when wildmenu showing - default C-n/p here is to traverse results, equivalent
-" to <Tab>/<S-Tab>.
-cnoremap <expr> <C-p> wildmenumode() ? "<C-P>" : "<Up>"
-cnoremap <expr> <C-n> wildmenumode() ? "<C-N>" : "<Down>"
-
-" If completion menu open use C-j/k instead of arrow keys to navigate
-" parent/child folders.
-cnoremap <expr> <C-j> wildmenumode() ? "\<Down>\<C-z>" : "\<C-j>"
-cnoremap <expr> <C-k> wildmenumode() ? "\<Up>\<C-z>" : "\<C-k>"
-
-nnoremap <Leader><CR> <cmd>source %<CR>
-nnoremap <Leader>w <cmd>update<CR>
-nnoremap <Leader>, <cmd>edit $MYVIMRC<CR>
-nnoremap <Leader>ft :e <C-R>=expand('~/.config/nvim/after/ftplugin/'.&ft.'.vim')<CR><CR>
-nnoremap <Leader>bb <cmd>buffer #<CR>
-
-" keeps marks, settings, and you can still do e.g., <C-o> to jump to it
-nnoremap <Leader>dd <Cmd>bdelete!<CR>
-
-" Tmux-like mappings
-" TODO: start in insert mode and close when exited
-nnoremap <C-b>s :split +terminal<CR>
-nnoremap <C-b>v :vsplit +terminal<CR>
-nnoremap <C-b>! <C-w>T
-tnoremap <C-b>s <C-\><C-n>:split +terminal<CR>
-tnoremap <C-b>v <C-\><C-n>:vsplit +terminal<CR>
-tnoremap <C-b>! <C-\><C-n><C-w>T
-
-" resizing windows
-nnoremap <silent><C-Up> <Cmd>2wincmd+<CR>
-nnoremap <silent><C-Down> <Cmd>2wincmd-<CR>
-nnoremap <silent><C-Left> <Cmd>2wincmd <<CR>
-nnoremap <silent><C-Right> <Cmd>2wincmd ><CR>
-
-" Re-select visually selected area after indenting/dedenting.
-xmap < <gv
-xmap > >gv
-
-" Move visual selection up/down lines.
-xnoremap J :m '>+1<CR>gv=gv
-xnoremap K :m '<-2<CR>gv=gv
+cnoremap <expr> <C-j> wildmenumode() ? "\<Up>\<C-z>" : "\<C-j>"
+cnoremap <expr> <C-k> wildmenumode() ? "\<Down>\<C-z>" : "\<C-k>"
 
 " '%%' in command-line mode maybe expands to path of current buffer.
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 
-" Function keys
-
-nnoremap <silent><F7> <cmd>15Lexplore<CR>
-nnoremap <silent><F8> <cmd>TagbarOpenAutoClose<CR>
-nnoremap <silent><F9> <cmd>set list!<CR>
-nnoremap <Leader>* :grep <C-r><C-w>
-
-" Vimdiff
-nnoremap gh :diffget //2<CR>
-nnoremap gl :diffget //3<CR>
-
-nnoremap [q <cmd>cprevious<CR>
-nnoremap ]q <cmd>cnext<CR>
-nnoremap [Q <cmd>cfirst<CR>
-nnoremap ]Q <cmd>clast<CR>
-nnoremap <C-p> <cmd>lprevious<CR>
-nnoremap <C-n> <cmd>lnext<CR>
-nnoremap <M-n> <cmd>llast<CR>
-nnoremap <M-p> <cmd>lfirst<CR>
-nnoremap ]t <cmd>tabnext<CR>
-nnoremap [t <cmd>tabprev<CR>
-nnoremap [T <cmd>tabfirst<CR>
-nnoremap ]T <cmd>tablast<CR>
-
-nnoremap g; g;zv
-nnoremap g, g,zv
-nnoremap <silent> } <cmd>keepjumps normal! }<CR>
-nnoremap <silent> { <cmd>keepjumps normal! {<CR>
-
-nmap <Leader>/ :grep<Space>
-nnoremap <Leader>? :vimgrep //j **/*.md<S-Left><S-Left><Right>
-nnoremap <Leader>@ <cmd>JekyllOpen<CR>
-
-tnoremap <C-w>h <C-\><C-n><C-w>h
-tnoremap <C-w>k <C-\><C-n><C-w>k
-tnoremap <C-w>j <C-\><C-n><C-w>j
-tnoremap <C-w>l <C-\><C-n><C-w>l
 ]]
 -- }}}
 
