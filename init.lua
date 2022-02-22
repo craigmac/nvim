@@ -689,10 +689,10 @@ vim.keymap.set("t", "<C-b>!", "<C-\\><C-n><C-w>T")
 -- nnoremap <silent><C-Right> <Cmd>2wincmd ><CR>
 --
 -- lua:
-vim.keymap.set("n", "<C-Up>", "<Cmd>2windcmd+<CR>", silent)
-vim.keymap.set("n", "<C-Down>", "<Cmd>2windcmd-<CR>", silent)
-vim.keymap.set("n", "<C-Left>", "<Cmd>2windcmd<<CR>", silent)
-vim.keymap.set("n", "<C-Right>", "<Cmd>2windcmd><CR>", silent)
+vim.keymap.set("n", "<C-Up>", "<Cmd>2wincmd+<CR>", silent)
+vim.keymap.set("n", "<C-Down>", "<Cmd>2wincmd-<CR>", silent)
+vim.keymap.set("n", "<C-Left>", "<Cmd>2wincmd<<CR>", silent)
+vim.keymap.set("n", "<C-Right>", "<Cmd>2wincmd><CR>", silent)
 
 -- vimscript:
 -- xmap < <gv
