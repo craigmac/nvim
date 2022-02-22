@@ -342,56 +342,53 @@ require("null-ls").setup {
 -- }}}
 
 -- vim-fugitive {{{
-vim.cmd [[
-" Status and quick one-off :G commands
-nnoremap <silent><Leader>gg <cmd>G<CR>
-nnoremap <Leader>g<Space> :G<space>
+-- Status and quick one-off :G commands
+vim.keymap.set("n", "<Leader>gg", "<Cmd>G<CR>")
+vim.keymap.set("n", "<Leader>g<Space>", ":G<Space>")
+-- Add <cfile> to index and save, gW useful in 3 way merge diffs: choose
+-- a buffer and use gW to use all that versions' changes, i.e., --ours/theirs
+vim.keymap.set("n", "<Leader>gw", "<Cmd>Gwrite<CR>")
+vim.keymap.set("n", "<Leader>gW", "<Cmd>Gwrite!<CR>")
 
-" Add <cfile> to index and save, gW useful in 3 way merge diffs: choose
-" a buffer and use gW to use all that versions' changes, i.e., --ours/theirs
-nnoremap <silent><Leader>gw <cmd>Gwrite<CR>
-nnoremap <silent><Leader>gW <cmd>Gwrite!<CR>
+-- Blames
+vim.keymap.set("n", "<Leader>gb", "<cmd>G blame<CR>")
 
-" Blames
-nnoremap <silent><Leader>gb <cmd>G blame<CR>
+-- Location list no jump log of current file and general commit log
+vim.keymap.set("n", "<Leader>gl", "<cmd>0Git log<CR>")
+vim.keymap.set("n", "<Leader>gL", "<cmd>Git log<CR>")
 
-" Location list no jump log of current file and general commit log
-nnoremap <silent><Leader>gl <cmd>0Git log<CR>
-nnoremap <silent><Leader>gL <cmd>Git log<CR>
+-- :Gedit is 'git checkout %' => reverts work tree file to index, be careful!
+vim.keymap.set("n", "<Leader>ge", ":Gedit<Space>")
+vim.keymap.set("n", "<Leader>gE", ":Gedit <bar> only<CR>")
 
-" :Gedit is 'git checkout %' => reverts work tree file to index, be careful!
-nnoremap <Leader>ge :Gedit<Space>
-nnoremap <silent><Leader>gE :Gedit <bar> only<CR>
+-- Add all and start commit message with --verbose flag to show patches
+vim.keymap.set("n", "<Leader>gc", "<cmd>G commit -av<CR>")
 
-" Add all and start commit message with --verbose flag to show patches
-nnoremap <silent><Leader>gc <cmd>G commit -av<CR>
+-- Vertical diffs on current file or any git object SHA.
+-- :h fugitive-object helpers: @ aka HEAD, :% index version of <cfile>
+vim.keymap.set("n", "<Leader>gd", "<cmd>Gvdiffsplit<CR>")
+vim.keymap.set("n", "<Leader>gD", ":Gvdiffsplit<space>")
 
-" Vertical diffs on current file or any git object SHA.
-" :h fugitive-object helpers: @ aka HEAD, :% index version of <cfile>
-nnoremap <silent><Leader>gd <cmd>Gvdiffsplit<CR>
-nnoremap <Leader>gD :Gvdiffsplit<space>
+-- Grepping git trees and commits messages. '!' to run it async.
+-- git grep 'foo bar' [branch/SHA]
+-- git log --grep='foobar' to search commit messages
+-- git log -Sfoobar (when 'foobar' was added/removed)
+vim.keymap.set("n", "<Leader>g/", ":Ggrep! -Hnri --quiet<Space>")
+vim.keymap.set("n", "<Leader>g?", ":Git! log --grep=")
+vim.keymap.set("n", "<Leader>gS", ":Git! log -S")
+vim.keymap.set("n", "<Leader>g*", ':Ggrep! -Hnri --quiet <C-r>=expand("<cword>")<CR><CR>')
 
-" Grepping git trees and commits messages. '!' to run it async.
-" git grep 'foo bar' [branch/SHA]
-" git log --grep='foobar' to search commit messages
-" git log -Sfoobar (when 'foobar' was added/removed)
-nnoremap <Leader>g/ :Ggrep! -Hnri --quiet<Space>
-nnoremap <Leader>g? :Git! log --grep=
-nnoremap <Leader>gS :Git! log -S
-nnoremap <Leader>g* :Ggrep! -Hnri --quiet <C-r>=expand("<cword>")<CR><CR>
+-- git push/pull/fetching
+-- TODO: maybe use Dispatch for this?
+vim.keymap.set("n", "<Leader>gP", "<cmd>G push<CR>")
+vim.keymap.set("n", "<Leader>gp", "<cmd>G pull<CR>")
+vim.keymap.set("n", "<Leader>gf", "<cmd>G fetch<CR>")
 
-" git push/pull/fetching
-" TODO: maybe use Dispatch for this?
-nnoremap <silent><Leader>gP <cmd>G push<CR>
-nnoremap <silent><Leader>gp <cmd>G pull<CR>
-nnoremap <silent><Leader>gf <cmd>G fetch<CR>
-
-" Requires vim-rhubarb, visual selection appends anchors to URL to highlight
-" Reminder: ["register]y<C-g> to yank relative path to clipboard
-" Reminder: :GBrowse! doesn't open URL just yanks it to clipboard
-nnoremap <Leader>g@ <cmd>GBrowse<CR>
-xnoremap <Leader>g@ <cmd>GBrowse<CR>
-]]
+-- Requires vim-rhubarb, visual selection appends anchors to URL to highlight
+-- Reminder: ["register]y<C-g> to yank relative path to clipboard
+-- Reminder: :GBrowse! doesn't open URL just yanks it to clipboard
+vim.keymap.set("n", "<Leader>g@", "<cmd>GBrowse<CR>")
+vim.keymap.set("x", "<Leader>g@", "<cmd>GBrowse<CR>")
 
 -- }}}
 
@@ -623,14 +620,81 @@ ls.snippets = {
 -- }}}
 
 -- Commands {{{
-vim.cmd [[
-command! Api :help list-functions<CR>
-command! Cd :lcd %:h
-command! TodoLocal :botright silent! lvimgrep /\v\CTODO|FIXME|HACK|DEV/ %<CR>
-command! Todo :botright silent! vimgrep /\v\CTODO|FIXME|HACK|DEV/ *<CR>
-command! JekyllOpen call utils#JekyllOpenLive()
-command! -nargs=* Redir call utils#Redir(<args>)
-]]
+
+-- vimscript - simplest
+-- command! SayHello :echo 'Hello World!'
+--
+-- lua
+vim.api.nvim_add_user_command("SayHello", "echo 'Hello World!'", {})
+
+-- vimscript
+-- command! Api :help list-functions<CR>
+--
+-- lua
+-- default is command! version to overwrite any existing :Api command
+vim.api.nvim_add_user_command("VimscriptFunctions", "help list-functions", {})
+
+-- vimscript
+-- command! Cd :lcd %:h
+--
+-- lua: dynamic construction of RHS, without using any passed in arguments. '_' is convention
+-- to say we aren't going to use this parameter but the signature requires it.
+vim.api.nvim_add_user_command("Cd", function(_) return "lcd " .. vim.fn.expand("%:h") end, {})
+
+-- The table passed to the second parameter, "command" if it's a function:
+--{
+--	args: (string), vimscript <args>
+--	bang: (boolean), vimscript modified <bang>
+--	line1: (number), vimscript <line1>
+--	line2: (number), vimscript <line2> 
+--	range: (number), vimscript <range>
+--	count: (number), vimscript <count>
+--	reg: (string), vimscript <reg>
+--	mods: (string), vimscript <mods>
+--}
+
+-- vimscript
+-- command! TodoLocal :botright silent! lvimgrep /\v\CTODO|FIXME|HACK|DEV/ %<CR>
+--
+-- lua: need to double escape backslashes
+vim.api.nvim_add_user_command("TodoLocal", "botright silent! lvimgrep /\\v\\CTODO|FIXME|HACK|DEV/", {})
+
+-- vimscript:
+-- command! Todo :botright silent! vimgrep /\v\CTODO|FIXME|HACK|DEV/ *<CR>
+--
+-- lua:
+vim.api.nvim_add_user_command("Todo", "botright silent! vimgrep /\\v\\CTODO|FIXME|HACK|DEV/ *<CR>", {})
+
+-- vimscript
+-- command! JekyllOpen call utils#JekyllOpenLive()
+--
+-- lua: calling an autoload function
+-- The '#' is an issue because it's not valid lua, so it's a special case, if we put this in
+-- a lua string it will try to expand '#' as the alternate file name.
+vim.api.nvim_add_user_command("JekyllOpen", function(_) vim.fn['utils#JekyllOpenLive']() end, {}) 
+
+-- vimscript: autoload function with requires 1 or more string arguments
+-- command! -nargs=1 Redir call utils#Redir(<args>)
+--
+-- and in ~/.vim/autoload/utils.vim, the definition:
+--
+-- Executes an ex-command an captures output to a scratch buffer, such as "buffers" or "version"
+-- function! utils#Redir(cmd) abort
+--   let output = execute(a:cmd)
+--   botright split +enew
+--   setlocal nobuflisted nonumber norelativenumber buftype=nofile bufhidden=wipe noswapfile
+--   nnoremap <buffer> q :bwipeout!<CR>
+--   call setline(1, split(output, "\n"))
+-- endfunction
+-- 
+-- lua: calling an autoload with required arguments, e.g. :Redir ls
+vim.api.nvim_add_user_command("Redir", function(cmdargs) 
+	-- vim.pretty_print(cmdargs)
+	print(cmdargs.args)
+	-- weird, :lua vim.fn['utils#Redir']("ls") works fine...
+	vim.fn['utils#Redir'](cmdargs.args) 
+end, {})
+-- 
 -- }}}
 
 -- Keymaps {{{
@@ -639,35 +703,27 @@ command! -nargs=* Redir call utils#Redir(<args>)
 -- correctly translating termcodes such as <Tab> and <Leader> which are vimscript only
 -- representations of characters that don't display (unless listchars is on).
 --
--- inoremaps like:
--- inoremap <C-Space> <C-x><C-o>
 -- 
--- maps that call autoload commands, issue is with # character which is invalid Lua, you'll
--- need to do:
--- nnoremap <silent><F3> <cmd>call utils#ToggleQuickfixList()<CR>
+-- vimscript:
+-- inoremap <C-Space> <C-x><C-o>
 --
--- standard inoremaps become:
+-- lua:
 vim.keymap.set('i', "<C-Space>", "<C-x><C-o>")
 
 local silent = { silent = true }
 
 -- Get started with:
 -- :%s/^nnoremap\s\+/vim.keymap.set("n",/
-vim.keymap.set("n", "<Leader><CR>", "<cmd>source %<CR>")
-vim.keymap.set("n", "<Leader>w", "<cmd>update<CR>")
-vim.keymap.set("n", "<Leader>,", "<cmd>edit $MYVIMRC<CR>")
+vim.keymap.set("n", "<Leader><CR>", "<Cmd>source %<CR>")
+vim.keymap.set("n", "<Leader>w", "<Cmd>update<CR>")
+vim.keymap.set("n", "<Leader>,", "<Cmd>edit $MYVIMRC<CR>")
 vim.keymap.set("n", "<Leader>ft", ":e <C-R>=expand('~/.config/nvim/after/ftplugin/'.&ft.'.vim')<CR><CR>")
-vim.keymap.set("n", "<Leader>bb", "<cmd>buffer #<CR>")
-
+vim.keymap.set("n", "<Leader>bb", "<Cmd>buffer #<CR>")
 vim.keymap.set("n", "<Leader>dd", "<Cmd>bdelete!<CR>")
-
 vim.keymap.set("n", "<C-b>s", ":split +terminal<CR>")
 vim.keymap.set("n", "<C-b>v", ":vsplit +terminal<CR>")
 vim.keymap.set("n", "<C-b>!", "<C-w>T")
 
--- using a literal backslash in the RHS string like <C-\> for example, will
--- require a double backslash! like <C-\\>
---
 -- vimscript:
 -- nnoremap <C-b>s :split +terminal<CR>
 -- nnoremap <C-b>v :vsplit +terminal<CR>
@@ -676,8 +732,7 @@ vim.keymap.set("n", "<C-b>!", "<C-w>T")
 -- tnoremap <C-b>v <C-\><C-n>:vsplit +terminal<CR>
 -- tnoremap <C-b>! <C-\><C-n><C-w>T
 --
--- lua:
--- TODO: I think we need to enable autocmds to fire with this in options somehow?
+-- lua: must escape backslashes in strings
 vim.keymap.set("t", "<C-b>s", "<C-\\><C-n>:split +terminal<CR>")
 vim.keymap.set("t", "<C-b>v", "<C-\\><C-n>:vsplit +terminal<CR>")
 vim.keymap.set("t", "<C-b>!", "<C-\\><C-n><C-w>T")
@@ -725,7 +780,6 @@ vim.keymap.set("n", "<F9>", "<Cmd>set list!<CR>")
 -- note: whitespace is significant in RHS strings so technically we don't need to use
 -- <Space> here we could just end with a space, but better to be explicit
 vim.keymap.set("n", "<Leader>*", ":grep <C-r><C-w><Space>")
-
 
 -- vimscript:
 --nnoremap gh :diffget //2<CR>
@@ -789,7 +843,7 @@ vim.keymap.set("n", "<Leader>@", "<Cmd>JekyllOpen<CR>")
 -- tnoremap <C-w>j <C-\><C-n><C-w>j
 -- tnoremap <C-w>l <C-\><C-n><C-w>l
 --
--- lua:
+-- lua: backslashes in strings need to be escaped
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
 vim.keymap.set("t", "<C-v><Esc>", "<Esc>")
 vim.keymap.set("t", "<C-w>h", "<C-\\><C-n><C-w>h")
@@ -806,6 +860,10 @@ vim.keymap.set("n", "<Leader>T", "<Plug>PlenaryTestFile")
 -- vimscript autoload command calls:
 -- nnoremap <silent><F3> <cmd>call utils#ToggleQuickfixList()<CR>
 -- nnoremap <silent><F4> <cmd>call utils#ToggleLocationList()<CR>
+--
+-- lua:
+vim.keymap.set("n", "<F3>", vim.fn['utils#ToggleQuickfixList'])
+vim.keymap.set("n", "<F4>", vim.fn['utils#ToggleLocationList'])
 
 -- vimscript command-line setting a map using a conditional expression
 -- cnoremap <expr> <C-p> wildmenumode() ? "<C-P>" : "<Up>"
@@ -819,8 +877,8 @@ vim.keymap.set("n", "<Leader>T", "<Plug>PlenaryTestFile")
 -- cnoremap <expr> <C-j> wildmenumode() ? "\<Up>\<C-z>" : "\<C-j>"
 -- cnoremap <expr> <C-k> wildmenumode() ? "\<Down>\<C-z>" : "\<C-k>"
 -- cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
-
--- requires wildchar to set <C-z>
+--
+-- lua: requires :h 'wildchar' to set <C-z>
 vim.keymap.set("c", "<C-j>", function()
 	return vim.fn.wildmenumode() == 1 and "<Up><C-z>" or "<C-j>"
 end, { expr = true })
@@ -832,11 +890,6 @@ end, { expr = true })
 vim.keymap.set("c", "%%", function()
 	return vim.fn.getcmdtype() == ":" and vim.fn.expand("%:h") .. "/" or "%%"
 end, { expr = true})
-
-
--- lua: to call an autoload function
--- vim.fn['some#function']({...})
-
 -- }}}
 
 -- UI and Colors {{{

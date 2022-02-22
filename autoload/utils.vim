@@ -128,6 +128,7 @@ function! utils#JekyllOpenLive() abort
 endfunction
 
 function! utils#Redir(cmd) abort
+  echom 'Received: ' .. a:cmd
   let output = execute(a:cmd)
   botright split +enew
   setlocal nobuflisted nonumber norelativenumber buftype=nofile bufhidden=wipe noswapfile
