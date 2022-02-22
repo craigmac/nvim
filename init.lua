@@ -379,7 +379,6 @@ vim.keymap.set("n", "<Leader>gS", ":Git! log -S")
 vim.keymap.set("n", "<Leader>g*", ':Ggrep! -Hnri --quiet <C-r>=expand("<cword>")<CR><CR>')
 
 -- git push/pull/fetching
--- TODO: maybe use Dispatch for this?
 vim.keymap.set("n", "<Leader>gP", "<cmd>G push<CR>")
 vim.keymap.set("n", "<Leader>gp", "<cmd>G pull<CR>")
 vim.keymap.set("n", "<Leader>gf", "<cmd>G fetch<CR>")
@@ -389,23 +388,9 @@ vim.keymap.set("n", "<Leader>gf", "<cmd>G fetch<CR>")
 -- Reminder: :GBrowse! doesn't open URL just yanks it to clipboard
 vim.keymap.set("n", "<Leader>g@", "<cmd>GBrowse<CR>")
 vim.keymap.set("x", "<Leader>g@", "<cmd>GBrowse<CR>")
-
 -- }}}
 
 -- telescope.nvim {{{
-
--- WIP: build a custom layout strategy and register it for "vscode"
--- copy one of strategies that resembles what I'd like from:
--- ~/.local/share/nvim/site/pack/packer/start/telescope.nvim/lua/telescope/pickers/layout_strategies.lua
-local function vscode(picker, columns, lines, layout_config)
-	-- do calculations here
-	return {
-		preview = {}, -- preview panel config
-		results = {}, -- results panel config
-		prompt = {}, -- prompt config
-}
-end
-
 require("telescope").setup {
   defaults = {
     history = {
@@ -463,10 +448,10 @@ require("telescope").setup {
     prompt_prefix = " ",
     selection_caret = "  ",
 
-    -- TODO: ornate borders with utf?
+    -- IDEA: more ornate borders using utf.
     -- borderchars = { "-", "|", "-", "|", "-", "|", "-", "|"}
 
-    -- TODO: how to put this on left-hand side instead?
+    -- IDEA: can this be put on left-hand side instead?
     -- get_status_text = function(picker) return "Search files by name" end,
   },
   pickers = {
@@ -486,20 +471,6 @@ require("telescope").setup {
     },
   },
 }
-
--- VS Code style:
--- When first opened, show list of most recently opened files until you start
--- typing, then when typing, most recently are at the top and below that are
--- filename matches of your entered text.
--- needs: frecency plugin probably
--- needs: autocmd! FileType TelescopePrompt setlocal nocursorline nocursorcolumn nolist
--- needs: custom functions for caret prefixes
--- shows:
---  * Filetype icon first
---  * Tail filename, then
---  * remainder of the path from pwd such as "docs/_ver_6.15/rn"
---  * button to open it in a split (cannot do)
---  * close X button to remove it from "recently opened" list (cannot do)
 
 -- these need to come after main setup() call
 require("telescope").load_extension "fzf"
@@ -521,9 +492,6 @@ vim.keymap.set("n", "<Leader>hf", require("telescope").extensions.gh.pull_reques
 vim.keymap.set("n", "<Leader>hp", require("telescope").extensions.gh.pull_request)
 vim.keymap.set("n", "<Leader>hi", require("telescope").extensions.gh.issues)
 vim.keymap.set("n", "<Leader>hg", require("telescope").extensions.gh.gist)
-
--- TODO: create a new telescope.themes.vscode
-
 -- }}}
 
 -- lualine {{{
@@ -688,13 +656,14 @@ vim.api.nvim_add_user_command("JekyllOpen", function(_) vim.fn['utils#JekyllOpen
 -- endfunction
 -- 
 -- lua: calling an autoload with required arguments, e.g. :Redir ls
-vim.api.nvim_add_user_command("Redir", function(cmdargs) 
-	-- vim.pretty_print(cmdargs)
-	print(cmdargs.args)
+-- vim.api.nvim_add_user_command("Redir", function(cmd) 
+-- 	vim.pretty_print(cmd)
+	-- print(cmd.args)
 	-- weird, :lua vim.fn['utils#Redir']("ls") works fine...
-	vim.fn['utils#Redir'](cmdargs.args) 
-end, {})
--- 
+	-- vim.fn['utils#Redir'](cmd.args) 
+-- end, { nargs = 1 })
+
+vim.api.nvim_add_user_command("Redir", "call utils#Redir(<args>)", { nargs =1 })
 -- }}}
 
 -- Keymaps {{{
