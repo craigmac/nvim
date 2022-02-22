@@ -878,4 +878,36 @@ colorscheme github_light
 ]]
 -- }}}
 
+--- Autocommands {{{
+vim.cmd [[
+augroup myinit
+  autocmd!
+  autocmd TextYankPost * silent! lua vim.highlight.on_yank()
+  autocmd BufWritePost $MYVIMRC nested source $MYVIMRC
+  autocmd BufWritePre /tmp/* setlocal noundofile
+  autocmd QuickFixCmdPost [^l]* botright cwindow
+  autocmd QuickFixCmdPost  l* botright lwindow
+  autocmd VimEnter * cwindow
+  autocmd FileType gitcommit call feedkeys('i')
+  autocmd VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+  autocmd WinLeave * setlocal nocursorline
+  " I also set this in utils#Redir because it does 'nobuflisted'
+  " This one catches other things that open 'nofile' buffers
+  autocmd BufEnter * if &buftype ==# 'nofile' | nnoremap <buffer> q :bwipeout!<CR> | endif
+  autocmd BufEnter * if &buftype ==# 'nofile' | setlocal nocursorcolumn | endif
+  autocmd BufEnter $MYVIMRC setlocal fdm=marker
+  autocmd BufWinEnter * if &previewwindow | setlocal nonumber norelativenumber nolist | endif
+  autocmd TermOpen * startinsert | setlocal nonumber norelativenumber
+  autocmd TermOpen * setlocal statusline=%{b:term_title}
+  " Auto close terminal buffers if exit status was 0 (no errors)
+  autocmd TermClose * if !v:event.status | execute 'bdelete! ' .. expand('<abuf>') | endif
+  autocmd BufEnter term://* startinsert
+  autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focus=false, scope="cursor"})
+  " Stop fugitive from littering buffer list
+  autocmd BufReadPost fugitive://* set bufhidden=delete
+  autocmd FileType TelescopePrompt setlocal nocursorline
+augroup END
+-]]
+--- }}}
+
 -- vim: ts=2 sts=2 sw=2 noet fdm=marker
