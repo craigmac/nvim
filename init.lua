@@ -4,7 +4,6 @@ require("my.globals")
 
 -- Options {{{
 vim.g.mapleader = " "
-vim.api.nvim_set_keymap("", "<Space>", "<Nop>", { silent = true, noremap = true })
 vim.opt.breakindent = true
 vim.opt.clipboard = { "unnamed", "unnamedplus" }
 vim.opt.complete:remove { "d", "i" }
@@ -634,6 +633,7 @@ command! -nargs=* Redir call utils#Redir(<args>)
 ]]
 -- }}}
 
+-- Keymaps {{{
 -- vim.keymap.set() automatically handles the 'noremap' sensibly, if the LHS
 -- has 'plug' in it, it sets remap = true in opts, otherwise false. It also handles
 -- correctly translating termcodes such as <Tab> and <Leader> which are vimscript only
@@ -800,7 +800,7 @@ vim.keymap.set("t", "<C-w>l", "<C-\\><C-n><C-w>l")
 -- vimscript:
 -- nmap <Leader>T <Plug>PlenaryTestFile
 --
--- lua:
+-- lua: keymap.set knows we need to allow remapping on the RHS here to do the right thing
 vim.keymap.set("n", "<Leader>T", "<Plug>PlenaryTestFile")
 
 -- vimscript autoload command calls:
@@ -815,15 +815,28 @@ vim.keymap.set("n", "<Leader>T", "<Plug>PlenaryTestFile")
 -- vim.keymap.set("c", "<C-p>", "", { expr = true })
 -- vim.keymap.set("c", "<C-p>", "", { expr = true })
 
-vim.cmd [[
+-- vimscript
+-- cnoremap <expr> <C-j> wildmenumode() ? "\<Up>\<C-z>" : "\<C-j>"
+-- cnoremap <expr> <C-k> wildmenumode() ? "\<Down>\<C-z>" : "\<C-k>"
+-- cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 
-cnoremap <expr> <C-j> wildmenumode() ? "\<Up>\<C-z>" : "\<C-j>"
-cnoremap <expr> <C-k> wildmenumode() ? "\<Down>\<C-z>" : "\<C-k>"
+-- requires wildchar to set <C-z>
+vim.keymap.set("c", "<C-j>", function()
+	return vim.fn.wildmenumode() == 1 and "<Up><C-z>" or "<C-j>"
+end, { expr = true })
 
-" '%%' in command-line mode maybe expands to path of current buffer.
-cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
+vim.keymap.set("c", "<C-k>", function()
+	return vim.fn.wildmenumode() == 1 and "<Down><C-z>" or "<C-k>"
+end, { expr = true })
 
-]]
+vim.keymap.set("c", "%%", function()
+	return vim.fn.getcmdtype() == ":" and vim.fn.expand("%:h") .. "/" or "%%"
+end, { expr = true})
+
+
+-- lua: to call an autoload function
+-- vim.fn['some#function']({...})
+
 -- }}}
 
 -- UI and Colors {{{
