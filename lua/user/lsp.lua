@@ -79,5 +79,11 @@ vim.api.nvim_create_autocmd('LspAttach', {
         autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
       ]])
     end
+
+    if client:supports_method('textDocument/hover') then
+      vim.keymap.set('n', 'K', function()
+        vim.lsp.buf.hover({ border = 'rounded', max_height = 10 })
+      end, { buffer = true })
+    end
   end,
 })

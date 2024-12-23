@@ -2,3 +2,5 @@
 tree-sitter-toml = "0.0.31"
 tree-sitter-gitignore = "0.0.29"
 tree-sitter-json = "0.0.33"
+tree-sitter-bash = "0.0.36"
+tree-sitter-gitcommit = "0.0.33"
