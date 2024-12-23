@@ -1,0 +1,40 @@
+import = ["rocks-treesitter.toml"]
+# non-Neovim rocks - like `toml` or other lua packages.
+[rocks]
+
+# Neovim plugins--plugins w/ dot in name need to be wrapped in quotes
+[plugins]
+"rocks.nvim" = "2.42.4"           # manage yerself
+"rocks-git.nvim" = "2.5.2"        # `:Rocks install repo/name` support
+"rocks-config.nvim" = "3.1.0"     # read configs from `lua/plugins/*.lua`
+"rocks-treesitter.nvim" = "1.2.0" # install binary parsers and queries automatically
+"tree-sitter-cli" = "0.24.5"      # CLI tool required to compile some parsers like tree-sitter-toml
+"smart-splits.nvim" = "1.7.0"
+"gitsigns.nvim" = "0.9.0"
+"quicker.nvim" = "1.2.0"
+"mini.nvim" = "0.14.0"
+"fzf-lua" = "0.0.1537"
+"nvim-lint" = "scm"
+"nvim-surround" = "2.1.5"
+"fidget.nvim" = "1.4.1"
+"care.nvim" = "0.1.0"
+
+[plugins."hybrid.nvim"]
+git = "honamduong/hybrid.nvim"
+rev = "8838621a2e299582a0af5b8b96d5515f27b5d058"
+
+[plugins.vim-fugitive]
+git = "tpope/vim-fugitive"
+rev = "v3.7"
+
+[plugins.vim-rhubarb]
+git = "tpope/vim-rhubarb"
+rev = "ee69335de176d9325267b0fd2597a22901d927b1"
+
+[plugins.vim-rsi]
+git = "tpope/vim-rsi"
+rev = "45540637ead22f011e8215f1c90142e49d946a54"
+
+[plugins.vim-repeat]
+git = "tpope/vim-repeat"
+rev = "v1.2"

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
+  "runtime": {
+    "version": "LuaJIT"
+  },
+  "workspace": {
+    "library": [
+      "lua",
+      "plugin",
+      "after/ftplugin",
+      "/usr/local/share/nvim/runtime"
+    ],
+    "checkThirdParty": "Disable"
+  },
+  "diagnostics": {
+    "globals": [ "vim" ],
+  },
+  "unusedLocalExclude": [ "_*" ],
+  "disable": [
+    "luadoc-miss-see-name"
+  ]
+}

@@ -1,0 +1,4 @@
+[plugins]
+tree-sitter-toml = "0.0.31"
+tree-sitter-gitignore = "0.0.29"
+tree-sitter-json = "0.0.33"
