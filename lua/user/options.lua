@@ -34,7 +34,7 @@ vim.opt.fillchars:append {
   fold = ' ', -- char to fill rest of foldline header with
   foldopen = "▶",
   foldclose = "▼",
-  diff = "±",
+  diff = " ", -- char used in e.g., diff display to show where text removed
 }
 
 -- use option 2 of the 5 ways to use tabs, see `:h 'ts`

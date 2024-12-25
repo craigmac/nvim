@@ -52,63 +52,60 @@ local function get_search_count()
   return ''
 end
 
----Returns attached LSP clients in `[name1, name2]` format or empty string,
 ---shortening the match 'language.server' to 'ls' to save space
 ---
----@return string
+---@return string?
 local function get_lsp_servers_attached()
-    local attached_clients = vim.lsp.get_clients({ bufnr = 0 })
-    if #attached_clients == 0 then
-        return ""
-    end
-    local it = vim.iter(attached_clients)
-    it:map(function (client)
-        local name = client.name:gsub("language.server", "ls")
-        return name
-    end)
-    local names = it:totable()
-    return "[" .. table.concat(names, ", ") .. "]"
+  local attached_clients = vim.lsp.get_clients({ bufnr = 0 })
+  if #attached_clients == 0 then
+    return ""
+  end
+  local it = vim.iter(attached_clients)
+  it:map(function(client)
+    local name = client.name:gsub("language.server", "ls")
+    return name
+  end)
+  local names = it:totable()
+  return table.concat(names, ", ") .. " "
 end
-
--- vim.o.statusline = '  %{luaeval("Mode()")} │ %f%m %=│ %{luaeval("Dia()")}│ %{&filetype} │ %l:%c │ %03(%p%)%%  '
 
 local function get_mode()
   -- see `:h mode()` for list
   local mode_map = {
-    ['n']  = 'N',
-    ['no'] = 'N',
-    ['nov'] = 'N',
-    ['noV'] = 'N',
+    ['n']     = 'N',
+    ['no']    = 'N',
+    ['nov']   = 'N',
+    ['noV']   = 'N',
     ['no\22'] = 'N',
-    ['niI'] = 'I',
-    ['niR'] = 'R',
-    ['niV'] = 'R',
-    ['nt'] = 'T', -- IDEA: terminal mode is pretty much insert mode
-    ['v']  = 'V',
-    ['V']  = 'VL',
-    ['\22'] = 'VB',
-    ['\22s'] = 'VB',
-    ['s']  = 'S',
-    ['S']  = 'SL',
-    ['\19'] = 'SB',
-    ['i']  = 'I',
-    ['ic'] = 'I',
-    ['ix'] = 'I',
-    ['R']  = 'R',
-    ['Rc']  = 'R',
-    ['Rv'] = 'R',
-    ['Rx'] = 'R',
-    ['Rvc'] = 'R',
-    ['Rvx'] = 'R',
-    ['c']  = 'C',
-    ['cr']  = 'C',
-    ['cv']  = 'C',
-    ['cvr']  = 'C',
-    ['r']  = 'C',
-    ['rm']  = 'C',
-    ['r?']  = 'C',
-    ['!']  = 'C',
-    ['t']  = 'T'
+    ['niI']   = 'I',
+    ['niR']   = 'R',
+    ['niV']   = 'R',
+    ['nt']    = 'T', -- IDEA: terminal mode is pretty much insert mode
+    ['v']     = 'V',
+    ['V']     = 'VL',
+    ['\22']   = 'VB',
+    ['\22s']  = 'VB',
+    ['s']     = 'S',
+    ['S']     = 'SL',
+    ['\19']   = 'SB',
+    ['i']     = 'I',
+    ['ic']    = 'I',
+    ['ix']    = 'I',
+    ['R']     = 'R',
+    ['Rc']    = 'R',
+    ['Rv']    = 'R',
+    ['Rx']    = 'R',
+    ['Rvc']   = 'R',
+    ['Rvx']   = 'R',
+    ['c']     = 'C',
+    ['cr']    = 'C',
+    ['cv']    = 'C',
+    ['cvr']   = 'C',
+    ['r']     = 'C',
+    ['rm']    = 'C',
+    ['r?']    = 'C',
+    ['!']     = 'C',
+    ['t']     = 'T'
   }
   local mode = vim.api.nvim_get_mode().mode
   return string.format(' %s ', mode_map[mode] or '')
@@ -119,20 +116,20 @@ function M.statusline()
   local divider = '│'
 
   return table.concat({
-    get_mode(),                             -- I|N|O|R|V|C|S|T mode indicator (coarse)
+    get_mode(),                 -- I|N|O|R|V|C|S|T mode indicator (coarse)
     divider,
-    '%t',                                   -- filename.lua
-    ' %(%M %R %H%)',                        -- + RO HLP
-    get_lsp_diagnostics(),                  -- W:2 E:3
-    get_recording_register(),               -- recording @ q
-    '%=',                                   -- right-align
-    get_search_count(),                     -- [1/4]
-    ' %S ',                                 -- partial commands, use `set sloc=statusline`
-    get_lsp_servers_attached(),             -- [pyls, pyright]
+    '%t',                       -- filename.lua
+    ' %(%M %R %H%)',            -- + RO HLP
+    get_lsp_diagnostics(),      -- W:2 E:3
+    get_recording_register(),   -- recording @ q
+    '%=',                       -- right-align
+    get_search_count(),         -- [1/4]
+    ' %S ',                     -- partial commands, use `set sloc=statusline`
+    get_lsp_servers_attached(), -- [pyls, pyright]
     divider,
-    '%10.(%l:%c%V%) ',                          -- 75,22-32 or empty
+    '%8(%l:%c%V%) ',            -- 75,22-32 or empty
     divider,
-    ' %P '                                   -- Top|Bot|All|23%
+    ' %P '                      -- Top|Bot|All|23%
   })
 end
 
