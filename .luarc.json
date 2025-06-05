@@ -1,0 +1,27 @@
+{
+  "$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
+  "runtime": {
+    "version": "LuaJIT"
+  },
+  "diagnostics": {
+    "globals": [
+      "vim",
+      "describe",
+      "it",
+      "assert",
+      "after_each",
+      "before_each",
+      "pending"
+    ],
+    "unusedLocalExclude": [ "_*" ]
+  },
+  "workspace": {
+    "library": [
+      "$VIMRUNTIME",
+      "~/.local/share/nvim/lazy/conform.nvim",
+      "~/.local/share/nvim/lazy/lazy.nvim"
+
+    ],
+    "checkThirdParty": false
+  }
+}
