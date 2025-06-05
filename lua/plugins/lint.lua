@@ -1,6 +1,8 @@
 -- https://github.com/mfussenegger/nvim-lint
+-- ~/.local/share/nvim/lazy/nvim-lint/
 -- Integrate external CLI linters (non-LSP provided linting)
----@type LazySpec
+---@module 'lazy'
+---@type LazyPluginSpec
 return {
   'mfussenegger/nvim-lint',
   event = { 'BufReadPre', 'BufNewFile' },
@@ -8,8 +10,8 @@ return {
     local lint = require('lint')
     lint.linters_by_ft = {
       lua = { 'selene' },
-      markdown = { 'vale' },
-      text = { 'vale' },
+      -- markdown = { 'vale' }, -- needs a vale.ini file setup
+      -- text = { 'vale' },
       bash = { 'shellcheck' },
     }
 

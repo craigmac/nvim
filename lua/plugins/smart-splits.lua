@@ -1,5 +1,7 @@
 -- https://github.com/mrjones2014/smart-splits.nvim
----@type LazySpec
+-- ~/.local/share/nvim/lazy/smart-splits.nvim/
+---@module 'lazy'
+---@type LazyPluginSpec
 return {
   'mrjones2014/smart-splits.nvim',
   lazy = false,

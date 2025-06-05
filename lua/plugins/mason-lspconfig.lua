@@ -1,5 +1,7 @@
 -- https://github.com/mason-org/mason-lspconfig.nvim
----@type LazySpec
+-- ~/.local/share/nvim/lazy/mason-lspconfig.nvim/
+---@module 'lazy'
+---@type LazyPluginSpec
 return {
   "mason-org/mason-lspconfig.nvim",
   dependencies = {

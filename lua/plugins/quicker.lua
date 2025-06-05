@@ -1,5 +1,7 @@
 -- https://github.com/stevearc/quicker.nvim
----@type LazySpec
+-- ~/.local/share/nvim/lazy/quicker.nvim/
+---@module 'lazy'
+---@type LazyPluginSpec
 return {
   'stevearc/quicker.nvim',
   event = 'FileType qf',

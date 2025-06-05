@@ -1,5 +1,7 @@
 -- https://github.com/lewis6991/gitsigns.nvim
----@type LazySpec
+-- ~/.local/share/nvim/lazy/gitsigns.nvim/
+---@module 'lazy'
+---@type LazyPluginSpec
 return {
   'lewis6991/gitsigns.nvim',
   opts = {
@@ -36,6 +38,7 @@ return {
         gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
       end, { desc = 'git [r]eset hunk' })
 
+      map('n', 'yog', gitsigns.toggle_signs )
       map('n', '<leader>hs', gitsigns.stage_hunk, { desc = 'git [s]tage hunk' })
       map('n', '<leader>hr', gitsigns.reset_hunk, { desc = 'git [r]eset hunk' })
       map('n', '<leader>hS', gitsigns.stage_buffer, { desc = 'git [S]tage buffer' })

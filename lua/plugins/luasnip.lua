@@ -1,5 +1,7 @@
 -- https://github.com/L3MON4D3/LuaSnip
----@type LazySpec
+-- ~/.local/share/nvim/lazy/LuaSnip/
+---@module 'lazy'
+---@type LazyPluginSpec
 return {
   'L3MON4D3/LuaSnip',
   version = '2.*',

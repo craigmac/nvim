@@ -1,5 +1,7 @@
 -- https://github.com/nvim-treesitter/nvim-treesitter
----@type LazySpec
+-- ~/.local/share/nvim/lazy/nvim-treesitter/
+---@module 'lazy'
+---@type LazyPluginSpec
 return {
   'nvim-treesitter/nvim-treesitter',
   build = ':TSUpdate',

@@ -1,5 +1,7 @@
 -- https://github.com/folke/todo-comments.nvim
----@type LazySpec
+--
+---@module 'lazy'
+---@type LazyPluginSpec
 return {
   'folke/todo-comments.nvim',
   enabled = false,

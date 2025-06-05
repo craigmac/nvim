@@ -1,5 +1,7 @@
 -- https://github.com/tpope/vim-unimpaired
----@type LazySpec
+-- ~/.local/share/nvim/lazy/vim-unimpaired/
+---@module 'lazy'
+---@type LazyPluginSpec
 return {
   'tpope/vim-unimpaired',
   dependencies = 'tpope/vim-repeat',
