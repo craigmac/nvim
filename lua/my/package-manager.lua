@@ -25,6 +25,10 @@ require('lazy').setup({
     -- to turn ON spec in either vscode/firenvim just set local spec `cond = true`
     cond = not vim.g.vscode and not vim.g.firenvim,
   },
+  change_detection = {
+    enabled = true,
+    notify = false,
+  },
   rocks = {
     enabled = true,
     hererocks = true,
