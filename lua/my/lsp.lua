@@ -70,11 +70,18 @@ vim.api.nvim_create_autocmd('LspAttach', {
       vim.api.nvim_create_autocmd('BufWritePre', {
         buffer = args.buf,
         callback = function()
+          -- using local CLI formatters intead for servers in this list
+          local disable_lsp_formatting = {
+            ['lua-language-server'] = true,
+            ['json-lsp'] = true,
+            ['bash-language-server'] = true,
+            ['yamlls'] = true,
+          }
           vim.lsp.buf.format({
             bufnr = args.buf,
             id = client.id,
             filter = function()
-              return client.name == 'lua-language-server'
+              return disable_lsp_formatting[client.name]
             end,
           })
         end,
@@ -110,7 +117,7 @@ vim.diagnostic.config({
     border = 'rounded',
     header = 'Diagnostics',
     severity_sort = true,
-    source = 'if_many',
+    source = 'always',
   },
   signs = {
     text = {
@@ -124,4 +131,13 @@ vim.diagnostic.config({
   virtual_text = false,
 })
 
-vim.lsp.enable('lua_ls')
+vim.lsp.enable({
+  'bashls',
+  'jsonls',
+  'lua_ls',
+  'taplo',
+  'vimls',
+  'vale_ls',
+  'yamlls',
+  'marksman'
+})
