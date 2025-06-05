@@ -18,16 +18,16 @@ return {
       -- ~/.local/share/nvim/lazy/hybrid.nvim/lua/hybrid/highlights.lua and
       -- ~/.local/share/nvim/lazy/hybrid.nvim/lua/hybrid/colors.lua
       overrides = function(highlights, colors)
-        highlights['@markup.raw.block'] = {
-          bg = colors.none
-        }
-        highlights['@markup.raw'] = {
-          bg = colors.none
-        }
+        highlights['@markup.raw.block'] = { bg = colors.none }
+        highlights['@markup.raw'] = { bg = colors.none }
+        highlights['DiagnosticVirtualTextError'] = { bg = colors.none }
+        highlights['DiagnosticVirtualTextWarn'] = { bg = colors.none }
+        highlights['DiagnosticVirtualTextInfo'] = { bg = colors.none }
+        highlights['DiagnosticVirtualTextHint'] = { bg = colors.none }
+        highlights['DiagnosticVirtualTextOk']   = { bg = colors.none }
       end,
     })
 
     require('hybrid').load()
-    -- vim.cmd.colorscheme('hybrid')
   end,
 }
