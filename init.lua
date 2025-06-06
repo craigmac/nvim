@@ -22,6 +22,5 @@ require('vim._extui').enable({})
 -- TODO: PR to mason for emmylua_check
 -- TODO: fix fzf-lua leader f et al keymaps from vim script to lua and
 -- not respecting ui settings in opt, maybe because used vim script cmd?
--- TODO: yog to toggle gitsigns
 -- TODO: re-add Tab/S-tab to / and ? searches for C-g ergonomics
 -- TODO: vim-rsi insert mode conflict with <C-e> must be accounted for in blink.cmp

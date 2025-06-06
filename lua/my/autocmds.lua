@@ -33,8 +33,14 @@ vim.api.nvim_create_autocmd('BufReadPost', {
 })
 
 vim.api.nvim_create_autocmd('FileType', {
-  callback = function()
-    pcall(vim.treesitter.start)
+  pattern = '*',
+  callback = function(args)
+    local ok, _ = pcall(vim.treesitter.start)
+    if not ok then return end
+    -- only set this if we know treesitter started without error
+    vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+    -- if additional legacy regex syntax is needed
+    -- vim.bo[args.buf].syntax = 'on'
   end,
   desc = 'Try starting treesitter, ignoring errors.',
   group = mygroup,
