@@ -23,5 +23,8 @@
 
     ],
     "checkThirdParty": false
-  }
+  },
+    "diagnostics.disable": [
+        "unused-local"
+    ]
 }
