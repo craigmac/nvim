@@ -4,17 +4,14 @@
 ---@type LazyPluginSpec
 return {
   'lewis6991/gitsigns.nvim',
+  keys = { 'yog', '[c', ']c' },
   opts = {
     on_attach = function(bufnr)
       local gitsigns = require('gitsigns')
 
-      local function map(mode, l, r, opts)
-        opts = opts or {}
-        opts.buffer = bufnr
-        vim.keymap.set(mode, l, r, opts)
-      end
+      vim.keymap.set('n', 'yog', gitsigns.toggle_signs)
 
-      map('n', ']c', function()
+      vim.keymap.set('n', ']c', function()
         if vim.wo.diff then
           vim.cmd.normal({ ']c', bang = true })
         else
@@ -22,38 +19,31 @@ return {
         end
       end)
 
-      map('n', '[c', function()
+      vim.keymap.set('n', '[c', function()
         if vim.wo.diff then
           vim.cmd.normal { '[c', bang = true }
         else
-          gitsigns.nav_hunk 'prev'
+          gitsigns.nav_hunk('prev')
         end
-      end, { desc = 'Jump to previous git [c]hange' })
+      end)
 
-      map('v', '<leader>hs', function()
-        gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
-      end, { desc = 'git [s]tage hunk' })
+      vim.keymap.set('x', '<Leader>hs', function()
+        gitsigns.stage_hunk({ vim.fn.line('.'), vim.fn.line('v')})
+      end)
 
-      map('v', '<leader>hr', function()
-        gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
-      end, { desc = 'git [r]eset hunk' })
+      vim.keymap.set('x', '<Leader>hr', function()
+        gitsigns.reset_hunk({ vim.fn.line('.'), vim.fn.line('v')})
+      end)
 
-      map('n', 'yog', gitsigns.toggle_signs )
-      map('n', '<leader>hs', gitsigns.stage_hunk, { desc = 'git [s]tage hunk' })
-      map('n', '<leader>hr', gitsigns.reset_hunk, { desc = 'git [r]eset hunk' })
-      map('n', '<leader>hS', gitsigns.stage_buffer, { desc = 'git [S]tage buffer' })
-      map('n', '<leader>hu', gitsigns.stage_hunk, { desc = 'git [u]ndo stage hunk' })
-      map('n', '<leader>hR', gitsigns.reset_buffer, { desc = 'git [R]eset buffer' })
-      map('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'git [p]review hunk' })
-      map('n', '<leader>hb', gitsigns.blame_line, { desc = 'git [b]lame line' })
-      map('n', '<leader>hd', gitsigns.diffthis, { desc = 'git [d]iff against index' })
-
-      map('n', '<leader>hD', function()
-        gitsigns.diffthis '@'
-      end, { desc = 'git [D]iff against last commit' })
-
-      map('n', '<leader>tb', gitsigns.toggle_current_line_blame, { desc = '[T]oggle [b]lame line' })
-      map('n', '<leader>tD', gitsigns.preview_hunk_inline, { desc = '[T]oggle git show [D]eleted' })
+      vim.keymap.set('n', '<Leader>hs', gitsigns.stage_hunk)
+      vim.keymap.set('n', '<Leader>hr', gitsigns.reset_hunk)
+      vim.keymap.set('n', '<Leader>hS', gitsigns.stage_buffer)
+      vim.keymap.set('n', '<Leader>hR', gitsigns.reset_buffer)
+      vim.keymap.set('n', '<Leader>hp', gitsigns.preview_hunk)
+      vim.keymap.set('n', '<Leader>hb', gitsigns.blame_line)
+      vim.keymap.set('n', '<Leader>hd', gitsigns.diffthis)
+      -- diff with version of file in the commit referenced by '@' aka HEAD
+      vim.keymap.set('n', '<Leader>hD', function() gitsigns.diffthis('@') end)
     end,
   },
 }
