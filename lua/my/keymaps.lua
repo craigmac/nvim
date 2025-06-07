@@ -22,22 +22,23 @@ vim.keymap.set('i', '[<CR>', '[<CR>]<Esc>O')
 vim.keymap.set('i', '[,', '[<CR>],<Esc>O')
 
 -- `:h 'wcm` explains <C-z> here
-vim.keymap.set('c', '<Tab>', function()
-  return string.match(vim.fn.getcmdtype(), '[/?]') and '<C-g>' or '<C-z>'
-end, { expr = true })
+vim.keymap.set(
+  'c',
+  '<Tab>',
+  function() return string.match(vim.fn.getcmdtype(), '[/?]') and '<C-g>' or '<C-z>' end,
+  { expr = true }
+)
 
-vim.keymap.set('c', '<S-Tab>', function()
-  return string.match(vim.fn.getcmdtype(), '[/?]') and '<C-t>' or '<S-C-z>'
-end, { expr = true })
+vim.keymap.set(
+  'c',
+  '<S-Tab>',
+  function() return string.match(vim.fn.getcmdtype(), '[/?]') and '<C-t>' or '<S-C-z>' end,
+  { expr = true }
+)
 
 -- improve command-line history recall by using context-aware <Up><Down>
-vim.keymap.set('c', '<C-p>', function()
-  return vim.fn.pumvisible() >= 1 and '<C-p>' or '<Up>'
-end, { expr = true })
-
-vim.keymap.set('c', '<C-n>', function()
-  return vim.fn.pumvisible() >= 1 and '<C-n>' or '<Down>'
-end, { expr = true })
+vim.keymap.set('c', '<C-p>', function() return vim.fn.pumvisible() >= 1 and '<C-p>' or '<Up>' end, { expr = true })
+vim.keymap.set('c', '<C-n>', function() return vim.fn.pumvisible() >= 1 and '<C-n>' or '<Down>' end, { expr = true })
 
 vim.keymap.set('n', '<Leader>e', function()
   -- :Rex isn't defined until netrw is loaded

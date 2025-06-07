@@ -1,6 +1,5 @@
 -- https://github.com/lewis6991/gitsigns.nvim
 -- ~/.local/share/nvim/lazy/gitsigns.nvim/
----@module 'lazy'
 ---@type LazyPluginSpec
 return {
   'lewis6991/gitsigns.nvim',

@@ -8,7 +8,7 @@ vim.o.fillchars = 'eob: ,diff: ,fold: ,foldclose:▶,foldopen:▼,msgsep:─'
 -- tab options: ⇥ > » → vertical bars work ok for leading tabs, look weird as trailing
 vim.o.listchars = 'eol:¬,tab:⇥ ,trail:█,extends:»,precedes: '
 vim.o.list = true
-vim.o.winborder = 'rounded'
+vim.o.winborder = 'single'
 vim.o.foldtext = ''
 vim.o.foldlevelstart = 99
 vim.o.showmode = false
@@ -46,11 +46,12 @@ vim.o.statusline = table.concat({
 vim.o.exrc = true
 vim.o.secure = true
 vim.o.diffopt = vim.o.diffopt .. ',followwrap,algorithm:minimal'
--- using option 1 in `:help 'tabstop`
-vim.o.softtabstop = -1
+-- using option 2 in `:help 'tabstop` (vim docs, removed from nvim)
+vim.o.expandtab = true
+vim.o.tabstop = 2
 vim.o.shiftwidth = 2
-vim.o.scrolloff = 5
-vim.o.sidescrolloff = 10
+vim.o.scrolloff = 3
+vim.o.sidescrolloff = 5
 vim.o.undofile = true
 -- shorter delay to trigger `:h vim.lsp.buf.document_highlight()`
 vim.o.updatetime = 500

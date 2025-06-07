@@ -1,7 +1,6 @@
 -- https://github.com/mfussenegger/nvim-lint
 -- ~/.local/share/nvim/lazy/nvim-lint/
 -- Integrate external CLI linters (non-LSP provided linting)
----@module 'lazy'
 ---@type LazyPluginSpec
 return {
   'mfussenegger/nvim-lint',

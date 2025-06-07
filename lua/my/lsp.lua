@@ -21,9 +21,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(args)
     ---@type vim.lsp.Client|nil
     local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
-    if client == nil then
-      return
-    end
+    if client == nil then return end
 
     vim.notify_once(string.format('%s %s attached.', '󰋼 ', client.name), vim.log.INFO)
 
@@ -45,24 +43,17 @@ vim.api.nvim_create_autocmd('LspAttach', {
     if client:supports_method('textDocument/inlayHint') then
       vim.keymap.set('n', 'yoh', function()
         vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-        vim.notify(
-          string.format('inlay hints are now: %s', vim.lsp.inlay_hint.is_enabled()),
-          vim.log.INFO
-        )
+        vim.notify(string.format('inlay hints are now: %s', vim.lsp.inlay_hint.is_enabled()), vim.log.INFO)
       end, { buffer = true })
     end
 
     if client:supports_method('workspace/symbol') then
-      vim.keymap.set(
-        'n',
-        '<leader>gO',
-        '<Cmd>FzfLua lsp_live_workspace_symbols<CR>',
-        { buffer = true }
-      )
+      vim.keymap.set('n', '<leader>gO', function()
+        ---@diagnostic disable-next-line: undefined-field
+        require('fzf-lua').lsp_live_workspace_symbols()
+      end, { buffer = true })
     end
 
-    -- Auto-format ("lint") on save if not blacklisted
-    -- Usually not needed if server supports "textDocument/willSaveWaitUntil".
     if
       not client:supports_method('textDocument/willSaveWaitUntil')
       and client:supports_method('textDocument/formatting')
@@ -70,19 +61,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
       vim.api.nvim_create_autocmd('BufWritePre', {
         buffer = args.buf,
         callback = function()
-          -- using local CLI formatters intead for servers in this list
-          local disable_lsp_formatting = {
-            ['lua-language-server'] = true,
-            ['json-lsp'] = true,
-            ['bash-language-server'] = true,
-            ['yamlls'] = true,
-          }
           vim.lsp.buf.format({
             bufnr = args.buf,
             id = client.id,
-            filter = function()
-              return disable_lsp_formatting[client.name]
-            end,
+            filter = function(c) return c.name ~= 'lua_ls' end,
           })
         end,
       })
@@ -96,14 +78,18 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end
 
     if client:supports_method('textDocument/hover') then
-      vim.keymap.set('n', 'K', function()
-        vim.lsp.buf.hover({ border = 'rounded', max_height = 10 })
-      end, { buffer = true })
+      vim.keymap.set(
+        'n',
+        'K',
+        function() vim.lsp.buf.hover({ border = 'rounded', max_height = 10 }) end,
+        { buffer = true }
+      )
     end
 
     if client:supports_method('textDocument/foldingRange') then
       local win = vim.api.nvim_get_current_win()
       if vim.wo[win].foldmethod == 'marker' then
+        -- if user has fdm set to this, they want specific folds in this buffer so bail
         return
       end
       vim.wo[win][0].foldmethod = 'expr'
@@ -117,7 +103,7 @@ vim.diagnostic.config({
     border = 'rounded',
     header = 'Diagnostics',
     severity_sort = true,
-    source = 'always',
+    source = true, -- show where diagnostic comes from
   },
   signs = {
     text = {
@@ -131,6 +117,40 @@ vim.diagnostic.config({
   virtual_text = false,
 })
 
+-- HACK: https://github.com/neovim/nvim-lspconfig/issues/3189
+local runtime_files = vim.api.nvim_get_runtime_file('', true)
+for k, v in ipairs(runtime_files) do
+  if v == '/home/craig/.config/nvim/after' or v == '/home/craig/.config/nvim' then table.remove(runtime_files, k) end
+end
+
+---@type vim.lsp.Config
+local luals_config = {
+  settings = {
+    Lua = {
+      runtime = {
+        version = 'LuaJIT',
+        -- find modules the neovim way - default otherwise is `{ '?.lua', '?/init.lua' }`
+        path = {
+          'lua/?.lua',
+          'lua/?/init.lua',
+        },
+      },
+      workspace = {
+        library = {
+          vim.env.VIMRUNTIME,
+          -- TODO: inline this using vim.fn.glob(lazypath, '*')
+          runtime_files,
+        },
+        checkThirdParty = false,
+      },
+    },
+  }
+}
+
+-- merge-in plugin paths - we can't use '*' wildchar in .luarc.json, lua_ls doesn't support it
+-- extends any config chain found
+vim.lsp.config('lua_ls', luals_config)
+
 vim.lsp.enable({
   'bashls',
   'jsonls',
@@ -139,5 +159,5 @@ vim.lsp.enable({
   'vimls',
   'vale_ls',
   'yamlls',
-  'marksman'
+  'marksman',
 })

@@ -1,6 +1,5 @@
 -- https://github.com/mason-org/mason.nvim
 -- ~/.local/share/nvim/lazy/mason.nvim/
----@module 'lazy'
 ---@type LazyPluginSpec
 return {
   'mason-org/mason.nvim',

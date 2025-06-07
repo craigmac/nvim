@@ -1,6 +1,5 @@
 -- https://github.com/stevearc/quicker.nvim
 -- ~/.local/share/nvim/lazy/quicker.nvim/
----@module 'lazy'
 ---@type LazyPluginSpec
 return {
   'stevearc/quicker.nvim',
@@ -19,7 +18,6 @@ return {
       end,
     },
   },
-  ---@module 'quicker'
   ---@type quicker.SetupOptions
   opts = {},
 }

@@ -1,11 +1,11 @@
 -- https://github.com/L3MON4D3/LuaSnip
 -- ~/.local/share/nvim/lazy/LuaSnip/
----@module 'lazy'
 ---@type LazyPluginSpec
 return {
   'L3MON4D3/LuaSnip',
   version = '2.*',
   lazy = true,
+  enabled = false,
   build = 'make install_jsregexp',
   config = function()
     local ls = require('luasnip')

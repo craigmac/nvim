@@ -1,6 +1,5 @@
 -- Various tpope and other legacy vim script plugins
 -- https://github.com/tpope/vim-unimpaired
----@module 'lazy'
 ---@type LazyPluginSpec[]
 return {
   {

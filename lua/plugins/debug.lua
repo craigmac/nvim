@@ -1,6 +1,5 @@
 -- https://github.com/mfussenegger/nvim-dap
 -- ~/.local/share/nvim/lazy/nvim-dap/
----@module 'lazy'
 ---@type LazyPluginSpec
 return {
   'mfussenegger/nvim-dap',

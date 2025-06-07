@@ -1,13 +1,14 @@
 -- https://github.com/nvim-treesitter/nvim-treesitter
 -- ~/.local/share/nvim/lazy/nvim-treesitter/
----@module 'lazy'
 ---@type LazyPluginSpec
 return {
   'nvim-treesitter/nvim-treesitter',
   lazy = false,
   branch = 'main',
   build = ':TSUpdate',
-  opts = {},
+  opts = {
+
+  },
   dependencies = {
     {
       'nvim-treesitter/nvim-treesitter-context',

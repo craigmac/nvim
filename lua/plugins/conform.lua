@@ -1,7 +1,6 @@
 -- https://github.com/stevearc/conform.nvim
 -- ~/.local/share/nvim/lazy/conform.nvim/
 -- integrates external CLI formatters (non-LSP provided formatting)
----@module "lazy"
 ---@type LazyPluginSpec
 return {
   'stevearc/conform.nvim',
@@ -18,7 +17,7 @@ return {
     formatters_by_ft = {
       python = { 'black' },
       bash = { 'shfmt' },
-      lua = { 'stylua'  },
+      lua = { 'stylua' },
       markdown = { 'prettier' },
       -- yaml = { 'prettier' },
       -- json = { 'prettier' },

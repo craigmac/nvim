@@ -1,6 +1,5 @@
 -- https://github.com/HoNamDuong/hybrid.nvim
 -- ~/.local/share/nvim/lazy/hybrid.nvim/
----@module "lazy"
 ---@type LazyPluginSpec
 return {
   'HoNamDuong/hybrid.nvim',

@@ -1,6 +1,5 @@
 -- https://github.com/ibhagwan/fzf-lua
 -- ~/.local/share/nvim/lazy/fzf-lua/
----@module 'lazy'
 ---@type LazyPluginSpec
 return {
   'ibhagwan/fzf-lua',

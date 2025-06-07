@@ -1,9 +1,7 @@
 local mygroup = vim.api.nvim_create_augroup('my.augroup', { clear = true })
 
 vim.api.nvim_create_autocmd('TextYankPost', {
-  callback = function()
-    vim.hl.on_yank()
-  end,
+  callback = function() vim.hl.on_yank() end,
   desc = 'Briefly highlight yanked text',
   group = mygroup,
 })
@@ -24,9 +22,7 @@ vim.api.nvim_create_autocmd('BufReadPost', {
   callback = function()
     local ln = vim.fn.line('\'"')
     local lastln = vim.fn.line('$')
-    if ln > 1 and ln <= lastln then
-      vim.cmd.normal({ 'g`"', bang = true })
-    end
+    if ln > 1 and ln <= lastln then vim.cmd.normal({ 'g`"', bang = true }) end
   end,
   desc = 'Goto last edit position after reading a buffer.',
   group = mygroup,
