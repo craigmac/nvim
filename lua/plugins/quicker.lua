@@ -3,21 +3,10 @@
 ---@type LazyPluginSpec
 return {
   'stevearc/quicker.nvim',
-  event = 'FileType qf',
-  keys = {
-    {
-      '<leader>q',
-      function()
-        require('quicker').toggle()
-      end,
-    },
-    {
-      '<leader>l',
-      function()
-        require('quicker').toggle({ loclist = true })
-      end,
-    },
-  },
+  config = function()
+    vim.keymap.set('n', '<Leader>q', function() require('quicker').toggle() end)
+    vim.keymap.set('n', '<Leader>l', function() require('quicker').toggle({ loclist = true }) end)
+  end,
   ---@type quicker.SetupOptions
   opts = {},
 }

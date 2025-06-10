@@ -3,14 +3,9 @@
 ---@type LazyPluginSpec
 return {
   'ibhagwan/fzf-lua',
+  cmd = 'FzfLua',
   -- if just declaring keys, they must be defined inside config() call
   keys = { '<Leader>:', '<Leader>f', '<Leader>b', '<Leader>/', '<Leader><F1>', '<Leader>o' },
-    -- { '<Leader>:', '<Cmd>FzfLua command_history<CR>' },
-    -- { '<Leader>f', '<Cmd>FzfLua files previewer=false<CR>' },
-    -- { '<Leader>b', '<Cmd>FzfLua buffers<CR>' },
-    -- { '<Leader>/', function() require('fzf-lua').live_grep_native() end },
-    -- { '<Leader><F1>', function() require('fzf-lua').helptags() end },
-    -- { '<Leader>o', function() require('fzf-lua').oldfiles() end },
   config = function()
     local fzf = require('fzf-lua')
 

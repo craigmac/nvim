@@ -4,13 +4,12 @@
 ---@type LazyPluginSpec
 return {
   'mfussenegger/nvim-lint',
-  event = { 'BufReadPre', 'BufNewFile' },
+  -- event = { 'BufReadPre', 'BufNewFile' },
   config = function()
     local lint = require('lint')
     lint.linters_by_ft = {
       lua = { 'selene' },
       -- markdown = { 'vale' }, -- needs a vale.ini file setup
-      -- text = { 'vale' },
       bash = { 'shellcheck' },
     }
 

@@ -6,7 +6,6 @@ return {
   'stevearc/conform.nvim',
   cmd = 'ConformInfo',
   event = 'BufWritePre',
-  ---@module "conform"
   ---@type conform.setupOpts
   opts = {
     default_format_opts = {

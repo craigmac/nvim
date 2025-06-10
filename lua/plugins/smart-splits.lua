@@ -3,7 +3,7 @@
 ---@type LazyPluginSpec
 return {
   'mrjones2014/smart-splits.nvim',
-  lazy = false,
+  -- lazy = false,
   config = function()
     local splits = require('smart-splits')
     splits.setup()

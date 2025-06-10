@@ -1,3 +1,4 @@
+-- global variables
 vim.g.mapleader = ' '
 vim.g.netrw_banner = 0
 vim.g.netrw_hide = 0
@@ -27,6 +28,37 @@ vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.o.inccommand = 'split'
 vim.o.pumheight = 10
+-- default is 'ltToOCF'
+vim.o.shortmess = vim.o.shortmess .. table.concat({
+  'c', -- no 'match 1 of 2' etc. messages when scrolling through completions
+  's', -- no 'search hit BOTTOM...' messages and don't show 'W' for wrapped before [1/3]
+  -- 'q', -- no 'recording @q' when recording macro
+  -- 'S', -- no [1/5] search count shown
+})
+-- fuzzy matching based completion currently not supported for files/dirs - wildcard expansion used instead
+vim.o.wildoptions = vim.o.wildoptions .. ',fuzzy'
+
+---Returns a list of filenames as strings using the `rg` binary, so you need to have it installed
+---on your system. When used as the provider of filenames for `:help 'findfunc`, the `cmd_completions`
+---parameter will be set to `true`.
+---
+---@param cmd_arg string The command argument to `:find`.
+---@param cmd_completions boolean True when function being called to get cmdline matches for `:find` command.
+---@return string[]|{} # The list of strings found or an empty list if nothing found/an error occurred.
+function _G.RgFiles(cmd_arg, cmd_completions)
+  -- not being called from command-line for results for `:h 'findfunc'`
+  if not cmd_completions then
+    vim.print('RgFiles() cmd_completions was false.')
+    -- TODO: what do we want to do here then, just provide all files `rg --files` finds?
+    return {}
+  end
+  -- being called as completion provider for `:find` on command-line
+  vim.print('MyFindFunc() cmd_arg: ' .. cmd_arg) 
+  local pattern = cmd_completions and string.fmt('%s*', cmd_args) or cmd_args
+
+  return { 'fileone', 'filetwo', 'filethree' }
+end
+vim.o.findfunc = 'v:lua._G.MyFindFunc'
 
 -- bars and lines
 vim.o.number = true
@@ -42,14 +74,15 @@ vim.o.statusline = table.concat({
   ' %y',
 })
 
+-- editing
+vim.o.expandtab = true
+vim.o.tabstop = 2
+vim.o.shiftwidth = 2
+
 -- startup/behaviour
 vim.o.exrc = true
 vim.o.secure = true
 vim.o.diffopt = vim.o.diffopt .. ',followwrap,algorithm:minimal'
--- using option 2 in `:help 'tabstop` (vim docs, removed from nvim)
-vim.o.expandtab = true
-vim.o.tabstop = 2
-vim.o.shiftwidth = 2
 vim.o.scrolloff = 3
 vim.o.sidescrolloff = 5
 vim.o.undofile = true

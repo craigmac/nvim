@@ -5,6 +5,7 @@ vim.keymap.set('n', '<Leader>,', ':<C-u>tabedit $MYVIMRC <Bar> :tcd %:h<CR>')
 vim.keymap.set('n', "'", '`')
 vim.keymap.set('n', 'zS', '<Cmd>Inspect<CR>')
 vim.keymap.set('n', 'g:', ':<C-u>lua =')
+vim.keymap.set('n', '<Leader>f', ':<C-u>f<Space>')
 
 vim.keymap.set({ 'n', 'x' }, '<Leader>y', '"+y')
 vim.keymap.set({ 'n', 'x' }, '<Leader>Y', '"+Y')
@@ -15,36 +16,49 @@ vim.keymap.set('x', '.', ':normal! .<CR>')
 
 vim.keymap.set('i', 'kj', '<Esc>')
 vim.keymap.set('i', 'jk', '<Esc>')
-vim.keymap.set('i', '(<CR>', '(<CR>)<Esc>O')
-vim.keymap.set('i', '{<CR>', '{<CR>}<Esc>O')
+
+-- some vim-unimpaired stuff not in $VIMRUNTIME/lua/vim/_defaults.lua
+-- when we have a visual selection we need to move size of select + 1
+vim.keymap.set('x', '[e', ":move '[-2<CR>gv=gv")
+vim.keymap.set('n', '[e', ":<C-u>move -2<CR>==")
+vim.keymap.set('x', ']e', ":move ']<CR>gv=gv")
+vim.keymap.set('n', ']e', ":<C-u>move +1<CR>==")
+
+-- only options that can be toggled with the '!' postfix, like `:set list!`
+local toggleable_opts = {
+  c = 'cursorline',
+  l = 'list',
+  s = 'spell',
+  ['|'] = 'cursorcolumn',
+  n = 'number',
+  r = 'relativenumber',
+}
+for k,v in pairs(toggleable_opts) do
+  vim.keymap.set('n', string.format('yo%s', k), string.format('<Cmd>set %s!<CR>', v))
+end
+
+-- autopairs on demand
+vim.keymap.set('i', '(<cr>', '(<cr>)<esc>o')
+vim.keymap.set('i', '{<cr>', '{<cr>}<esc>o')
 vim.keymap.set('i', '{,', '{<CR>},<Esc>O')
 vim.keymap.set('i', '[<CR>', '[<CR>]<Esc>O')
 vim.keymap.set('i', '[,', '[<CR>],<Esc>O')
 
 -- `:h 'wcm` explains <C-z> here
-vim.keymap.set(
-  'c',
-  '<Tab>',
-  function() return string.match(vim.fn.getcmdtype(), '[/?]') and '<C-g>' or '<C-z>' end,
-  { expr = true }
-)
+vim.keymap.set( 'c', '<Tab>', function()
+  return string.match(vim.fn.getcmdtype(), '[/?]') and '<C-g>' or '<C-z>' end, { expr = true })
 
-vim.keymap.set(
-  'c',
-  '<S-Tab>',
-  function() return string.match(vim.fn.getcmdtype(), '[/?]') and '<C-t>' or '<S-C-z>' end,
-  { expr = true }
-)
+vim.keymap.set( 'c', '<S-Tab>', function()
+  return string.match(vim.fn.getcmdtype(), '[/?]') and '<C-t>' or '<S-C-z>' end, { expr = true })
 
--- improve command-line history recall by using context-aware <Up><Down>
+-- replace standard dumb up/down with improved command-line-history-aware <Up><Down>
 vim.keymap.set('c', '<C-p>', function() return vim.fn.pumvisible() >= 1 and '<C-p>' or '<Up>' end, { expr = true })
 vim.keymap.set('c', '<C-n>', function() return vim.fn.pumvisible() >= 1 and '<C-n>' or '<Down>' end, { expr = true })
 
 vim.keymap.set('n', '<Leader>e', function()
   -- :Rex isn't defined until netrw is loaded
   if vim.g.loaded_netrw then
-    -- from netrw source:
-    -- com! Rexplore if exists("w:netrw_rexlocal")|call s:NetrwRexplore(w:netrw_rexlocal,exists("w:netrw_rexdir")? w:netrw_rexdir : ".")|else|call netrw#ErrorMsg(s:WARNING,"win#".winnr()." not a former netrw window",79)|endif
+    -- if current win was not previously a netrw window we have to call `:Ex` instead to avoid error
     if vim.w.netrw_rexlocal == 1 then
       return ':Rex<CR>'
     else
@@ -73,12 +87,15 @@ vim.keymap.set('n', '<Leader>tt', function()
 
     if buftype == 'terminal' then
       vim.fn.win_gotoid(winnr)
+      vim.cmd.startinsert()
       return
     end
   end
 
+  -- start new terminal
   vim.cmd.split()
   vim.cmd.wincmd('J')
   vim.cmd.term()
   vim.api.nvim_win_set_height(0, 10)
+  vim.cmd.startinsert()
 end)

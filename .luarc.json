@@ -4,6 +4,9 @@
     "version": "LuaJIT"
   },
   "diagnostics": {
+    "disable": [
+      "unused-local"
+    ],
     "globals": [
       "vim",
       "describe",
@@ -13,18 +16,14 @@
       "before_each",
       "pending"
     ],
-    "unusedLocalExclude": [ "_*" ]
+    "unusedLocalExclude": [
+      "_*"
+    ]
   },
   "workspace": {
     "library": [
-      "$VIMRUNTIME",
-      "~/.local/share/nvim/lazy/conform.nvim",
-      "~/.local/share/nvim/lazy/lazy.nvim"
-
+      "$VIMRUNTIME"
     ],
     "checkThirdParty": false
-  },
-    "diagnostics.disable": [
-        "unused-local"
-    ]
+  }
 }

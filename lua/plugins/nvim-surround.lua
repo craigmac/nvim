@@ -3,6 +3,7 @@
 ---@type LazyPluginSpec
 return {
   'kylechui/nvim-surround',
-  keys = { 'cs', 'ys', 'ds' },
+  event = 'InsertEnter', -- so `<C-g>s` in insert mode is available if not loaded yet
+  keys = { 'cs', 'ys', 'ds', 'S' },
   opts = {},
 }

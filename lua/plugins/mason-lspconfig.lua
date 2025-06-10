@@ -10,6 +10,7 @@ return {
   },
   opts = {
     -- NOTE: only enables servers installed by mason.nvim plugin
-    automatic_enable = {}
+    -- and will call the vim.lsp.enable() to enable them
+    automatic_enable = false,
   },
 }

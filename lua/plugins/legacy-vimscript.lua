@@ -5,7 +5,7 @@ return {
   {
     'tpope/vim-unimpaired',
     dependencies = 'tpope/vim-repeat',
-    event = 'VeryLazy',
+    -- event = 'VeryLazy',
   },
   {
     -- m<CR> for :Make
@@ -14,7 +14,7 @@ return {
     -- g'<CR> for :Spawn (same as Start but always make new process don't reuse existing)
     -- m|`|'|g' then <Space> allows you to give args, like '<Space>lazygit
     'tpope/vim-dispatch',
-    event = 'VeryLazy',
+    -- event = 'VeryLazy',
   },
   {
     -- <C-a>, <C-e>, <C-d>, et al., readline bindings in Cmdline and insert mode

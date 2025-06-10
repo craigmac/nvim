@@ -9,45 +9,22 @@ return {
     'williamboman/mason.nvim', -- for installing debuggers
     'jay-babu/mason-nvim-dap.nvim', -- translation layer/helper like mason-lspconfig
   },
+  enabled = false,
   keys = {
-    {
-      '<F5>',
-      function()
-        require('dap').continue()
-      end,
-      desc = 'Debug: Start/Continue',
-    },
-    {
-      '<F1>',
-      function()
-        require('dap').step_into()
-      end,
-      desc = 'Debug: Step Into',
-    },
-    {
-      '<F2>',
-      function()
-        require('dap').step_over()
-      end,
-      desc = 'Debug: Step Over',
-    },
-    {
-      '<F3>',
-      function()
-        require('dap').step_out()
-      end,
-      desc = 'Debug: Step Out',
-    },
+    { '<F5>', function() require('dap').continue() end },
+    { '<F1>', function() require('dap').step_into() end },
+    { '<F2>', function() require('dap').step_over() end },
+    { '<F3>', function() require('dap').step_out() end },
   },
   config = function()
-    local dap = require('dap')
-    local dapui = require('dapui')
-
-    require('mason-nvim-dap').setup {
+    require('mason-nvim-dap').setup({
       automatic_installation = true,
       handlers = {},
       ensure_installed = {},
-    }
+    })
+
+    local dap = require('dap')
+    local dapui = require('dapui')
 
     dapui.setup({
       icons = { expanded = '▾', collapsed = '▸', current_frame = '*' },
