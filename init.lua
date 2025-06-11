@@ -5,7 +5,8 @@ require('my.autocmds')
 require('my.keymaps')
 require('my.commands')
 require('my.lsp')
-require('my.plugins')
+
+require('plugins')
 
 -- experimental
 -- TODO: issue with long filenames?
@@ -13,9 +14,7 @@ vim.loader.enable()
 
 require('vim._extui').enable({
   enable = true,
-  msg = {
-    pos = 'box'
-  }
+  msg = { pos = 'box' }
 })
 
 -- TODO: don't diagnose library files when opened

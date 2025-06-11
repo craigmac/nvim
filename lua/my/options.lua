@@ -53,8 +53,8 @@ function _G.RgFiles(cmd_arg, cmd_completions)
     return {}
   end
   -- being called as completion provider for `:find` on command-line
-  vim.print('MyFindFunc() cmd_arg: ' .. cmd_arg) 
-  local pattern = cmd_completions and string.fmt('%s*', cmd_args) or cmd_args
+  vim.print('MyFindFunc() cmd_arg: ' .. cmd_arg)
+  local pattern = cmd_completions and string.format('%s*', cmd_arg) or cmd_arg
 
   return { 'fileone', 'filetwo', 'filethree' }
 end
@@ -66,7 +66,7 @@ vim.o.signcolumn = 'number'
 vim.o.statusline = table.concat({
   ' 󰉋 %{fnamemodify(getcwd(0), ":t")}',
   -- '%=',
-  ' %.20f',
+  ' %f',
   ' %m',
   '%=',
   ' %8.(%l:%c%V%)',
