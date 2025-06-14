@@ -61,8 +61,7 @@ end
 vim.o.findfunc = 'v:lua._G.MyFindFunc'
 
 -- bars and lines
-vim.o.number = true
-vim.o.signcolumn = 'number'
+vim.o.signcolumn = 'yes'
 vim.o.statusline = table.concat({
   ' 󰉋 %{fnamemodify(getcwd(0), ":t")}',
   -- '%=',
