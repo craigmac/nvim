@@ -1,5 +1,7 @@
 local gitsigns = require('gitsigns')
 gitsigns.setup({
+  signs_staged_enable = false,
+  signcolumn = false, -- off by default instead of on
   on_attach = function(bufnr)
     vim.keymap.set('n', 'yog', gitsigns.toggle_signs)
 
