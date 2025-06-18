@@ -20,7 +20,7 @@ vim.o.wrap = false
 vim.o.breakindent = true
 vim.o.joinspaces = false
 vim.o.linebreak = true
-vim.o.showbreak = '↳'
+vim.o.showbreak = '↳ '
 vim.o.smoothscroll = true
 
 -- searching/matching
