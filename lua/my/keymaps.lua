@@ -6,6 +6,11 @@ vim.keymap.set('n', "'", '`')
 vim.keymap.set('n', 'zS', '<Cmd>Inspect<CR>')
 vim.keymap.set('n', 'g:', ':<C-u>lua =')
 vim.keymap.set('n', '<Leader>f', ':<C-u>f<Space>')
+vim.keymap.set('n', 'j', function()
+  return (vim.v.count > 0 or not vim.wo.wrap) and 'j' or 'gj' end, { expr = true, silent = true })
+vim.keymap.set('n', 'k', function()
+  return (vim.v.count > 0 or not vim.wo.wrap) and 'k' or 'gk' end, { expr = true, silent = true })
+
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>')
 vim.keymap.set('t', '<C-[><C-[>', '<C-\\><C-n>')
 
