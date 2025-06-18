@@ -6,22 +6,31 @@ vim.keymap.set('n', "'", '`')
 vim.keymap.set('n', 'zS', '<Cmd>Inspect<CR>')
 vim.keymap.set('n', 'g:', ':<C-u>lua =')
 vim.keymap.set('n', '<Leader>f', ':<C-u>f<Space>')
+vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>')
+vim.keymap.set('t', '<C-[><C-[>', '<C-\\><C-n>')
 
 vim.keymap.set({ 'n', 'x' }, '<Leader>y', '"+y')
 vim.keymap.set({ 'n', 'x' }, '<Leader>Y', '"+Y')
-vim.keymap.set({ 'n', 'x' }, '<Leader>p', '"+p')
-vim.keymap.set({ 'n', 'x' }, '<Leader>P', '"+P')
+-- paste then re-select the pasted text
+vim.keymap.set({ 'n', 'x' }, '<Leader>p', '"+pv\'[\']')
+vim.keymap.set({ 'n', 'x' }, '<Leader>P', '"+Pv\'[\']')
 
 vim.keymap.set('x', '.', ':normal! .<CR>')
+
+-- n always goes down, N always goes up, and never think about it again
+vim.cmd([[
+nnoremap <expr> n 'Nn'[v:searchforward]
+nnoremap <expr> N 'nN'[v:searchforward]
+]])
 
 vim.keymap.set('i', 'kj', '<Esc>')
 vim.keymap.set('i', 'jk', '<Esc>')
 
 -- some vim-unimpaired stuff not in $VIMRUNTIME/lua/vim/_defaults.lua
 -- when we have a visual selection we need to move size of select + 1
-vim.keymap.set('x', '[e', ":move '[-2<CR>gv=gv")
-vim.keymap.set('n', '[e', ":<C-u>move -2<CR>==")
-vim.keymap.set('x', ']e', ":move ']<CR>gv=gv")
+vim.keymap.set('x', '[e', ":move '<-2<cr>gv=gv")
+vim.keymap.set('x', ']e', ":move '>+1<CR>gv=gv")
+vim.keymap.set('n', '[e', ":<c-u>move -2<cr>==")
 vim.keymap.set('n', ']e', ":<C-u>move +1<CR>==")
 
 -- only options that can be toggled with the '!' postfix, like `:set list!`
