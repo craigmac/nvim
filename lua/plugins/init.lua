@@ -1,25 +1,37 @@
+---@type vim.pack.Spec[]
 local pkgs = {
-  { 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate', branch = 'main' },
-  { 'nvim-treesitter/nvim-treesitter-textobjects', branch = 'main' },
-  'neovim/nvim-lspconfig',
-  'ibhagwan/fzf-lua',
-  'mrjones2014/smart-splits.nvim',
-  'stevearc/conform.nvim',
-  'lewis6991/gitsigns.nvim',
-  'HoNamDuong/hybrid.nvim',
-  'mbbill/undotree',
-  'mfussenegger/nvim-lint',
-  'mason-org/mason.nvim',
-  'kylechui/nvim-surround',
-  'stevearc/quicker.nvim',
-  'tpope/vim-rsi',
-  'tpope/vim-fugitive',
-  'tpope/vim-rhubarb',
-
+  'https://github.com/neovim/nvim-lspconfig',
+  {
+    source = 'https://github.com/nvim-treesitter/nvim-treesitter',
+    version = 'main'
+  },
+  {
+    source = 'https://github.com/nvim-treesitter/nvim-treesitter-textobjects',
+    version = 'main'
+  },
+  'https://github.com/ibhagwan/fzf-lua',
+  'https://github.com/mrjones2014/smart-splits.nvim',
+  'https://github.com/lewis6991/gitsigns.nvim',
+  'https://github.com/HoNamDuong/hybrid.nvim',
+  'https://github.com/mbbill/undotree',
+  'https://github.com/mfussenegger/nvim-lint',
+  'https://github.com/mason-org/mason.nvim',
+  'https://github.com/kylechui/nvim-surround',
+  'https://github.com/stevearc/conform.nvim',
+  'https://github.com/stevearc/quicker.nvim',
+  'https://github.com/tpope/vim-rsi',
+  'https://github.com/tpope/vim-fugitive',
+  'https://github.com/tpope/vim-rhubarb',
+  'https://github.com/tommcdo/vim-lion',
 }
 
--- hand our list to a package manager to do the installing
-require('paq')(pkgs)
+vim.pack.add(pkgs)
+
+vim.api.nvim_create_autocmd('PackUpdate', {
+  group = vim.api.nvim_create_augroup('my.augroup.pack', {}),
+  command = 'TSUpdate',
+  desc = 'Run `:TSUpdate` when vim.pack updates, in case nvim-treesitter plugin needs it.'
+})
 
 require('plugins.conform')
 require('plugins.fzf')
