@@ -1,25 +1,27 @@
 vim.keymap.set('n', '<Leader>w', '<Cmd>silent update ++p<CR>')
 vim.keymap.set('n', '<Leader><CR>', '<Cmd>source %<CR>')
 vim.keymap.set('n', '<Leader><Space>', '<Cmd>b #<CR>')
-vim.keymap.set('n', '<Leader>,', ':<C-u>tabedit $MYVIMRC <Bar> :tcd %:h<CR>')
+vim.keymap.set('n', '<Leader>,', ':<C-u>silent tabedit $MYVIMRC <Bar> :tcd %:h<CR>', { silent = true })
 vim.keymap.set('n', "'", '`')
 vim.keymap.set('n', 'zS', '<Cmd>Inspect<CR>')
 vim.keymap.set('n', 'g:', ':<C-u>lua =')
+
 vim.keymap.set('n', '<Leader>f', ':<C-u>f<Space>')
 vim.keymap.set('n', 'j', function()
   return (vim.v.count > 0 or not vim.wo.wrap) and 'j' or 'gj' end, { expr = true, silent = true })
 vim.keymap.set('n', 'k', function()
   return (vim.v.count > 0 or not vim.wo.wrap) and 'k' or 'gk' end, { expr = true, silent = true })
-
+if not vim.pack then
+  -- no plugins
+  vim.keymap.set('n', '<Leader>f', ':<C-u>f<Space>')
+end
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>')
 vim.keymap.set('t', '<C-[><C-[>', '<C-\\><C-n>')
 
 vim.keymap.set({ 'n', 'x' }, '<Leader>y', '"+y')
 vim.keymap.set({ 'n', 'x' }, '<Leader>Y', '"+Y')
--- paste then re-select the pasted text
 vim.keymap.set({ 'n', 'x' }, '<Leader>p', '"+pv\'[\']')
 vim.keymap.set({ 'n', 'x' }, '<Leader>P', '"+Pv\'[\']')
-
 vim.keymap.set('x', '.', ':normal! .<CR>')
 
 -- n always goes down, N always goes up, and never think about it again
@@ -31,14 +33,13 @@ nnoremap <expr> N 'nN'[v:searchforward]
 vim.keymap.set('i', 'kj', '<Esc>')
 vim.keymap.set('i', 'jk', '<Esc>')
 
--- some vim-unimpaired stuff not in $VIMRUNTIME/lua/vim/_defaults.lua
--- when we have a visual selection we need to move size of select + 1
-vim.keymap.set('x', '[e', ":move '<-2<cr>gv=gv")
-vim.keymap.set('x', ']e', ":move '>+1<CR>gv=gv")
-vim.keymap.set('n', '[e', ":<c-u>move -2<cr>==")
-vim.keymap.set('n', ']e', ":<C-u>move +1<CR>==")
+-- some vim-unimpaired extras not shipped in $VIMRUNTIME/lua/vim/_defaults.lua
+vim.keymap.set('x', '[e', ":move '<-2<cr>gv=gv", { silent = true })
+vim.keymap.set('x', ']e', ":move '>+1<CR>gv=gv", { silent = true })
+vim.keymap.set('n', '[e', ":<C-u>move -2<cr>==", { silent = true })
+vim.keymap.set('n', ']e', ":<C-u>move +1<CR>==", { silent = true })
 
--- only options that can be toggled with the '!' postfix, like `:set list!`
+-- vim-unimpaired 'yo<key>' option toggles
 local toggleable_opts = {
   c = 'cursorline',
   l = 'list',
@@ -50,6 +51,10 @@ local toggleable_opts = {
 for k,v in pairs(toggleable_opts) do
   vim.keymap.set('n', string.format('yo%s', k), string.format('<Cmd>set %s!<CR>', v))
 end
+
+vim.keymap.set('n', 'yov', function()
+  return string.format(':<C-u>set virtualedit%s=all<CR>', vim.o.virtualedit == "" and '+' or '-')
+end, { expr = true })
 
 -- autopairs on demand
 vim.keymap.set('i', '(<cr>', '(<cr>)<esc>o')
@@ -94,19 +99,17 @@ end)
 vim.keymap.set('n', '<Leader>tt', function()
   local curr_tab = vim.api.nvim_get_current_tabpage()
   local windows = vim.api.nvim_tabpage_list_wins(curr_tab)
-
+  -- reuse any existing :term in tabpage
   for _, winnr in ipairs(windows) do
     local bufnr = vim.api.nvim_win_get_buf(winnr)
     local buftype = vim.api.nvim_get_option_value('buftype', { buf = bufnr })
-
     if buftype == 'terminal' then
       vim.fn.win_gotoid(winnr)
       vim.cmd.startinsert()
       return
     end
   end
-
-  -- start new terminal
+  -- no reusable :term found, start new terminal
   vim.cmd.split()
   vim.cmd.wincmd('J')
   vim.cmd.term()

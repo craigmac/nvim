@@ -1,20 +1,23 @@
--- Whenever an LSP server attaches successfully, run our callback to do setup.
--- Some mappings are done unconditionally in `$VIMRUNTIME/lua/vim/_defaults.lua`
--- file, and not repeated here.
---
+-- Some mappings are done unconditionally in `$VIMRUNTIME/lua/vim/_defaults.lua`:
 -- gra      - code (a)ction
 -- grr      - (r)eferences
 -- grn      - re(n)ame
 -- gri      - (i)mplementation
 -- gO       - document symbol (like help buffer gO binding)
 -- i_CTRL-S - (s)ignature
+-- an       -  expand selection, (a)dd (n)ode, using vim.lsp.buf.selection_range()
+-- in       -  shrink selection, (i)n (n)ode, both can take a count too, like: 3van
+-- <Tab>    - snippet jump forward if snippet active
+-- <S-Tab>  - snippet jump backward if snippet active
+--
+-- set here:
 -- gd       - (d)efinition
 -- gD       - (D)eclaraction
 -- gy       - t(y)pe definition
 -- g(       - incoming calls
 -- g)       - outgoing calls
 -- yoh      - toggle inlay hints
--- <leader>gO - workspace symbols
+-- <leader>gO - workspace symbols, like gO is for buffer symbols
 -- K        - popup docs window
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('my.lsp.attach', {}),
@@ -26,24 +29,17 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.notify_once(string.format('%s %s attached.', '󰋼 ', client.name), vim.log.INFO)
 
     if client:supports_method('textDocument/completion') then
-      -- too many odd edge cases with autotriggering and having to swap in/out nvim
-      -- completeopt settings, just go full bore manual mode
       vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = false })
     end
 
-    if client:supports_method('textDocument/definition') then
-      vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = true })
-    end
-
-    if client:supports_method('textDocument/declaration') then
-      vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { buffer = true })
-    end
+    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = true })
+    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { buffer = true })
 
     -- these quickly become annoying when on all the time so I set a vim-unimpaired style map
     if client:supports_method('textDocument/inlayHint') then
       vim.keymap.set('n', 'yoh', function()
         vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-        vim.notify(string.format('inlay hints are now: %s', vim.lsp.inlay_hint.is_enabled()), vim.log.INFO)
+        vim.notify(string.format('Show inlay hints set to %s', vim.lsp.inlay_hint.is_enabled()), vim.log.INFO)
       end, { buffer = true })
     end
 
