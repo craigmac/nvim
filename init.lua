@@ -1,7 +1,7 @@
 -- nvim nightly config
 
 -- reserve a namespace on the global table
-_G.my = {}
+My = {}
 
 require('my.options')
 require('my.autocmds')
@@ -16,4 +16,3 @@ vim.loader.enable()
 
 -- ⚠ experimental ⚠
 require('vim._extui').enable({ enable = true, msg = { target = 'msg', timeout = 4000 }})
-

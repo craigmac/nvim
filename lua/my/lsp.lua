@@ -50,10 +50,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
       end, { buffer = true })
     end
 
-    if
-      not client:supports_method('textDocument/willSaveWaitUntil')
-      and client:supports_method('textDocument/formatting')
-    then
+    if client:supports_method('textDocument/formatting') then
+    --   not client:supports_method('textDocument/willSaveWaitUntil')
+    --   and client:supports_method('textDocument/formatting')
+    -- then
       vim.api.nvim_create_autocmd('BufWritePre', {
         buffer = args.buf,
         callback = function()
@@ -74,9 +74,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end
 
     if client:supports_method('textDocument/hover') then
-      vim.keymap.set(
-        'n',
-        'K',
+      vim.keymap.set( 'n', 'K',
         function() vim.lsp.buf.hover({ border = 'rounded', max_height = 10 }) end,
         { buffer = true }
       )
@@ -96,7 +94,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 vim.diagnostic.config({
   float = {
-    border = 'rounded',
+    border = 'single',
     header = 'Diagnostics',
     severity_sort = true,
     source = true, -- show where diagnostic comes from

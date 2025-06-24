@@ -6,14 +6,9 @@ require('nvim-treesitter-textobjects').setup({
 -- You can use the capture groups defined in `textobjects.scm`
 local ts = require('nvim-treesitter-textobjects.select')
 
--- `i` and `a` textobjects for (f)unction and (c)lass
-vim.keymap.set({ "x", "o" }, "af", function() ts.select_textobject("@function.outer", "textobjects") end)
-vim.keymap.set({ "x", "o" }, "if", function() ts.select_textobject("@function.inner", "textobjects") end)
+-- `i` and `a` textobjects for (c)lass
 vim.keymap.set({ "x", "o" }, "ac", function() ts.select_textobject("@class.outer", "textobjects") end)
 vim.keymap.set({ "x", "o" }, "ic", function() ts.select_textobject("@class.inner", "textobjects") end)
-
--- (a)round (s)cope textobject - this would override 's' default, 'sentence' textobject
-vim.keymap.set({ "x", "o" }, "as", function() ts.select_textobject("@local.scope", "locals") end)
 
 local mv = require('nvim-treesitter-textobjects.move')
 
