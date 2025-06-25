@@ -13,11 +13,7 @@ local pkgs = {
   'https://github.com/mason-org/mason.nvim',
   'https://github.com/stevearc/conform.nvim',
   'https://github.com/tpope/vim-rsi',
-  'https://github.com/tpope/vim-fugitive',
-  'https://github.com/tpope/vim-rhubarb',
   'https://github.com/romainl/vim-cool',
-  'https://github.com/lewis6991/gitsigns.nvim',
-  'https://github.com/mbbill/undotree',
   'https://github.com/romainl/vim-qf',
 }
 vim.pack.add(pkgs)
@@ -34,8 +30,5 @@ require('plugins.hybrid')
 require('plugins.splits')
 require('plugins.conform')
 require('plugins.lint')
-require('plugins.gitsigns')
 require('plugins.mason')
--- require('plugins.treesitter-textobjects')
-require('plugins.fugitive')
 require('plugins.vim-qf')
