@@ -31,6 +31,25 @@ require('mini.completion').setup({
 })
 
 
+-- mimic tpope/vim-surround mappings, dot repeat works too
+require('mini.surround').setup({
+  mappings = {
+    add = 'ys',
+    delete = 'ds',
+    find = '',
+    find_left = '',
+    highlight = '',
+    replace = 'cs',
+    update_n_lines = '',
+    suffix_last = '',
+    suffix_next = '',
+  },
+  search_method = 'cover_or_next',
+})
+-- more tpope/vim-surround behaviour: visual S and yss for surround line
+vim.keymap.del('x', 'ys')
+vim.keymap.set('x', 'S', [[:<C-u>lua MiniSurround.add('visual')<CR>]], { silent = true })
+vim.keymap.set('n', 'yss', 'ys_', { remap = true })
 
 -- use 's' instead of '<CR>' as jump key
 require('mini.jump2d').setup({
