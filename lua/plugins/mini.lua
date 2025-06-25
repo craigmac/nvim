@@ -1,3 +1,4 @@
+require('mini.pairs').setup()
 local spec_treesitter = require('mini.ai').gen_spec.treesitter
 require('mini.ai').setup({
   -- see treesitter textobjects defined for a language: `:=vim.treesitter.query.get('<lang>', 'textobjects')`
@@ -31,17 +32,6 @@ require('mini.completion').setup({
   mappings = { force_twostep = '', force_fallback = '' }
 })
 
--- modules to install:
--- MiniGit
--- MiniJump
--- MiniPairs
--- MiniSnippets
--- MiniStatusline
--- MiniSurround
 
--- maybe:
--- MiniExtra
--- MiniJump2d
--- MiniTabline
 
 

@@ -56,13 +56,6 @@ vim.keymap.set('n', 'yov', function()
   return string.format(':<C-u>set virtualedit%s=all<CR>', vim.o.virtualedit == "" and '+' or '-')
 end, { expr = true })
 
--- autopairs on demand
-vim.keymap.set('i', '(<cr>', '(<cr>)<esc>o')
-vim.keymap.set('i', '{<cr>', '{<cr>}<esc>o')
-vim.keymap.set('i', '{,', '{<CR>},<Esc>O')
-vim.keymap.set('i', '[<CR>', '[<CR>]<Esc>O')
-vim.keymap.set('i', '[,', '[<CR>],<Esc>O')
-
 -- `:h 'wcm` explains <C-z> here
 vim.keymap.set( 'c', '<Tab>', function()
   return string.match(vim.fn.getcmdtype(), '[/?]') and '<C-g>' or '<C-z>' end, { expr = true })
