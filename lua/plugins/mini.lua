@@ -30,6 +30,15 @@ require('mini.completion').setup({
   mappings = { force_twostep = '', force_fallback = '' }
 })
 
+-- improves vim.snippet to allow loading homemade snippets with pmenu integration
+local gen_loader = require('mini.snippets').gen_loader
+require('mini.snippets').setup({
+  snippets = {
+    gen_loader.from_file('~/.config/nvim/snippets/global.json'),
+    gen_loader.from_lang()
+  },
+})
+require('mini.snippets').start_lsp_server() -- for pmenu integration
 
 -- mimic tpope/vim-surround mappings, dot repeat works too
 require('mini.surround').setup({
