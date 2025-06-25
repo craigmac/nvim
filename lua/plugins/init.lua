@@ -13,6 +13,7 @@ local pkgs = {
   'https://github.com/mason-org/mason.nvim',
   'https://github.com/stevearc/conform.nvim',
   'https://github.com/tpope/vim-rsi',
+  'https://github.com/tpope/vim-endwise',
   'https://github.com/romainl/vim-cool',
   'https://github.com/romainl/vim-qf',
 }
