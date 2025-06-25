@@ -32,4 +32,9 @@ require('mini.completion').setup({
 
 
 
+-- use 's' instead of '<CR>' as jump key
+require('mini.jump2d').setup({
+  mappings = { start_jumping = 's' },
+  silent = true,
+})
 
