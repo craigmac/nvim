@@ -92,3 +92,20 @@ vim.o.undofile = true
 -- shorter delay to trigger `:h vim.lsp.buf.document_highlight()`
 vim.o.updatetime = 500
 vim.o.wildcharm = tonumber(vim.keycode('<C-z>'))
+
+-- menus, `:h popup-menu` and `$VIMRUNTIME/lua/vim/_defaults.lua`
+vim.cmd.aunmenu({ args = { 'disable', 'PopUp.How-to\\ disable\\ mouse' } })
+
+vim.cmd.anoremenu [[PopUp.Goto\ declaration\ [gd] <Cmd>lua vim.lsp.buf.declaration()<CR>]]
+vim.cmd.anoremenu [[PopUp.Goto\ source\ implementation\ [gri] <Cmd>lua vim.lsp.buf.implementation()<CR>]]
+vim.cmd.anoremenu [[PopUp.Goto\ type\ definition\ [gy] <Cmd>lua vim.lsp.buf.type_definition()<CR>]]
+vim.cmd.anoremenu [[PopUp.Goto\ references\ [grr] <Cmd>lua vim.lsp.buf.references()<CR>]]
+vim.cmd.anoremenu [[PopUp.Code\ actions\ [gra] <Cmd>lua vim.lsp.buf.code_action()<CR>]]
+vim.cmd.anoremenu [[PopUp.Rename\ symbol\ [grn] <Cmd>lua vim.lsp.buf.rename()<CR>]]
+vim.cmd.anoremenu [[PopUp.Document\ symbol\ [gO] <Cmd>lua vim.lsp.buf.document_symbol()<CR>]]
+vim.cmd.anoremenu [[PopUp.Workspace\ symbol\ [grO] <Cmd>lua vim.lsp.buf.workspace_symbol()<CR>]]
+vim.cmd.anoremenu [[PopUp.Show\ incoming\ calls\ [g(] <Cmd>lua vim.lsp.buf.incoming_calls()<CR>]]
+vim.cmd.anoremenu [[PopUp.Show\ outgoing\ calls\ [g)] <Cmd>lua vim.lsp.buf.outgoing_calls()<CR>]]
+vim.cmd.anoremenu [[PopUp.Format\ buffer <Cmd>lua vim.lsp.buf.format()<CR>]]
+vim.cmd.anoremenu [[PopUp.Toggle\ inlay-hints\ [yoh] <Cmd>lua vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())<CR>]]
+
