@@ -1,28 +1,25 @@
-vim.keymap.set('n', '<Leader>w', '<Cmd>silent update ++p<CR>')
-vim.keymap.set('n', '<Leader><CR>', '<Cmd>source %<CR>')
-vim.keymap.set('n', '<Leader><Space>', '<Cmd>b #<CR>')
+vim.keymap.set('n', '<Leader>w', '<Cmd>silent update ++p<CR>', { desc = 'Write buffer if needed, creating intermediate dirs'})
+vim.keymap.set('n', '<Leader><CR>', '<Cmd>source %<CR>', { desc = 'Source current buffer'})
+vim.keymap.set('n', '<Leader><Space>', '<Cmd>b #<CR>', { desc = 'Switch to last buffer'})
 vim.keymap.set('n', '<Leader>,', ':<C-u>silent tabedit $MYVIMRC <Bar> :tcd %:h<CR>', { silent = true })
-vim.keymap.set('n', "'", '`')
+vim.keymap.set('n', "'", '`', { desc = 'Map easier to type version to be the more accurate location marker'})
 vim.keymap.set('n', 'zS', '<Cmd>Inspect<CR>')
-vim.keymap.set('n', 'g:', ':<C-u>lua =')
-
-vim.keymap.set('n', '<Leader>f', ':<C-u>f<Space>')
+vim.keymap.set('n', 'g:', ':<C-u>lua =', { desc = 'Evaluate lua expression and print the result' })
+vim.keymap.set('n', 'gV', ':<C-u>normal! `[v`]<CR>', { desc = 'Visually select last edited/pasted region' })
 vim.keymap.set('n', 'j', function()
   return (vim.v.count > 0 or not vim.wo.wrap) and 'j' or 'gj' end, { expr = true, silent = true })
 vim.keymap.set('n', 'k', function()
   return (vim.v.count > 0 or not vim.wo.wrap) and 'k' or 'gk' end, { expr = true, silent = true })
-if not vim.pack then
-  -- no plugins
-  vim.keymap.set('n', '<Leader>f', ':<C-u>f<Space>')
-end
-vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>')
-vim.keymap.set('t', '<C-[><C-[>', '<C-\\><C-n>')
+if not vim.pack then vim.keymap.set('n', '<Leader>f', ':<C-u>f **/', { desc = 'budget fzf'}) end
 
-vim.keymap.set({ 'n', 'x' }, '<Leader>y', '"+y')
-vim.keymap.set({ 'n', 'x' }, '<Leader>Y', '"+Y')
-vim.keymap.set({ 'n', 'x' }, '<Leader>p', '"+pv\'[\']')
-vim.keymap.set({ 'n', 'x' }, '<Leader>P', '"+Pv\'[\']')
-vim.keymap.set('x', '.', ':normal! .<CR>')
+vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Escape terminal mode back to normal mode'})
+vim.keymap.set('t', '<C-[><C-[>', '<C-\\><C-n>', { desc = 'Escape terminal mode back to normal mode'})
+
+vim.keymap.set({ 'n', 'x' }, '<Leader>y', '"+y', { desc = 'Target system clipboard register'})
+vim.keymap.set({ 'n', 'x' }, '<Leader>Y', '"+Y', { desc = 'Save Y to system clipboard register'})
+vim.keymap.set({ 'n', 'x' }, '<Leader>p', '"+pv\'[\']', { desc = 'Paste from system clipboard and reselect'})
+vim.keymap.set({ 'n', 'x' }, '<Leader>P', '"+Pv\'[\']', { desc = 'Paste from system clipboard and reselect'})
+vim.keymap.set('x', '.', ':normal! .<CR>', { desc = 'Run repeat operator on selected lines'})
 
 -- n always goes down, N always goes up, and never think about it again
 vim.cmd([[
@@ -30,14 +27,14 @@ nnoremap <expr> n 'Nn'[v:searchforward]
 nnoremap <expr> N 'nN'[v:searchforward]
 ]])
 
-vim.keymap.set('i', 'kj', '<Esc>')
-vim.keymap.set('i', 'jk', '<Esc>')
+vim.keymap.set('i', 'kj', '<Esc>', { desc = 'Mash jk or kj to exit insert mode '})
+vim.keymap.set('i', 'jk', '<Esc>', { desc = 'Mash jk or kj to exit insert mode '})
 
 -- some vim-unimpaired extras not shipped in $VIMRUNTIME/lua/vim/_defaults.lua
-vim.keymap.set('x', '[e', ":move '<-2<cr>gv=gv", { silent = true })
-vim.keymap.set('x', ']e', ":move '>+1<CR>gv=gv", { silent = true })
-vim.keymap.set('n', '[e', ":<C-u>move -2<cr>==", { silent = true })
-vim.keymap.set('n', ']e', ":<C-u>move +1<CR>==", { silent = true })
+vim.keymap.set('x', '[e', ":move '<-2<cr>gv=gv", { silent = true, desc = 'Move visual range up' })
+vim.keymap.set('x', ']e', ":move '>+1<CR>gv=gv", { silent = true, desc = 'Move visual range down' })
+vim.keymap.set('n', '[e', ":<C-u>move -2<cr>==", { silent = true, desc = 'Move current line up' })
+vim.keymap.set('n', ']e', ":<C-u>move +1<CR>==", { silent = true, desc = 'Move current line down' })
 
 -- vim-unimpaired 'yo<key>' option toggles
 local toggleable_opts = {
@@ -81,12 +78,8 @@ vim.keymap.set('n', '<Leader>e', function()
 end, { expr = true })
 
 -- (g)o (m)enu: popup the right-click menu at cursor position
--- overwrites default useless gm that I never use
-vim.keymap.set('n', 'gm', function()
-  local pos = vim.api.nvim_win_get_cursor(0)
-  local row, col = pos[1] - 1, pos[2] + 2
-  vim.api.nvim_input_mouse('right', 'press', '', 0, row, col)
-end)
+-- overwrites default `:h gm` that I never use
+vim.keymap.set('n', 'gm', function() vim.cmd.popup('PopUp') end)
 
 -- (t)oggle (t)erminal: opens or reuses visible terminal buffer in current tabpage
 vim.keymap.set('n', '<Leader>tt', function()
