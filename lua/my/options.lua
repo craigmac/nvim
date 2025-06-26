@@ -36,7 +36,7 @@ vim.o.shortmess = vim.o.shortmess .. table.concat({
 ---@param cmd_arg string The command argument to `:find`.
 ---@param cmd_completions boolean True when function being called to get cmdline matches for `:find` command.
 ---@return string[]|{} # The list of strings found or an empty list if nothing found/an error occurred.
-function My.findfunc (cmd_arg, cmd_completions)
+function My.findfunc(cmd_arg, cmd_completions)
   -- not being called from command-line for results for `:h 'findfunc'`
   if not cmd_completions then
     vim.print('RgFiles() cmd_completions was false.')
@@ -49,21 +49,29 @@ function My.findfunc (cmd_arg, cmd_completions)
 
   return { 'fileone', 'filetwo', 'filethree' }
 end
+
 vim.o.findfunc = 'v:lua.My.findfunc'
 
 -- bars and lines
+function My.diagnostic_status()
+  return 'E: 1 W:2'
+
+end
+vim.o.showcmdloc = 'statusline'
 vim.o.signcolumn = 'yes'
+-- https://github.com/neovim/neovim/issues/28809
 vim.o.statusline = table.concat({
   '󰉋 ',
-  '%{fnamemodify(getcwd(0), ":t")} ',
+  '%{fnamemodify(getcwd(0), ":t")}',
   '%<',
-  '%.50(%f%) ',
+  ' │ %.50(%t%)',
   '%( [%H%W%M%R]%)',
   '%=',
-  '%{% &showcmdloc == "statusline" ? "%-10.S " : "" %}',
-  '%{% exists("b:keymap_name") ? "<"..b:keymap_name.."> " : "" %}',
-  '%{% &ruler ? ( &rulerformat == "" ? "%7.(%l:%v %P %)" : &rulerformat ) : "" %}',
-  '%y',
+  '%{% &showcmdloc == "statusline" ? "%.10S" : "" %}',
+  '%(%{v:lua.My.diagnostic_status()}%)',
+  ' │ %(%l:%v%) ',
+  ' │ %.10(%{&filetype}%)',
+  ' │ %P ',
 })
 
 -- vim.o.showtabline = 2
