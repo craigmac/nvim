@@ -12,6 +12,19 @@ vim.keymap.set('n', 'k', function()
   return (vim.v.count > 0 or not vim.wo.wrap) and 'k' or 'gk' end, { expr = true, silent = true })
 if not vim.pack then vim.keymap.set('n', '<Leader>f', ':<C-u>f **/', { desc = 'budget fzf'}) end
 
+vim.keymap.set('n', '<Leader>vr', function()
+  local d = vim.env.VIMRUNTIME
+  vim.cmd.tabedit(d)
+  vim.cmd.tcd(d)
+end, { desc = 'Tabedit $VIMRUNTIME', silent = true })
+
+vim.keymap.set('n', '<Leader>vp', function()
+  local d = vim.fn.stdpath('data')..'/site/pack/core/opt'
+  vim.cmd.tabedit(d)
+  vim.cmd.tcd(d)
+end, { desc = 'Open netrw to plugin install directory', silent =  true })
+
+
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Escape terminal mode back to normal mode'})
 vim.keymap.set('t', '<C-[><C-[>', '<C-\\><C-n>', { desc = 'Escape terminal mode back to normal mode'})
 
@@ -75,7 +88,7 @@ vim.keymap.set('n', '<Leader>e', function()
     end
   end
   return ':Ex<CR>'
-end, { expr = true })
+end, { expr = true, silent = true })
 
 -- (g)o (m)enu: popup the right-click menu at cursor position
 -- overwrites default `:h gm` that I never use
