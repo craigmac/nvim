@@ -14,6 +14,7 @@ require('hybrid').setup({
     highlights['FloatFooter'] = { bg = colors.none }
     highlights['NormalFloat'] = { bg  = colors.none }
     highlights['CurSearch']   = { link = "IncSearch" }
+    highlights['netrwMarkFile']   = { reverse = true }
   end,
 })
 require('hybrid').load()
