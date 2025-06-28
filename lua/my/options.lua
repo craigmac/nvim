@@ -106,7 +106,7 @@ vim.cmd.aunmenu({ args = { 'disable', 'PopUp.How-to\\ disable\\ mouse' } })
 
 vim.cmd.anoremenu [[PopUp.Goto\ declaration\ [gd] <Cmd>lua vim.lsp.buf.declaration()<CR>]]
 vim.cmd.anoremenu [[PopUp.Goto\ source\ implementation\ [gri] <Cmd>lua vim.lsp.buf.implementation()<CR>]]
-vim.cmd.anoremenu [[PopUp.Goto\ type\ definition\ [gy] <Cmd>lua vim.lsp.buf.type_definition()<CR>]]
+vim.cmd.anoremenu [[PopUp.Goto\ type\ definition\ [grt] <Cmd>lua vim.lsp.buf.type_definition()<CR>]]
 vim.cmd.anoremenu [[PopUp.Goto\ references\ [grr] <Cmd>lua vim.lsp.buf.references()<CR>]]
 vim.cmd.anoremenu [[PopUp.Code\ actions\ [gra] <Cmd>lua vim.lsp.buf.code_action()<CR>]]
 vim.cmd.anoremenu [[PopUp.Rename\ symbol\ [grn] <Cmd>lua vim.lsp.buf.rename()<CR>]]
