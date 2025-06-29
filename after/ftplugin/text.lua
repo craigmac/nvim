@@ -7,5 +7,3 @@ setlocal formatoptions+=n
 " reset options if filetype is changed to their global values
 let b:undo_ftplugin = 'setlocal formatoptions< formatlistpat<'
 ]])
-
-
