@@ -10,5 +10,5 @@ vim.api.nvim_create_autocmd('Filetype', {
   callback = function()
     vim.keymap.set('n', 'dd', ':.Reject<CR>', { buffer = true })
     vim.keymap.set('x', 'd', ':Reject<CR>', { buffer = true })
-  end
+  end,
 })

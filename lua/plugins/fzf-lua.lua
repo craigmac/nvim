@@ -22,5 +22,3 @@ vim.keymap.set('n', '<Leader>b', fzf.buffers)
 vim.keymap.set('n', '<Leader>/', fzf.live_grep_native)
 vim.keymap.set('n', '<Leader><F1>', fzf.helptags)
 vim.keymap.set('n', '<Leader>o', fzf.oldfiles)
-
-

@@ -8,10 +8,10 @@ require('my.keymaps')
 require('my.commands')
 require('my.lsp')
 
----[[ ⚠ experimental ⚠
+---[[ experimental
 vim.loader.enable()
 
-require('vim._extui').enable({ enable = true, msg = { target = 'msg', timeout = 4000 }})
+require('vim._extui').enable({ enable = true, msg = { target = 'msg', timeout = 4000 } })
 
 vim.pack.add({
   'https://github.com/ibhagwan/fzf-lua',

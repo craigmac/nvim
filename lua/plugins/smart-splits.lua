@@ -9,4 +9,3 @@ vim.keymap.set('n', '<M-j>', splits.move_cursor_down)
 vim.keymap.set('n', '<M-k>', splits.move_cursor_up)
 vim.keymap.set('n', '<M-l>', splits.move_cursor_right)
 vim.keymap.set('n', '<M-p>', splits.move_cursor_previous)
-

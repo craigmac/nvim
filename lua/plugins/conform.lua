@@ -13,5 +13,3 @@ require('conform').setup({
     -- json = { 'prettier' },
   },
 })
-
-
