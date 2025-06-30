@@ -2,6 +2,33 @@
 vim.g.mapleader = ' '
 vim.g.netrw_banner = 0
 vim.g.netrw_hide = 0
+-- from `highlight_group.c` in neovim source
+vim.g.nvim_palette = {
+  black = '#07080d', -- same as 'gray1', added for alias
+  red = '#590008',
+  green = '#005523',
+  yellow = '#6b5300',
+  blue = '#004c73',
+  magenta = '#470045',
+  cyan = '#007373',
+  white = '#2c2e33', -- same as 'gray3', added as alias
+  bright_black = '#9b9ea4', -- same as 'gray4', added as alias
+  bright_red = '#ffc0b9',
+  bright_green = '#b3f6c0',
+  bright_yellow = '#fce094',
+  bright_blue = '#a6dbff',
+  bright_magenta = '#ffcaff',
+  bright_cyan = '#8cf8f7',
+  bright_white = '#eef1f8', -- same as 'gray1', added as alias
+  gray1 = '#07080d',
+  gray2 = '#14161b', -- hl-Normal guibg in bg=dark, guifg in bg=light
+  gray3 = '#2c2e33',
+  gray4 = '#4f5258',
+  bright_gray1 = '#eef1f8',
+  bright_gray2 = '#e0e2ea', -- hl-Normal guibg in bg=light
+  bright_gray3 = '#c4c6cd',
+  bright_gray4 = '#9b9ea4',
+}
 
 -- special characters and display
 vim.o.fillchars = 'eob:⌁,diff: ,fold: ,foldclose:▶,foldopen:▼,lastline:⋯,msgsep:─,trunc:⋯,truncrl:⋯'
@@ -26,12 +53,13 @@ vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.o.inccommand = 'split'
 vim.o.pumheight = 10
-vim.o.shortmess = vim.o.shortmess .. table.concat({
-  'c', -- no 'match 1 of 2' etc. messages when scrolling through completions
-  's', -- no 'search hit BOTTOM...' messages and don't show 'W' for wrapped before [1/3]
-  -- 'q', -- no 'recording @q' when recording macro
-  -- 'S', -- no [1/5] search count shown
-})
+vim.o.shortmess = vim.o.shortmess
+  .. table.concat({
+    'c', -- no 'match 1 of 2' etc. messages when scrolling through completions
+    's', -- no 'search hit BOTTOM...' messages and don't show 'W' for wrapped before [1/3]
+    -- 'q', -- no 'recording @q' when recording macro
+    -- 'S', -- no [1/5] search count shown
+  })
 
 ---@param cmd_arg string The command argument to `:find`.
 ---@param cmd_completions boolean True when function being called to get cmdline matches for `:find` command.
@@ -53,10 +81,7 @@ end
 vim.o.findfunc = 'v:lua.My.findfunc'
 
 -- bars and lines
-function My.diagnostic_status()
-  return 'E: 1 W:2'
-
-end
+function My.diagnostic_status() return 'E: 1 W:2' end
 vim.o.showcmdloc = 'statusline'
 vim.o.signcolumn = 'yes'
 -- https://github.com/neovim/neovim/issues/28809
@@ -104,16 +129,17 @@ vim.o.wildcharm = tonumber(vim.keycode('<C-z>'))
 -- menus, `:h popup-menu` and `$VIMRUNTIME/lua/vim/_defaults.lua`
 vim.cmd.aunmenu({ args = { 'disable', 'PopUp.How-to\\ disable\\ mouse' } })
 
-vim.cmd.anoremenu [[PopUp.Goto\ declaration\ [gd] <Cmd>lua vim.lsp.buf.declaration()<CR>]]
-vim.cmd.anoremenu [[PopUp.Goto\ source\ implementation\ [gri] <Cmd>lua vim.lsp.buf.implementation()<CR>]]
-vim.cmd.anoremenu [[PopUp.Goto\ type\ definition\ [grt] <Cmd>lua vim.lsp.buf.type_definition()<CR>]]
-vim.cmd.anoremenu [[PopUp.Goto\ references\ [grr] <Cmd>lua vim.lsp.buf.references()<CR>]]
-vim.cmd.anoremenu [[PopUp.Code\ actions\ [gra] <Cmd>lua vim.lsp.buf.code_action()<CR>]]
-vim.cmd.anoremenu [[PopUp.Rename\ symbol\ [grn] <Cmd>lua vim.lsp.buf.rename()<CR>]]
-vim.cmd.anoremenu [[PopUp.Document\ symbol\ [gO] <Cmd>lua vim.lsp.buf.document_symbol()<CR>]]
-vim.cmd.anoremenu [[PopUp.Workspace\ symbol\ [grO] <Cmd>lua vim.lsp.buf.workspace_symbol()<CR>]]
-vim.cmd.anoremenu [[PopUp.Show\ incoming\ calls\ [g(] <Cmd>lua vim.lsp.buf.incoming_calls()<CR>]]
-vim.cmd.anoremenu [[PopUp.Show\ outgoing\ calls\ [g)] <Cmd>lua vim.lsp.buf.outgoing_calls()<CR>]]
-vim.cmd.anoremenu [[PopUp.Format\ buffer <Cmd>lua vim.lsp.buf.format()<CR>]]
-vim.cmd.anoremenu [[PopUp.Toggle\ inlay-hints\ [yoh] <Cmd>lua vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())<CR>]]
-
+vim.cmd.anoremenu([[PopUp.Go\ to\ declaration\ [gd] <Cmd>lua vim.lsp.buf.declaration()<CR>]])
+vim.cmd.anoremenu([[PopUp.Go\ to\ source\ implementation\ [gri] <Cmd>lua vim.lsp.buf.implementation()<CR>]])
+vim.cmd.anoremenu([[PopUp.Go\ to\ type\ definition\ [grt] <Cmd>lua vim.lsp.buf.type_definition()<CR>]])
+vim.cmd.anoremenu([[PopUp.Go\ to\ references\ [grr] <Cmd>lua vim.lsp.buf.references()<CR>]])
+vim.cmd.anoremenu([[PopUp.Code\ actions\ [gra] <Cmd>lua vim.lsp.buf.code_action()<CR>]])
+vim.cmd.anoremenu([[PopUp.Rename\ symbol\ [grn] <Cmd>lua vim.lsp.buf.rename()<CR>]])
+vim.cmd.anoremenu([[PopUp.Document\ symbol\ [gO] <Cmd>lua vim.lsp.buf.document_symbol()<CR>]])
+vim.cmd.anoremenu([[PopUp.Workspace\ symbol\ [grO] <Cmd>lua vim.lsp.buf.workspace_symbol()<CR>]])
+vim.cmd.anoremenu([[PopUp.Show\ incoming\ calls\ [g(] <Cmd>lua vim.lsp.buf.incoming_calls()<CR>]])
+vim.cmd.anoremenu([[PopUp.Show\ outgoing\ calls\ [g)] <Cmd>lua vim.lsp.buf.outgoing_calls()<CR>]])
+vim.cmd.anoremenu([[PopUp.Format\ buffer <Cmd>lua vim.lsp.buf.format()<CR>]])
+vim.cmd.anoremenu(
+  [[PopUp.Toggle\ inlay-hints\ [yoh] <Cmd>lua vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())<CR>]]
+)
