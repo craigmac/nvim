@@ -30,7 +30,7 @@ vim.api.nvim_create_autocmd('BufReadPost', {
 
 vim.api.nvim_create_autocmd('FileType', {
   pattern = '*',
-  callback = function(args)
+  callback = function()
     local ok, _ = pcall(vim.treesitter.start)
     if not ok then return end
     -- only set this if we know treesitter started without error
@@ -39,12 +39,5 @@ vim.api.nvim_create_autocmd('FileType', {
     -- vim.bo[args.buf].syntax = 'on'
   end,
   desc = 'Try starting treesitter, ignoring errors.',
-  group = mygroup,
-})
-
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'msgbox',
-  callback = function(ev) end,
-  desc = 'Settings for message box window when using vim._extui module.',
   group = mygroup,
 })

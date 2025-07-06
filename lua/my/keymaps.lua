@@ -1,65 +1,59 @@
-vim.keymap.set(
-  'n',
-  '<Leader>w',
-  '<Cmd>silent update ++p<CR>',
-  { desc = 'Write buffer if needed, creating intermediate dirs' }
-)
-vim.keymap.set('n', '<Leader><CR>', '<Cmd>source %<CR>', { desc = 'Source current buffer' })
-vim.keymap.set('n', '<Leader><Space>', '<Cmd>b #<CR>', { desc = 'Switch to last buffer' })
+vim.keymap.set('n', '<Leader>w', '<Cmd>silent update ++p<CR>')
+vim.keymap.set('n', '<Leader><CR>', '<Cmd>source %<CR>')
+vim.keymap.set('n', '<Leader><Space>', '<Cmd>b #<CR>')
 vim.keymap.set('n', '<Leader>,', ':<C-u>silent tabedit $MYVIMRC <Bar> :tcd %:h<CR>', { silent = true })
-vim.keymap.set('n', "'", '`', { desc = 'Map easier to type version to be the more accurate location marker' })
+vim.keymap.set('n', "'", '`')
 vim.keymap.set('n', 'zS', '<Cmd>Inspect<CR>')
-vim.keymap.set('n', 'g:', ':<C-u>lua =', { desc = 'Evaluate lua expression and print the result' })
-vim.keymap.set('n', 'gV', ':<C-u>normal! `[v`]<CR>', { desc = 'Visually select last edited/pasted region' })
-vim.keymap.set(
-  'n',
-  'j',
-  function() return (vim.v.count > 0 or not vim.wo.wrap) and 'j' or 'gj' end,
-  { expr = true, silent = true }
-)
-vim.keymap.set(
-  'n',
-  'k',
-  function() return (vim.v.count > 0 or not vim.wo.wrap) and 'k' or 'gk' end,
-  { expr = true, silent = true }
-)
-if not vim.pack then vim.keymap.set('n', '<Leader>f', ':<C-u>f **/', { desc = 'budget fzf' }) end
-
-vim.keymap.set('n', '<Leader>vr', function()
-  local d = vim.env.VIMRUNTIME
-  vim.cmd.tabedit(d)
-  vim.cmd.tcd(d)
-end, { desc = 'Tabedit $VIMRUNTIME', silent = true })
-
-vim.keymap.set('n', '<Leader>vp', function()
-  local d = vim.fn.stdpath('data') .. '/site/pack/core/opt'
-  vim.cmd.tabedit(d)
-  vim.cmd.tcd(d)
-end, { desc = 'Open netrw to plugin install directory', silent = true })
-
-vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Escape terminal mode back to normal mode' })
-vim.keymap.set('t', '<C-[><C-[>', '<C-\\><C-n>', { desc = 'Escape terminal mode back to normal mode' })
-
-vim.keymap.set({ 'n', 'x' }, '<Leader>y', '"+y', { desc = 'Target system clipboard register' })
-vim.keymap.set({ 'n', 'x' }, '<Leader>Y', '"+Y', { desc = 'Save Y to system clipboard register' })
-vim.keymap.set({ 'n', 'x' }, '<Leader>p', "\"+pv'[']", { desc = 'Paste from system clipboard and reselect' })
-vim.keymap.set({ 'n', 'x' }, '<Leader>P', "\"+Pv'[']", { desc = 'Paste from system clipboard and reselect' })
-vim.keymap.set('x', '.', ':normal! .<CR>', { desc = 'Run repeat operator on selected lines' })
-
+vim.keymap.set('n', 'g:', ':<C-u>lua =')
+vim.keymap.set('n', 'gV', ':<C-u>normal! `[v`]<CR>')
+vim.keymap.set({ 'n', 'x' }, '<Leader>y', '"+y')
+vim.keymap.set({ 'n', 'x' }, '<Leader>Y', '"+Y')
+vim.keymap.set({ 'n', 'x' }, '<Leader>p', "\"+pv'[']")
+vim.keymap.set({ 'n', 'x' }, '<Leader>P', "\"+Pv'[']")
 -- n always goes down, N always goes up, and never think about it again
 vim.cmd([[
 nnoremap <expr> n 'Nn'[v:searchforward]
 nnoremap <expr> N 'nN'[v:searchforward]
 ]])
 
-vim.keymap.set('i', 'kj', '<Esc>', { desc = 'Mash jk or kj to exit insert mode ' })
-vim.keymap.set('i', 'jk', '<Esc>', { desc = 'Mash jk or kj to exit insert mode ' })
+
+vim.keymap.set('n', 'j', function()
+  return (vim.v.count > 0 or not vim.wo.wrap) and 'j' or 'gj'
+end, { expr = true, silent = true })
+
+vim.keymap.set('n', 'k', function()
+  return (vim.v.count > 0 or not vim.wo.wrap) and 'k' or 'gk'
+end, { expr = true, silent = true })
+
+if not vim.pack then
+  vim.keymap.set('n', '<Leader>f', ':<C-u>f **/')
+end
+
+vim.keymap.set('n', '<Leader>vr', function()
+  local d = vim.env.VIMRUNTIME
+  vim.cmd.tabedit(d)
+  vim.cmd.tcd(d)
+end, { silent = true })
+
+vim.keymap.set('n', '<Leader>vp', function()
+  local d = vim.fn.stdpath('data') .. '/site/pack/core/opt'
+  vim.cmd.tabedit(d)
+  vim.cmd.tcd(d)
+end, { silent = true })
+
+vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>')
+vim.keymap.set('t', '<C-[><C-[>', '<C-\\><C-n>')
+
+vim.keymap.set('x', '.', ':normal! .<CR>')
+
+vim.keymap.set('i', 'kj', '<Esc>')
+vim.keymap.set('i', 'jk', '<Esc>')
 
 -- some vim-unimpaired extras not shipped in $VIMRUNTIME/lua/vim/_defaults.lua
-vim.keymap.set('x', '[e', ":move '<-2<cr>gv=gv", { silent = true, desc = 'Move visual range up' })
-vim.keymap.set('x', ']e', ":move '>+1<CR>gv=gv", { silent = true, desc = 'Move visual range down' })
-vim.keymap.set('n', '[e', ':<C-u>move -2<cr>==', { silent = true, desc = 'Move current line up' })
-vim.keymap.set('n', ']e', ':<C-u>move +1<CR>==', { silent = true, desc = 'Move current line down' })
+vim.keymap.set('x', '[e', ":move '<-2<cr>gv=gv", { silent = true })
+vim.keymap.set('x', ']e', ":move '>+1<CR>gv=gv", { silent = true })
+vim.keymap.set('n', '[e', ':<C-u>move -2<cr>==', { silent = true })
+vim.keymap.set('n', ']e', ':<C-u>move +1<CR>==', { silent = true })
 
 -- vim-unimpaired 'yo<key>' option toggles
 local toggleable_opts = {
@@ -74,27 +68,18 @@ for k, v in pairs(toggleable_opts) do
   vim.keymap.set('n', string.format('yo%s', k), string.format('<Cmd>set %s!<CR>', v))
 end
 
-vim.keymap.set(
-  'n',
-  'yov',
-  function() return string.format(':<C-u>set virtualedit%s=all<CR>', vim.o.virtualedit == '' and '+' or '-') end,
-  { expr = true }
-)
+vim.keymap.set('n', 'yov', function()
+  return string.format(':<C-u>set virtualedit%s=all<CR>', vim.o.virtualedit == '' and '+' or '-')
+end, { expr = true })
 
 -- `:h 'wcm` explains <C-z> here
-vim.keymap.set(
-  'c',
-  '<Tab>',
-  function() return string.match(vim.fn.getcmdtype(), '[/?]') and '<C-g>' or '<C-z>' end,
-  { expr = true }
-)
+vim.keymap.set('c', '<Tab>', function()
+  return string.match(vim.fn.getcmdtype(), '[/?]') and '<C-g>' or '<C-z>'
+end, { expr = true })
 
-vim.keymap.set(
-  'c',
-  '<S-Tab>',
-  function() return string.match(vim.fn.getcmdtype(), '[/?]') and '<C-t>' or '<S-C-z>' end,
-  { expr = true }
-)
+vim.keymap.set('c', '<S-Tab>', function()
+  return string.match(vim.fn.getcmdtype(), '[/?]') and '<C-t>' or '<S-C-z>'
+end, { expr = true })
 
 -- replace standard dumb up/down with improved command-line-history-aware <Up><Down>
 vim.keymap.set('c', '<C-p>', function() return vim.fn.pumvisible() >= 1 and '<C-p>' or '<Up>' end, { expr = true })
