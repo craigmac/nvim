@@ -159,8 +159,11 @@ local lua_ls_config = {
     -- add nvim rtp paths to installed plugins and builtin $VIMRUNTIME/lua
     client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
       workspace = {
-        -- BUG: https://github.com/neovim/nvim-lspconfig/issues/3189
-        library = vim.api.nvim_get_runtime_file('', true),
+        -- Filter out stdpath('config') and it's 'after' directory to fix
+        -- https://github.com/neovim/nvim-lspconfig/issues/3189
+        library = vim.tbl_filter(function(d)
+          return not d:match(vim.fn.stdpath('config') .. '/?a?f?t?e?r?')
+        end, vim.api.nvim_get_runtime_file('', true))
       },
     })
   end,
