@@ -1,7 +1,7 @@
 -- nvim nightly config
 
-My = {}
 
+require('my.globals')
 require('my.options')
 require('my.autocmds')
 require('my.keymaps')
