@@ -16,6 +16,11 @@ nnoremap <expr> n 'Nn'[v:searchforward]
 nnoremap <expr> N 'nN'[v:searchforward]
 ]])
 
+-- set in $VIMRUNTIME/lua/vim/_defaults.lua but doesn't show float automatically
+vim.keymap.set('n', ']d', function() vim.diagnostic.jump({ count = 1, float = true, wrap = false }) end)
+vim.keymap.set('n', '[d', function() vim.diagnostic.jump({ count = -1, float = true, wrap = false }) end)
+vim.keymap.set('n', '[D', function() vim.diagnostic.jump({ count = 999, float = true, wrap = false }) end)
+vim.keymap.set('n', '[D', function() vim.diagnostic.jump({ count = -999, float = true, wrap = false }) end)
 
 vim.keymap.set('n', 'j', function()
   return (vim.v.count > 0 or not vim.wo.wrap) and 'j' or 'gj'
