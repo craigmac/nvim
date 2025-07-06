@@ -63,6 +63,7 @@ local toggleable_opts = {
   ['|'] = 'cursorcolumn',
   n = 'number',
   r = 'relativenumber',
+  z = 'foldenable'
 }
 for k, v in pairs(toggleable_opts) do
   vim.keymap.set('n', string.format('yo%s', k), string.format('<Cmd>set %s!<CR>', v))
