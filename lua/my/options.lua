@@ -1,5 +1,5 @@
 -- special characters and display
-vim.o.fillchars = 'eob:⌁,diff: ,fold: ,foldclose:▶,foldopen:▼,lastline:⋯,msgsep:─,trunc:⋯,truncrl:⋯'
+vim.o.fillchars = 'eob:-,diff: ,fold: ,foldclose:▶,foldopen:▼,lastline:⋯,msgsep:─,trunc:⋯,truncrl:⋯'
 vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,t:ver25-TermCursor'
 vim.o.listchars = 'eol:↵,tab:⇥ ,trail:░,extends:»,precedes:«,nbsp:⍽'
 vim.o.list = true
@@ -58,37 +58,3 @@ vim.o.undofile = true
 -- shorter delay to trigger `:h vim.lsp.buf.document_highlight()`
 vim.o.updatetime = 500
 vim.o.wildcharm = tonumber(vim.keycode('<C-z>'))
-
--- menus: see `:h popup-menu` and `$VIMRUNTIME/lua/vim/_defaults.lua`
-vim.cmd.aunmenu({ args = { 'disable', 'PopUp.How-to\\ disable\\ mouse' } })
-vim.cmd.aunmenu({ args = { 'disable', 'PopUp.Configure\\ Diagnostics' } })
-vim.cmd.aunmenu({ args = { 'disable', 'PopUp.Open\\ in\\ web\\ browser' } })
-
-vim.cmd.anoremenu([[PopUp.Go\ to\ declaration <Cmd>lua vim.lsp.buf.declaration()<CR>]])
-vim.cmd.anoremenu([[PopUp.Go\ to\ implementation <Cmd>lua vim.lsp.buf.implementation()<CR>]])
-vim.cmd.anoremenu([[PopUp.Go\ to\ type\ definition <Cmd>lua vim.lsp.buf.type_definition()<CR>]])
-vim.cmd.anoremenu([[PopUp.Go\ to\ references <Cmd>lua vim.lsp.buf.references()<CR>]])
-vim.cmd.anoremenu([[PopUp.Rename\ symbol <Cmd>lua vim.lsp.buf.rename()<CR>]])
-vim.cmd.anoremenu([[PopUp.Show\ Code\ actions <Cmd>lua vim.lsp.buf.code_action()<CR>]])
-vim.cmd.anoremenu([[PopUp.Show\ Document\ symbols <Cmd>lua vim.lsp.buf.document_symbol()<CR>]])
-vim.cmd.anoremenu([[PopUp.Show\ Workspace\ symbols <Cmd>lua vim.lsp.buf.workspace_symbol()<CR>]])
-vim.cmd.anoremenu([[PopUp.Show\ incoming\ calls <Cmd>lua vim.lsp.buf.incoming_calls()<CR>]])
-vim.cmd.anoremenu([[PopUp.Show\ outgoing\ calls <Cmd>lua vim.lsp.buf.outgoing_calls()<CR>]])
-vim.cmd.anoremenu([[PopUp.Format\ buffer <Cmd>lua vim.lsp.buf.format()<CR>]])
-vim.cmd.anoremenu(
-  [[PopUp.Toggle\ inlay-hints <Cmd>lua vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())<CR>]]
-)
-
--- disable the lsp-related entries now that they are defined, and selectively enable them in LspAttach
-vim.cmd.aunmenu({ args = { 'disable', 'PopUp.Go\\ to\\ declaration' } })
-vim.cmd.aunmenu({ args = { 'disable', 'PopUp.Go\\ to\\ implementation' } })
-vim.cmd.aunmenu({ args = { 'disable', 'PopUp.Go\\ to\\ type\\ definition' } })
-vim.cmd.aunmenu({ args = { 'disable', 'PopUp.Go\\ to\\ references' } })
-vim.cmd.aunmenu({ args = { 'disable', 'PopUp.Rename\\ symbol' } })
-vim.cmd.aunmenu({ args = { 'disable', 'PopUp.Show\\ Code\\ actions' } })
-vim.cmd.aunmenu({ args = { 'disable', 'PopUp.Show\\ Document\\ symbols' } })
-vim.cmd.aunmenu({ args = { 'disable', 'PopUp.Show\\ Workspace\\ symbols' } })
-vim.cmd.aunmenu({ args = { 'disable', 'PopUp.Show\\ incoming\\ calls' } })
-vim.cmd.aunmenu({ args = { 'disable', 'PopUp.Show\\ outgoing\\ calls' } })
-vim.cmd.aunmenu({ args = { 'disable', 'PopUp.Format\\ buffer' } })
-vim.cmd.aunmenu({ args = { 'disable', 'PopUp.Toggle\\ inlay-hints' } })

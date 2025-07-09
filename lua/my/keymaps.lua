@@ -81,30 +81,5 @@ vim.keymap.set('n', '<Leader>e', function()
   return ':Ex .<CR>'
 end, { expr = true, silent = true })
 
--- (g)o (m)enu: popup the right-click menu at cursor position
--- overwrites default `:h gm` that I never use
--- vim.keymap.set('n', 'gm', function()
---   ---@type vim.lsp.Client[]|{}
---   local clients = vim.lsp.get_clients({ bufnr = 0 })
---
---   if vim.tbl_isempty(clients) then
---     vim.cmd.aunmenu({ args = { 'disable', 'PopUp.Show\\ Code\\ actions' } })
---     vim.cmd.aunmenu({ args = { 'disable', 'PopUp.Go\\ to\\ declaration' } })
---     vim.cmd.aunmenu({ args = { 'disable', 'PopUp.Go\\ to\\ type\\ definition' } })
---     vim.cmd.aunmenu({ args = { 'disable', 'PopUp.Go\\ to\\ references' } })
---     vim.cmd.aunmenu({ args = { 'disable', 'PopUp.Rename\\ symbol' } })
---     vim.cmd.aunmenu({ args = { 'disable', 'PopUp.Show\\ Document\\ symbols' } })
---     vim.cmd.aunmenu({ args = { 'disable', 'PopUp.Show\\ incoming\\ calls' } })
---     vim.cmd.aunmenu({ args = { 'disable', 'PopUp.Show\\ outgoing\\ calls' } })
---     vim.cmd.aunmenu({ args = { 'disable', 'PopUp.Toggle\\ inlay-hints' } })
---     vim.cmd.aunmenu({ args = { 'disable', 'PopUp.Show\\ Workspace\\ symbols' } })
---     vim.cmd.aunmenu({ args = { 'disable', 'PopUp.Format\\ buffer' } })
---   end
---   -- if #clients > 1 then
---     -- loop to check what methods are supported in each attached lsp server
---     -- for 
---   -- end
---   vim.cmd.popup('PopUp')
--- end)
-
 -- (g)o (m)enu - overwrites default `:h gm` that I never use
+vim.keymap.set('n', 'gm', function() require('my.menus').lsp_popup_menu() end, { desc = 'Contextual LSP popup menu' })
