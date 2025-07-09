@@ -3,17 +3,17 @@
 -- set here:
 -- gd       - (d)efinition
 -- gD       - (D)eclaraction
--- gy       - t(y)pe definition
 -- g(       - incoming calls
 -- g)       - outgoing calls
 -- yoh      - toggle inlay hints
 -- grO      - workspace symbols, like gO is for buffer symbols but using gr-prefix for lsp stuff
+-- <Leader>gq - like gq to format, but for whole buffer
 --
 -- See what attached lsp client supports:
 -- :lua =vim.lsp.get_clients()[1].server_capabilities
 
 local function lspdetach_cb(args)
-  local client = vim.lsp.get_client_by_id(args.data.client_id)
+  local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
   -- Remove the autocommand to format the buffer on save, if it exists
   if client:supports_method('textDocument/formatting') then
     vim.api.nvim_clear_autocmds({
@@ -28,26 +28,12 @@ local function lspattach_cb(args)
 
   vim.notify_once(string.format('%s %s attached.', '󰋼 ', client.name), vim.log.INFO)
 
-  if client:supports_method('textDocument/codeAction') then
-  end
-
   if client:supports_method('textDocument/definition') then
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = true })
   end
+
   if client:supports_method('textDocument/declaration') then
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { buffer = true })
-  end
-
-  if client:supports_method('textDocument/typeDefinition') then
-  end
-
-  if client:supports_method('textDocument/references') then
-  end
-
-  if client:supports_method('textDocument/rename') then
-  end
-
-  if client:supports_method('textDocument/documentSymbol') then
   end
 
   if client:supports_method('textDocument/completion') then
@@ -65,7 +51,6 @@ local function lspattach_cb(args)
     if client:supports_method('callHierarchy/incomingCalls') then
       vim.keymap.set('n', 'g(', function() vim.lsp.buf.incoming_calls() end, { buffer = true })
     end
-
     if client:supports_method('callHierarchy/outgoingCalls') then
       vim.keymap.set('n', 'g)', function() vim.lsp.buf.outgoing_calls() end, { buffer = true })
     end
@@ -83,6 +68,7 @@ local function lspattach_cb(args)
     vim.keymap.set('n', 'grO', function() require('fzf-lua').lsp_live_workspace_symbols() end, { buffer = true })
   end
 
+  -- Usually not needed if server supports "textDocument/willSaveWaitUntil"
   if
       not client:supports_method('textDocument/willSaveWaitUntil')
       and client:supports_method('textDocument/formatting')
@@ -93,7 +79,6 @@ local function lspattach_cb(args)
         vim.lsp.buf.format({
           bufnr = args.buf,
           id = client.id,
-          -- filter = function(c) return c.name ~= 'lua_ls' end,
         })
       end,
     })
@@ -104,6 +89,10 @@ local function lspattach_cb(args)
     autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()
     autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
     ]])
+  end
+
+  if client:supports_method('textDocument/formatting') then
+    vim.keymap.set('n', '<Leader>gq', function() vim.lsp.buf.format() end, { buffer = true })
   end
 
   if client:supports_method('textDocument/foldingRange') then
