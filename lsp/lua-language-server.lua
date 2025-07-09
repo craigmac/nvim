@@ -15,11 +15,21 @@ return {
   -- settings we want to apply globally to all workspaces
   settings = {
     Lua = {
+      codeLens = {
+        enable = true
+      },
       diagnostics = {
         -- using e.g., 'vim' for a global is fine
         disable = { 'lowercase-global' },
         -- variables that are known globals
-        globals = { 'vim', 'it' },
+        globals = {
+          'vim',
+          -- busted (test framework)
+          'it',
+          'after_each',
+          'before_each',
+          'describe',
+        },
         -- never diagnose ignored files. default is "Opened" (diagnose them if opened)
         ignoredFiles = "Disable",
         -- don't report `_` as unused in `local foo, _ = bar()`
