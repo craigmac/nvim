@@ -55,13 +55,14 @@ vim.keymap.set('i', 'kj', '<Esc>')
 vim.keymap.set('i', 'jk', '<Esc>')
 
 -- `:h 'wcm` explains <C-z> here
-vim.keymap.set('c', '<Tab>', function()
-  return string.match(vim.fn.getcmdtype(), '[/?]') and '<C-g>' or '<C-z>'
-end, { expr = true })
-
-vim.keymap.set('c', '<S-Tab>', function()
-  return string.match(vim.fn.getcmdtype(), '[/?]') and '<C-t>' or '<S-C-z>'
-end, { expr = true })
+-- now that expansion using Tab in / and ? is merged this is less useful
+-- vim.keymap.set('c', '<Tab>', function()
+--   return string.match(vim.fn.getcmdtype(), '[/?]') and '<C-g>' or '<C-z>'
+-- end, { expr = true })
+--
+-- vim.keymap.set('c', '<S-Tab>', function()
+--   return string.match(vim.fn.getcmdtype(), '[/?]') and '<C-t>' or '<S-C-z>'
+-- end, { expr = true })
 
 -- replace standard dumb up/down with improved command-line-history-aware <Up><Down>
 vim.keymap.set('c', '<C-p>', function() return vim.fn.pumvisible() >= 1 and '<C-p>' or '<Up>' end, { expr = true })
