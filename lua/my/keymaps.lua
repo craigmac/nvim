@@ -54,30 +54,6 @@ vim.keymap.set('x', '.', ':normal! .<CR>')
 vim.keymap.set('i', 'kj', '<Esc>')
 vim.keymap.set('i', 'jk', '<Esc>')
 
--- some vim-unimpaired extras not shipped in $VIMRUNTIME/lua/vim/_defaults.lua
-vim.keymap.set('x', '[e', ":move '<-2<cr>gv=gv", { silent = true })
-vim.keymap.set('x', ']e', ":move '>+1<CR>gv=gv", { silent = true })
-vim.keymap.set('n', '[e', ':<C-u>move -2<cr>==', { silent = true })
-vim.keymap.set('n', ']e', ':<C-u>move +1<CR>==', { silent = true })
-
--- vim-unimpaired 'yo<key>' option toggles
-local toggleable_opts = {
-  c = 'cursorline',
-  l = 'list',
-  s = 'spell',
-  ['|'] = 'cursorcolumn',
-  n = 'number',
-  r = 'relativenumber',
-  z = 'foldenable'
-}
-for k, v in pairs(toggleable_opts) do
-  vim.keymap.set('n', string.format('yo%s', k), string.format('<Cmd>set %s!<CR>', v))
-end
-
-vim.keymap.set('n', 'yov', function()
-  return string.format(':<C-u>set virtualedit%s=all<CR>', vim.o.virtualedit == '' and '+' or '-')
-end, { expr = true })
-
 -- `:h 'wcm` explains <C-z> here
 vim.keymap.set('c', '<Tab>', function()
   return string.match(vim.fn.getcmdtype(), '[/?]') and '<C-g>' or '<C-z>'
@@ -130,24 +106,4 @@ end, { expr = true, silent = true })
 --   vim.cmd.popup('PopUp')
 -- end)
 
--- (t)oggle (t)erminal: opens or reuses visible terminal buffer in current tabpage
-vim.keymap.set('n', '<Leader>tt', function()
-  local curr_tab = vim.api.nvim_get_current_tabpage()
-  local windows = vim.api.nvim_tabpage_list_wins(curr_tab)
-  -- reuse any existing :term in tabpage
-  for _, winnr in ipairs(windows) do
-    local bufnr = vim.api.nvim_win_get_buf(winnr)
-    local buftype = vim.api.nvim_get_option_value('buftype', { buf = bufnr })
-    if buftype == 'terminal' then
-      vim.fn.win_gotoid(winnr)
-      vim.cmd.startinsert()
-      return
-    end
-  end
-  -- no reusable :term found, start new terminal
-  vim.cmd.split()
-  vim.cmd.wincmd('J')
-  vim.cmd.term()
-  vim.api.nvim_win_set_height(0, 10)
-  vim.cmd.startinsert()
-end)
+-- (g)o (m)enu - overwrites default `:h gm` that I never use
