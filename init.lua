@@ -25,6 +25,8 @@ local plugins = {
   { src = 'https://github.com/kylechui/nvim-surround' },
   { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main' },
   { src = 'https://github.com/HoNamDuong/hybrid.nvim' },
+  { src = 'https://github.com/andrewferrier/debugprint.nvim' },
+
 }
 
 vim.pack.add(plugins)
@@ -32,3 +34,4 @@ vim.pack.add(plugins)
 require('plugins.fzf-lua')
 require('plugins.smart-splits')
 require('plugins.nvim-surround')
+require('plugins.colorscheme')
