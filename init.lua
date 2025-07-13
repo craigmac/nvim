@@ -25,13 +25,20 @@ local plugins = {
   { src = 'https://github.com/kylechui/nvim-surround' },
   { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main' },
   { src = 'https://github.com/HoNamDuong/hybrid.nvim' },
+  -- g? operator
   { src = 'https://github.com/andrewferrier/debugprint.nvim' },
-
+  -- gl/gL align operator
+  { src = 'https://github.com/tommcdo/vim-lion' },
+  { src = 'https://github.com/glacambre/firenvim' },
 }
 
 vim.pack.add(plugins)
+
+-- installs integration for detected browsers
+vim.fn['firenvim#install'](0)
 
 require('plugins.fzf-lua')
 require('plugins.smart-splits')
 require('plugins.nvim-surround')
 require('plugins.colorscheme')
+

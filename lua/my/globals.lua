@@ -31,6 +31,8 @@ vim.g.nvim_palette = {
   bright_gray3 = '#c4c6cd',
   bright_gray4 = '#9b9ea4',
 }
+-- when aligning with gl/gL reduces spaces to minimum required
+vim.g.lion_squeeze_spaces = 1
 
 ---@param value? number Minwid field value or 0 if no N specified
 ---@param mouse_clicks number How many mouse clicks - to detect double click if needed
