@@ -47,6 +47,7 @@ vim.o.shiftwidth = 2
 vim.o.softtabstop = -1 -- use shiftwidth
 
 -- startup/behaviour
+vim.o.cpoptions = vim.o.cpoptions .. '~'
 vim.o.exrc = true
 vim.o.secure = true
 vim.o.diffopt = vim.o.diffopt .. ',followwrap,algorithm:minimal'
