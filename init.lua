@@ -29,16 +29,15 @@ local plugins = {
   { src = 'https://github.com/andrewferrier/debugprint.nvim' },
   -- gl/gL align operator
   { src = 'https://github.com/tommcdo/vim-lion' },
+  -- run `:call firenvim#install(0)` if this updates and on first install
   { src = 'https://github.com/glacambre/firenvim' },
 }
 
 vim.pack.add(plugins)
 
--- installs integration for detected browsers
-vim.fn['firenvim#install'](0)
-
 require('plugins.fzf-lua')
 require('plugins.smart-splits')
 require('plugins.nvim-surround')
 require('plugins.colorscheme')
+require('plugins.debugprint')
 
