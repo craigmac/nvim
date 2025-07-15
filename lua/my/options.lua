@@ -33,6 +33,9 @@ vim.o.shortmess = vim.o.shortmess .. table.concat({
   -- 'q', -- no 'recording @q' when recording macro
   -- 'S', -- no [1/5] search count shown
 })
+-- HACK: <C-z> is 26 internally but vim.keycode call returns string '\26'
+vim.o.wildcharm = tonumber(string.match(vim.keycode('<C-z>'), '%d+'))
+vim.o.wildmode = 'noselect:lastused,full'
 
 -- bars and lines
 vim.o.showcmdloc = 'statusline'
@@ -58,4 +61,3 @@ vim.o.tabclose = 'uselast'
 vim.o.undofile = true
 -- shorter delay to trigger `:h vim.lsp.buf.document_highlight()`
 vim.o.updatetime = 500
-vim.o.wildcharm = tonumber(vim.keycode('<C-z>'))
