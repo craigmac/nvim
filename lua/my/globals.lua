@@ -68,18 +68,19 @@ end
 ---@return string # `:help 'stl` format string
 function My.StatusLine()
   local parts = {
-    '󰉋 ',
-    '%{fnamemodify(getcwd(0), ":t")}',
+    ' @',
+    '%{fnamemodify(getcwd(0), ":t")} ',
     '│ %<%.50(%f%)',
-    '%(%H %W %M %R%)',
-    '%(%@v:lua.My.ShowDiagnostics@%{v:lua.My.diagnostic_status()}%X%)',
+    '%( %H %W %M %R%)',
+    '%( %@v:lua.My.ShowDiagnostics@%{v:lua.My.diagnostic_status()}%X%)',
     '%=',
-    '%{% &showcmdloc == "statusline" ? "%.10( 󰌌 %S%)" : "" %}',
-    '│ %(%l:%v%) ',
-    '│ %.10(%{&filetype}%)',
+    '%{reg_recording() == "" ? "" : "foo"}',
+    '%{% &showcmdloc == "statusline" ? "%.10(%S…%)" : "" %}',
+    ' %( #%l–%L:%v%)',
+    '│ %.10(%{&filetype}%) ',
     '│ %P ',
   }
-  return table.concat(parts, ' ')
+  return table.concat(parts)
 end
 
 ---@param cmd_arg string The command argument to `:find`.
