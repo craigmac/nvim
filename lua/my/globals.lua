@@ -83,19 +83,14 @@ function My.StatusLine()
   return table.concat(parts)
 end
 
----@param cmd_arg string The command argument to `:find`.
----@param cmd_completions boolean True when function being called to get cmdline matches for `:find` command.
----@return string[]|{} # The list of strings found or an empty list if nothing found/an error occurred.
-function My.FindFunc(cmd_arg, cmd_completions)
-  -- not being called from command-line for results for `:h 'findfunc'`
-  if not cmd_completions then
-    vim.print('RgFiles() cmd_completions was false.')
-    -- TODO: what do we want to do here then, just provide all files `rg --files` finds?
-    return {}
-  end
-  -- being called as completion provider for `:find` on command-line
-  vim.print('MyFindFunc() cmd_arg: ' .. cmd_arg)
-  local pattern = cmd_completions and string.format('%s*', cmd_arg) or cmd_arg
-
-  return { 'fileone', 'filetwo', 'filethree' }
+---https://github.com/neovim/neovim/pull/34545
+---
+---Evaluated when searching for file names using the `:find` command
+function My.FindFunc(name)
+  local search_pattern = name or '.'
+  local cmd = vim.list_extend({
+    'rg', '--files', '--color', 'never', '--glob', search_pattern
+  }, vim.opt.path:get())
+  local res = vim.system(cmd, { text = true }):wait()
+  return vim.split(res.stdout, '\n', { trimempty = true })
 end
