@@ -40,4 +40,3 @@ require('plugins.smart-splits')
 require('plugins.nvim-surround')
 require('plugins.colorscheme')
 require('plugins.debugprint')
-

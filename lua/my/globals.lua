@@ -45,7 +45,7 @@ end
 function My.diagnostic_status()
   -- prioritize user set signs if they exist
   local user_signs = vim.tbl_get(vim.diagnostic.config(), 'signs', 'text') or {}
-  local signs = vim.tbl_extend('keep', user_signs, { 'E', 'W', 'I', 'H' })
+  local signs = vim.tbl_extend('keep', user_signs, { 'E:', 'W:', 'I:', 'H:' })
 
   local counts = vim.diagnostic.count(0)
   local result = vim.iter(pairs(counts))
