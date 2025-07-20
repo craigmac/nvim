@@ -26,7 +26,7 @@ end
 local function lspattach_cb(args)
   local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
 
-  vim.notify_once(string.format('%s %s attached.', '󰋼 ', client.name), vim.log.INFO)
+  vim.notify_once(string.format('%s attached.', client.name), vim.log.INFO)
 
   if client:supports_method('textDocument/definition') then
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = true })
