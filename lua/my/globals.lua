@@ -58,12 +58,37 @@ function My.diagnostic_status()
   -- return ('%s%s%s'):format('%@v:lua._G.Press@', result, '%X')
 end
 
--- function My.TabLine ()
---   return table.concat({
---     '%{% tabpagenr() %}',
---     ' %t'
---   })
--- end
+---@param n number tabpage number to create label for
+---@return string # label for tabpage `n`
+function My.TabLabel(n)
+  local buflist = vim.fn.tabpagebuflist(n)
+  local winnr = vim.fn.tabpagewinnr(n)
+  local bufname = vim.fn.bufname(buflist[winnr])
+  local isdir = bufname:sub(#bufname) == '/'
+  local name = vim.fn.fnamemodify(bufname, isdir and ':h:t' or ':t') .. (isdir and '/' or '')
+  name = name:len() > 20 and name:sub(1, 20) .. '…' or name
+  return name == '' and 'No Name' or name
+end
+
+---@return string # stl-format string
+function My.TabLine()
+  local s = {}
+  for i = 1, vim.fn.tabpagenr('$') do
+    local active_tab = i == vim.fn.tabpagenr()
+    local hlgroup = active_tab and '%#TabLineSel#' or '%#TabLine#'
+
+    vim.list_extend(s, {
+      hlgroup,
+      (' %%%dT'):format(i),
+      tostring(i),
+      (' %%{v:lua.My.TabLabel(%d)}'):format(i),
+      '%T ',
+    })
+  end
+  -- After last tabpage: Fill with TabLineFill highlight
+  vim.list_extend(s, { '%#TabLineFill#' })
+  return table.concat(s)
+end
 
 ---@return string # `:help 'stl` format string
 function My.StatusLine()

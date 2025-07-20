@@ -41,7 +41,7 @@ vim.o.showcmdloc = 'statusline'
 vim.o.showtabline = 2
 vim.o.signcolumn = 'no'
 vim.o.statusline = '%!v:lua.My.StatusLine()'
--- vim.o.tabline = '%!v:lua.My.TabLine()'
+vim.o.tabline = '%!v:lua.My.TabLine()'
 
 -- editing
 vim.o.expandtab = true

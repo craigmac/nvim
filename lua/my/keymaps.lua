@@ -83,3 +83,6 @@ end, { expr = true, silent = true })
 
 -- (g)o (m)enu - overwrites default `:h gm` that I never use
 vim.keymap.set('n', 'gm', function() require('my.menus').lsp_popup_menu() end, { desc = 'Contextual LSP popup menu' })
+
+-- bind alt+1..9 to tabpage numbers for quick targeting
+for i = 1, 9 do vim.keymap.set('n', ('<M-%d>'):format(i), (':<C-u>%dtabnext<CR>'):format(i)) end

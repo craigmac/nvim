@@ -25,9 +25,7 @@ local plugins = {
   { src = 'https://github.com/kylechui/nvim-surround' },
   { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main' },
   { src = 'https://github.com/HoNamDuong/hybrid.nvim' },
-  -- g? operator
   { src = 'https://github.com/andrewferrier/debugprint.nvim' },
-  -- gl/gL align operator
   { src = 'https://github.com/tommcdo/vim-lion' },
   -- run `:call firenvim#install(0)` if this updates and on first install
   { src = 'https://github.com/glacambre/firenvim' },
