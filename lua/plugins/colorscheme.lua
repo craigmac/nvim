@@ -17,6 +17,7 @@ require('hybrid').setup({
     highlights['NormalFloat'] = { bg = colors.none }
     highlights['CurSearch'] = { link = 'IncSearch' }
     highlights['netrwMarkFile'] = { reverse = true }
+    highlights['Comment'] = { fg = colors.fg_soft, italic = false }
 
     highlights['StatusLine'] = { fg = colors.bg, bg = colors.fg }
     highlights['StatusLineNC'] = { fg = colors.bg, bg = colors.fg_soft }
