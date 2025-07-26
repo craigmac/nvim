@@ -18,6 +18,13 @@ require('hybrid').setup({
     highlights['CurSearch'] = { link = 'IncSearch' }
     highlights['netrwMarkFile'] = { reverse = true }
     highlights['Comment'] = { fg = colors.fg_soft, italic = false }
+    highlights['WinBar'] = { link = 'StatusLine' }
+    highlights['WinBarNC'] = { link = 'StatusLineNC' }
+    highlights['WinSeparator'] = { link = 'NonText' }
+
+    highlights['TabLine'] = { link = 'StatusLineNC' }
+    highlights['TabLineFill'] = { link = 'StatusLineNC' }
+    highlights['TabLineSel'] = { link = 'StatusLine' }
 
     highlights['StatusLine'] = { fg = colors.bg, bg = colors.fg }
     highlights['StatusLineNC'] = { fg = colors.bg, bg = colors.fg_soft }
