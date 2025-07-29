@@ -34,6 +34,35 @@ vim.g.nvim_palette = {
 -- when aligning with gl/gL reduces spaces to minimum required
 vim.g.lion_squeeze_spaces = 1
 
+-- <C-n>, <C-t>, and <C-w> must be unbound to be used for firenvim instead of browser,
+-- on linux firefox you can't unbind these, but you can set alternatives in the extension
+-- shortcuts to send them to firenvim using a different shortcuts,
+-- I use <A-t> <A-w> and <A-n>.
+vim.g.firenvim_config = {
+  globalSettings = {
+    alt = 'all',
+    -- hide `cmdline='firenvim'` after 3 seconds in we never get message to stop displaying it
+    cmdlineTimeout = 3000,
+  },
+  -- js pattern against full URL, 'priority' is tiebreaker (higher wins) on multiple matches
+  localSettings = {
+    ['.*'] = {
+      -- defaults for when there's no narrower pattern match against the URL
+      cmdline = 'firenvim',
+      content = 'text',
+      priority = 0,
+      -- https://github.com/glacambre/firenvim#configuring-what-elements-firenvim-should-appear-on
+      selector = 'textarea:not([readonly], [aria-readonly]), div[role="textbox"]',
+      takeover = 'never'
+    },
+    ['https?://github.com/.*'] = {
+      content = 'markdown',
+      priority = 1,
+      takeover = 'always',
+    },
+  }
+}
+
 ---@param value? number Minwid field value or 0 if no N specified
 ---@param mouse_clicks number How many mouse clicks - to detect double click if needed
 ---@param mouse_button string Mouse button used, typically l, r, and m but can be any lowercase ASCII
@@ -56,6 +85,15 @@ function My.diagnostic_status()
   return result
   -- this wouldn't work...even when using %{% .. %} form to re-evalute
   -- return ('%s%s%s'):format('%@v:lua._G.Press@', result, '%X')
+end
+
+---@return string # stl-format string
+function My.Winbar()
+  -- consider WinBarNC as well, we don't need to always calc everything!
+  local bufnr = vim.fn.bufnr()
+  -- local active_winbar =
+  -- local curbuf_winbar =
+  return '%=%t%='
 end
 
 ---@param n number tabpage number to create label for
@@ -94,8 +132,9 @@ end
 function My.StatusLine()
   local parts = {
     ' @',
-    '%{fnamemodify(getcwd(0), ":t")} ',
-    '│ %<%.50(%f%)',
+    -- '%{fnamemodify(getcwd(0), ":t")} ',
+    '%{fnamemodify(getcwd(0), ":~")} │',
+    -- '│ %<%.50(%f%)',
     '%( %H %W %M %R%)',
     '%( %@v:lua.My.ShowDiagnostics@%{v:lua.My.diagnostic_status()}%X%)',
     '%=',

@@ -37,6 +37,7 @@ require('hybrid').setup({
     highlights['StatusLine']                 = { fg = colors.bg, bg = colors.fg }
     highlights['StatusLineNC']               = { fg = colors.bg, bg = colors.fg_soft }
 
+    highlights['MsgSeparator']               = { fg = colors.fg, bg = colors.none }
     highlights['TabLine']                    = { link = 'StatusLineNC' }
     highlights['TabLineFill']                = { link = 'StatusLineNC' }
     highlights['TabLineSel']                 = { link = 'StatusLine' }
