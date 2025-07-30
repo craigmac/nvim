@@ -37,11 +37,13 @@ vim.o.wildcharm = vim.keycode('<C-z>'):byte()
 vim.o.wildmode = 'noselect:lastused,full'
 
 -- bars and lines
+vim.o.laststatus = 3
 vim.o.showcmdloc = 'statusline'
-vim.o.showtabline = 2
+vim.o.showtabline = 1
 vim.o.signcolumn = 'no'
 vim.o.statusline = '%!v:lua.My.StatusLine()'
 vim.o.tabline = '%!v:lua.My.TabLine()'
+vim.o.winbar = '%!v:lua.My.Winbar()'
 
 -- editing
 vim.o.expandtab = true
