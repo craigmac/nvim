@@ -42,11 +42,6 @@ local function lspattach_cb(args)
     vim.keymap.set('i', '<C-i>', function() vim.lsp.completion.get() end)
   end
 
-  -- highlight hex colors like colorizer!
-  if client:supports_method('textDocument/documentColor') then
-    vim.lsp.document_color.enable(true, args.buf)
-  end
-
   if client:supports_method('textDocument/prepareCallHierarchy') then
     if client:supports_method('callHierarchy/incomingCalls') then
       vim.keymap.set('n', 'g(', function() vim.lsp.buf.incoming_calls() end, { buffer = true })
