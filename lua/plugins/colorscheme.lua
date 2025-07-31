@@ -45,6 +45,17 @@ require('hybrid').setup({
     highlights['WinBar']                     = { bg = colors.bg, fg = colors.blue }
     highlights['WinBarNC']                   = { bg = colors.bg, fg = colors.fg }
     highlights['WinSeparator']               = { link = 'NonText' }
+
+    -- for use in 'stl', use `%<N>*` to start and `%*` to reset
+    highlights['User1']                      = { bg = colors.red, fg = colors.bg }
+    highlights['User2']                      = { bg = colors.green, fg = colors.bg }
+    highlights['User3']                      = { bg = colors.yellow, fg = colors.bg }
+    highlights['User4']                      = { bg = colors.blue, fg = colors.bg }
+    highlights['User5']                      = { bg = colors.magenta, fg = colors.bg }
+    highlights['User6']                      = { bg = colors.cyan, fg = colors.bg }
+    highlights['User7']                      = { bg = colors.fg, fg = colors.bg }
+    highlights['User8']                      = { bg = colors.bg_soft, fg = colors.bg }
+    highlights['User9']                      = { bg = colors.bg_hard, fg = colors.fg_hard }
   end,
 })
 require('hybrid').load()

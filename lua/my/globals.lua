@@ -71,29 +71,16 @@ function My.ShowDiagnostics(value, mouse_clicks, mouse_button, mods)
   vim.diagnostic.open_float({ scope = 'buffer' })
 end
 
-function My.diagnostic_status()
-  -- prioritize user set signs if they exist
-  local user_signs = vim.tbl_get(vim.diagnostic.config(), 'signs', 'text') or {}
-  local signs = vim.tbl_extend('keep', user_signs, { 'E:', 'W:', 'I:', 'H:' })
-
-  local counts = vim.diagnostic.count(0)
-  local result = vim.iter(pairs(counts))
-      :map(function(severity, count)
-        return ('%s%s'):format(signs[severity], count)
-      end)
-      :join(' ')
-  return result
-  -- this wouldn't work...even when using %{% .. %} form to re-evalute
-  -- return ('%s%s%s'):format('%@v:lua._G.Press@', result, '%X')
-end
-
 ---@return string # stl-format string
 function My.Winbar()
-  -- consider WinBarNC as well, we don't need to always calc everything!
-  local bufnr = vim.fn.bufnr()
-  -- local active_winbar =
-  -- local curbuf_winbar =
-  return '%=%t%='
+  -- local bufnr = vim.fn.bufnr()
+  return table.concat({
+    '%=',
+    -- string.format('(%d) ', bufnr),
+    '%t',
+    '%( [%M%R%H%W]%)',
+    '%='
+  })
 end
 
 ---@param n number tabpage number to create label for
@@ -131,18 +118,18 @@ end
 ---@return string # `:help 'stl` format string
 function My.StatusLine()
   local parts = {
-    ' @',
-    -- '%{fnamemodify(getcwd(0), ":t")} ',
-    '%{fnamemodify(getcwd(0), ":~")} │',
-    -- '│ %<%.50(%f%)',
-    '%( %H %W %M %R%)',
-    '%( %@v:lua.My.ShowDiagnostics@%{v:lua.My.diagnostic_status()}%X%)',
+    ' @ ',
+    '%{fnamemodify(getcwd(0), ":~")}',
+    ' │ ',
+    '%(%{ v:lua.vim.diagnostic.status() }%)',
     '%=',
-    '%{reg_recording() == "" ? "" : "foo"}',
-    '%{% &showcmdloc == "statusline" ? "%.10(%S…%)" : "" %}',
+    '%{% reg_recording() == "" ? "" : "%1*[rec \\""..reg_recording().."]%* " %}',
+    '%{% &showcmdloc == "statusline" ? "%(%4* %S … %*%)" : "" %}',
     ' %( #%l–%L:%v%)',
-    '│ %.10(%{&filetype}%) ',
-    '│ %P ',
+    ' │ ',
+    '%.10(%{&filetype}%)',
+    ' │ ',
+    '%P ',
   }
   return table.concat(parts)
 end

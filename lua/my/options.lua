@@ -30,7 +30,7 @@ vim.o.pumheight = 10
 vim.o.shortmess = vim.o.shortmess .. table.concat({
   'c', -- no 'match 1 of 2' etc. messages when scrolling through completions
   's', -- no 'search hit BOTTOM...' messages and don't show 'W' for wrapped before [1/3]
-  -- 'q', -- no 'recording @q' when recording macro
+  'q', -- no 'recording @q' when recording macro
   -- 'S', -- no [1/5] search count shown
 })
 vim.o.wildcharm = vim.keycode('<C-z>'):byte()
