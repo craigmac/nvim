@@ -4,6 +4,9 @@ My = {}
 vim.g.mapleader = ' '
 vim.g.netrw_banner = 0
 vim.g.netrw_hide = 0
+-- tells netrw to try fetching from this directory for missing dictionaries on `:h spell-SpellFileMissing`
+vim.g.spellfile_URL = 'https://github.com/craigmac/en_CA/raw/refs/heads/main/spell'
+
 -- assembled from `highlight_group.c` in neovim source
 vim.g.nvim_palette = {
   black = '#07080d', -- same as 'gray1', added for alias

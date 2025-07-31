@@ -99,6 +99,15 @@ vim.api.nvim_create_autocmd('UIEnter', {
     local client = vim.api.nvim_get_chan_info(vim.v.event.chan).client
     if client ~= nil and client.name == 'Firenvim' then
       vim.o.laststatus = 0
+      vim.o.showtabline = 0
+      vim.o.winbar = ''
+      vim.o.background = 'light'
+      vim.cmd.colorscheme('default')
+      vim.o.spelllang = 'canadian'  -- « Canadien, s'îl vous plait! »
+      vim.o.spelloptions = 'camel'  -- 'ConsideredFourSeparateWords' = 4 words to check
+      vim.o.spellsuggest = 'best,5' -- only show 5 suggestions
+      vim.o.spell = true
+      vim.cmd.startinsert()
     end
   end
 })
