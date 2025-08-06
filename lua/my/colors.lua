@@ -28,18 +28,36 @@ local p = {
 
 local hi = function(group, value) vim.api.nvim_set_hl(0, group, value) end
 
+-- small transparency effect on popupmenus, PmenuSel by default sets to 0.
+vim.o.pumblend = 5
+-- small transparency on floating windows
+vim.o.winblend = 5
+
+-- default bg #07080d (black aka gray1) doesn't work well when you use border characters,
+-- as it 'bleeds' beyond the border char boundaries
+hi('NormalFloat', { link = 'Normal' })
+
+-- this will not work well when terminal emulator cursor is set to reverse-video
+-- but it makes it way more obvious and works in visual mode too.
+hi('MatchParen', { reverse = true })
+
+-- default links to StatusLine, gives ugly black horizontal line on white bg
+hi('MsgSeparator', { fg = p.bright_gray2 })
+
+-- switch from bold to italic instead and lighten it
 hi('Statement', { fg = p.bright_gray3, italic = true })
 
+-- default doesn't match either PmenuSel or StatusLine, I'd rather it be consistent
+-- with at least one of them
 hi('TabLineSel', { link = 'PmenuSel' })
-hi('TabLineFill', { fg = p.bright_gray2, bg = p.black })
-hi('TabLineFill', { fg = '#e0e2ea', bg = '#07080d' })
+-- hi('TabLineFill', { link = 'Pmenu' })
 hi('TabLine', { link = 'Pmenu' })
 
--- for use in stl, for example: `'%1*Red background and black fg text.%* Default hl again'`
+-- for use in statusline format strings, for example: `'%1*<text goes here>%*'`
 hi('User1', { fg = p.black, bg = p.bright_red })
 hi('User2', { fg = p.black, bg = p.bright_green })
 hi('User3', { fg = p.black, bg = p.bright_yellow })
-hi('User4', { fg = p.bright_white, bg = p.bright_blue })
+hi('User4', { fg = p.black, bg = p.bright_blue })
 hi('User5', { fg = p.black, bg = p.bright_magenta })
-hi('User6', { fg = p.bright_white, bg = p.bright_cyan })
+hi('User6', { fg = p.black, bg = p.bright_cyan })
 hi('User7', { fg = p.black, bg = p.bright_white })
