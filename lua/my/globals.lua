@@ -4,8 +4,12 @@ My = {}
 vim.g.mapleader = ' '
 vim.g.netrw_banner = 0
 vim.g.netrw_hide = 0
+
 -- tells netrw to try fetching from this directory for missing dictionaries on `:h spell-SpellFileMissing`
 vim.g.spellfile_URL = 'https://github.com/craigmac/en_CA/raw/refs/heads/main/spell'
+
+-- otherwise $VIMRUNTIME/ftplugin/qf.vim will set one, and it doesn't play nice with laststatus=3 and winbar
+vim.g.qf_disable_statusline = 1
 
 -- assembled from `highlight_group.c` in neovim source
 vim.g.nvim_palette = {
@@ -34,13 +38,13 @@ vim.g.nvim_palette = {
   bright_gray3 = '#c4c6cd',
   bright_gray4 = '#9b9ea4',
 }
+
 -- when aligning with gl/gL reduces spaces to minimum required
 vim.g.lion_squeeze_spaces = 1
 
 -- <C-n>, <C-t>, and <C-w> must be unbound to be used for firenvim instead of browser,
 -- on linux firefox you can't unbind these, but you can set alternatives in the extension
--- shortcuts to send them to firenvim using a different shortcuts,
--- I use <A-t> <A-w> and <A-n>.
+-- shortcuts to send them to firenvim using a different shortcuts, I use <A-t> <A-w> and <A-n>.
 vim.g.firenvim_config = {
   globalSettings = {
     alt = 'all',

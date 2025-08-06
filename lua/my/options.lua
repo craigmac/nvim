@@ -50,7 +50,6 @@ vim.o.expandtab = true
 vim.o.shiftwidth = 2
 vim.o.softtabstop = -1 -- use shiftwidth
 vim.o.spelllang = 'canadian'
-vim.o.spell = true
 vim.o.spelloptions = 'camel,noplainbuffer'
 vim.o.spellsuggest = 'fast,5'
 

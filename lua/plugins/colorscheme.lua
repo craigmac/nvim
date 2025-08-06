@@ -33,6 +33,8 @@ require('hybrid').setup({
     highlights['NormalNC']                   = { bg = colors.none, fg = colors.none }
     highlights['NormalFloat']                = { bg = colors.none }
 
+    highlights['QuickFixLine']               = { reverse = true }
+
     -- do like default colorscheme does
     highlights['StatusLine']                 = { fg = colors.bg, bg = colors.fg }
     highlights['StatusLineNC']               = { fg = colors.bg, bg = colors.fg_soft }
