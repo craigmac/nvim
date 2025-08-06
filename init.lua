@@ -11,7 +11,6 @@ require('my.lsp')
 
 -- runtime plugins shipped with nvim
 vim.cmd.packadd('nohlsearch')
-vim.cmd.packadd('cfilter')
 
 ---@type vim.pack.Spec[]
 local plugins = {
