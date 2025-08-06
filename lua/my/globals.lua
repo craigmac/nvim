@@ -65,7 +65,7 @@ vim.g.firenvim_config = {
     ['https?://github.com/.*'] = {
       content = 'markdown',
       priority = 1,
-      takeover = 'always',
+      takeover = 'never'
     },
   }
 }
