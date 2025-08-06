@@ -38,7 +38,9 @@ vim.o.wildmode = 'noselect:lastused,full'
 
 -- bars and lines
 vim.o.laststatus = 3
-vim.o.showcmdloc = 'statusline'
+vim.o.showcmd = false -- BUG: https://github.com/vim/vim/issues/11535
+-- the flickering was driving me nuts, for every movement key it would draw
+-- vim.o.showcmdloc = 'statusline'
 vim.o.showtabline = 1
 vim.o.signcolumn = 'no'
 vim.o.statusline = '%!v:lua.My.StatusLine()'
