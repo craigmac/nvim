@@ -42,58 +42,11 @@ vim.api.nvim_create_autocmd('FileType', {
   group = mygroup,
 })
 
--- requires https://github.com/neovim/neovim/pull/34761
 vim.api.nvim_create_autocmd('CmdlineChanged', {
   desc = 'Autocompletion suggestions as you type in search and commandline',
   group = mygroup,
   pattern = '[:/\\?]',
-  callback = function(ev)
-    local cmdline = vim.fn.getcmdline()
-    local curpos = vim.fn.getcmdpos()
-    local wildmenu_showing = vim.fn.wildmenumode() == 1
-    local cmdmode = ev.file == ':'
-    local trigger_re = '[%w/:%*%.%-_]$'
-    local trigger_found = cmdline:find(trigger_re) ~= nil
-
-    -- :h lua-pattern magic chars:`^$()%.[]*+-?`
-    -- causes conflict with `findfunc` because of textlock
-    local find_re = '^v?e?r?t?i?c?a?l?%s?s?find?'
-    local find_cmd = cmdline:find(find_re) ~= nil
-
-    -- example matches: `:1`, `:0,10` `:,50` `:50+` `:,25-` `:50+10`, `:10+,15-`
-    local range_re = '^[%d,%+%-]+$'
-    local only_range_found = cmdline:find(range_re) ~= nil
-
-    -- any characters still to process in the queue, like in a paste scenario?
-    local typeahead = vim.fn.getchar(1) ~= 0
-    local cursor_not_at_eol = curpos ~= #cmdline + 1
-
-    -- bail conditions - don't send char to trigger completion
-    if
-      typeahead
-      or wildmenu_showing
-      or cursor_not_at_eol
-      or only_range_found and cmdmode
-      or not trigger_found
-      or find_cmd
-    then
-      return
-    end
-
-    -- turn off event temporarily to avoid retriggering and doing redundant completion attempts
-    vim.opt.eventignore:append('CmdlineChanged')
-
-    vim.api.nvim_feedkeys(string.char(vim.o.wildcharm), 't', false)
-
-    -- Remove expansion char from line if there were no completions. `:Fail ` becomes `:Fail`
-    vim.schedule(function()
-      local wcm = string.char(vim.o.wildcharm)
-      local res = vim.fn.getcmdline():gsub(wcm, '')
-      vim.fn.setcmdline(res)
-    end)
-
-    vim.schedule(function() vim.opt.eventignore:remove('CmdlineChanged') end)
-  end,
+  command = 'call wildtrigger()',
 })
 
 vim.api.nvim_create_autocmd('UIEnter', {
