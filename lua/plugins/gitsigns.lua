@@ -1,8 +1,9 @@
 local gitsigns = require('gitsigns')
+
 gitsigns.setup({
   signs_staged_enable = false,
-  signcolumn = false, -- off by default instead of on
-  on_attach = function(bufnr)
+  signcolumn = true,
+  on_attach = function(_bufnr)
     vim.keymap.set('n', 'yog', gitsigns.toggle_signs)
 
     vim.keymap.set('n', ']c', function()
@@ -21,8 +22,16 @@ gitsigns.setup({
       end
     end)
 
-    vim.keymap.set('x', '<Leader>hs', function() gitsigns.stage_hunk({ vim.fn.line('.'), vim.fn.line('v') }) end)
-    vim.keymap.set('x', '<Leader>hr', function() gitsigns.reset_hunk({ vim.fn.line('.'), vim.fn.line('v') }) end)
+    vim.keymap.set(
+      'x',
+      '<Leader>hs',
+      function() gitsigns.stage_hunk({ vim.fn.line('.'), vim.fn.line('v') }) end
+    )
+    vim.keymap.set(
+      'x',
+      '<Leader>hr',
+      function() gitsigns.reset_hunk({ vim.fn.line('.'), vim.fn.line('v') }) end
+    )
 
     vim.keymap.set('n', '<Leader>hs', gitsigns.stage_hunk)
     vim.keymap.set('n', '<Leader>hr', gitsigns.reset_hunk)

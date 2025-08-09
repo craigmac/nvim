@@ -5,7 +5,7 @@ vim.g.qf_mapping_ack_style = 1
 vim.keymap.set('n', '<Leader>q', '<Plug>(qf_qf_toggle)')
 vim.keymap.set('n', '<Leader>l', '<Plug>(qf_loc_toggle)')
 
-vim.api.nvim_create_autocmd('Filetype', {
+vim.api.nvim_create_autocmd('FileType', {
   pattern = 'qf',
   callback = function()
     vim.keymap.set('n', 'dd', ':.Reject<CR>', { buffer = true })
