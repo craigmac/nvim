@@ -1,9 +1,0 @@
-{
-  // "$schema": "",
-  "diagnostics": {
-    "globals": [
-      "vim",
-      "it"
-    ]
-  }
-}

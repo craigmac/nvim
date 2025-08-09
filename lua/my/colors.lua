@@ -44,14 +44,18 @@ hi('MatchParen', { reverse = true })
 -- default links to StatusLine, gives ugly black horizontal line on white bg
 hi('MsgSeparator', { fg = p.bright_gray2 })
 
--- switch from bold to italic instead and lighten it
-hi('Statement', { fg = p.bright_gray3, italic = true })
+-- switch from bold to italic instead
+hi('Statement', { italic = true })
 
 -- default doesn't match either PmenuSel or StatusLine, I'd rather it be consistent
 -- with at least one of them
 hi('TabLineSel', { link = 'PmenuSel' })
 -- hi('TabLineFill', { link = 'Pmenu' })
 hi('TabLine', { link = 'Pmenu' })
+
+-- default is: cterm=underline gui=underline
+-- blue like html links
+hi('Underlined', { underline = true, fg = p.bright_blue, sp = p.bright_blue })
 
 -- for use in statusline format strings, for example: `'%1*<text goes here>%*'`
 hi('User1', { fg = p.black, bg = p.bright_red })

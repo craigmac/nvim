@@ -20,7 +20,7 @@ vim.g.nvim_palette = {
   blue = '#004c73',
   magenta = '#470045',
   cyan = '#007373',
-  white = '#2c2e33',        -- same as 'gray3', added as alias
+  white = '#2c2e33', -- same as 'gray3', added as alias
   bright_black = '#9b9ea4', -- same as 'gray4', added as alias
   bright_red = '#ffc0b9',
   bright_green = '#b3f6c0',
@@ -30,7 +30,7 @@ vim.g.nvim_palette = {
   bright_cyan = '#8cf8f7',
   bright_white = '#eef1f8', -- same as 'gray1', added as alias
   gray1 = '#07080d',
-  gray2 = '#14161b',        -- hl-Normal guibg in bg=dark, guifg in bg=light
+  gray2 = '#14161b', -- hl-Normal guibg in bg=dark, guifg in bg=light
   gray3 = '#2c2e33',
   gray4 = '#4f5258',
   bright_gray1 = '#eef1f8',
@@ -60,21 +60,21 @@ vim.g.firenvim_config = {
       priority = 0,
       -- https://github.com/glacambre/firenvim#configuring-what-elements-firenvim-should-appear-on
       selector = 'textarea:not([readonly], [aria-readonly]), div[role="textbox"]',
-      takeover = 'never'
+      takeover = 'never',
     },
     ['https?://github.com/.*'] = {
       content = 'markdown',
       priority = 1,
-      takeover = 'never'
+      takeover = 'never',
     },
-  }
+  },
 }
 
----@param value? number Minwid field value or 0 if no N specified
----@param mouse_clicks number How many mouse clicks - to detect double click if needed
----@param mouse_button string Mouse button used, typically l, r, and m but can be any lowercase ASCII
----@param mods string Modifiers pressed, contains s if shift, c for control, a for alt and m for meta
-function My.ShowDiagnostics(value, mouse_clicks, mouse_button, mods)
+---@param _value? number Minwid field value or 0 if no N specified
+---@param _mouse_clicks number How many mouse clicks - to detect double click if needed
+---@param _mouse_button string Mouse button used, typically l, r, and m but can be any lowercase ASCII
+---@param _mods string Modifiers pressed, contains s if shift, c for control, a for alt and m for meta
+function My.ShowDiagnostics(_value, _mouse_clicks, _mouse_button, _mods)
   vim.diagnostic.open_float({ scope = 'buffer' })
 end
 
@@ -86,11 +86,11 @@ function My.Winbar()
     -- string.format('(%d) ', bufnr),
     '%t',
     '%( [%M%R%H%W]%)',
-    '%='
+    '%=',
   })
 end
 
----@param n number tabpage number to create label for
+---@param n integer tabpage number to create label for
 ---@return string # label for tabpage `n`
 function My.TabLabel(n)
   local buflist = vim.fn.tabpagebuflist(n)
@@ -144,11 +144,17 @@ end
 ---https://github.com/neovim/neovim/pull/34545
 ---
 ---Evaluated when searching for file names using the `:find` command
+---@return string[] results Array of files found
 function My.FindFunc(name)
   local search_pattern = name or '.'
   local cmd = vim.list_extend({
-    'rg', '--files', '--color', 'never', '--glob', search_pattern
+    'rg',
+    '--files',
+    '--color',
+    'never',
+    '--glob',
+    search_pattern,
   }, vim.opt.path:get())
   local res = vim.system(cmd, { text = true }):wait()
-  return vim.split(res.stdout, '\n', { trimempty = true })
+  return vim.split(res.stdout or '', '\n', { trimempty = true })
 end

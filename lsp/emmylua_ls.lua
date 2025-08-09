@@ -19,6 +19,16 @@ return {
   workspace_required = false,
   settings = {
     Lua = {
+      diagnostics = {
+        globals = {
+          'vim',
+          -- busted (test framework)
+          'it',
+          'after_each',
+          'before_each',
+          'describe',
+        },
+      },
       runtime = {
         version = 'LuaJIT',
         path = { 'lua/?.lua', 'lua/?/init.lua' },

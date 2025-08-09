@@ -69,12 +69,14 @@ vim.api.nvim_create_autocmd('CmdlineChanged', {
     local cursor_not_at_eol = curpos ~= #cmdline + 1
 
     -- bail conditions - don't send char to trigger completion
-    if typeahead
-        or wildmenu_showing
-        or cursor_not_at_eol
-        or only_range_found and cmdmode
-        or not trigger_found
-        or find_cmd then
+    if
+      typeahead
+      or wildmenu_showing
+      or cursor_not_at_eol
+      or only_range_found and cmdmode
+      or not trigger_found
+      or find_cmd
+    then
       return
     end
 
@@ -91,25 +93,25 @@ vim.api.nvim_create_autocmd('CmdlineChanged', {
     end)
 
     vim.schedule(function() vim.opt.eventignore:remove('CmdlineChanged') end)
-  end
+  end,
 })
 
 vim.api.nvim_create_autocmd('UIEnter', {
-  callback = function(event)
-    local client = vim.api.nvim_get_chan_info(vim.v.event.chan).client
+  callback = function()
+    local client = vim.api.nvim_get_chan_info(vim.v.event.chan or 0).client
     if client ~= nil and client.name == 'Firenvim' then
       vim.o.laststatus = 0
       vim.o.showtabline = 0
       vim.o.winbar = ''
       vim.o.background = 'light'
       vim.cmd.colorscheme('default')
-      vim.o.spelllang = 'canadian'  -- « Canadien, s'îl vous plait! »
-      vim.o.spelloptions = 'camel'  -- 'ConsideredFourSeparateWords' = 4 words to check
+      vim.o.spelllang = 'canadian' -- « Canadien, s'îl vous plait! »
+      vim.o.spelloptions = 'camel' -- 'ConsideredFourSeparateWords' = 4 words to check
       vim.o.spellsuggest = 'best,5' -- only show 5 suggestions
       vim.o.spell = true
       vim.cmd.startinsert()
     end
-  end
+  end,
 })
 
 -- annotate :terminal prompt marks if OSC 133 is set correctly on shell prompt,
@@ -121,6 +123,7 @@ local ns = vim.api.nvim_create_namespace('my.terminal.prompt')
 vim.api.nvim_create_autocmd('TermRequest', {
   callback = function(args)
     if string.match(args.data.sequence, '^\027]133;A') then
+      ---@type integer
       local lnum = args.data.cursor[1]
       vim.api.nvim_buf_set_extmark(args.buf, ns, lnum - 1, 0, {
         sign_text = '▶',

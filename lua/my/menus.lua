@@ -19,7 +19,8 @@ function M.build_lsp_popup_menu()
   vim.cmd.nnoremenu([[LSP.Show\ Outgoing\ Calls <Cmd>lua vim.lsp.buf.outgoing_calls()<CR>]])
   vim.cmd.nnoremenu([[LSP.Format\ Buffer <Cmd>lua vim.lsp.buf.format()<CR>]])
   vim.cmd.nnoremenu(
-    [[LSP.Toggle\ Inlay\ Hints <Cmd>lua vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())<CR>]])
+    [[LSP.Toggle\ Inlay\ Hints <Cmd>lua vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())<CR>]]
+  )
 
   vim.cmd.nunmenu({ args = { 'disable', 'LSP.Go\\ to\\ Definition' } })
   vim.cmd.nunmenu({ args = { 'disable', 'LSP.Go\\ to\\ Declaration' } })
@@ -39,7 +40,7 @@ end
 ---@param bufnr? number Buffer id to query for attached clients
 function M.lsp_popup_menu(bufnr)
   ---@type vim.lsp.Client[]|{}
-  local clients = vim.lsp.get_clients({ bufnr = bufnr or 0 })
+  local clients = vim.lsp.get_clients({ bufnr = bufnr or 0 } --[[@as vim.lsp.get_clients.Filter]])
   -- no active lsp connections, bail
   if vim.tbl_isempty(clients) then
     vim.notify('Menu unavailable - no lsp clients attached')
@@ -49,7 +50,7 @@ function M.lsp_popup_menu(bufnr)
   M.build_lsp_popup_menu()
 
   -- TODO: arbitrarily picking first one, what if there's > 1 and they both support the method?
-  local client = clients[1]
+  local client = assert(clients[1], 'Error. No vim.lsp.Client found in buffer list of clients.')
 
   if client:supports_method('textDocument/definition') then
     vim.cmd.aunmenu({ args = { 'enable', 'LSP.Go\\ to\\ Definition' } })
@@ -74,7 +75,6 @@ function M.lsp_popup_menu(bufnr)
   if client:supports_method('textDocument/codeAction') then
     vim.cmd.aunmenu({ args = { 'enable', 'LSP.Show\\ Code\\ Actions' } })
   end
-
 
   vim.cmd.popup('LSP')
 end

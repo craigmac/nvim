@@ -123,7 +123,7 @@ vim.diagnostic.config({
 })
 
 ---@type vim.lsp.Config
-local lua_ls_config = {
+local lua_lsp_config = {
   on_init = function(client)
     -- do nothing if not in a proper workspace (no marker, even .git, found)
     if not client.workspace_folders then return end
@@ -144,11 +144,13 @@ local lua_ls_config = {
     })
   end,
 }
-vim.lsp.config('lua-language-server', lua_ls_config)
+vim.lsp.config('emmylua_ls', lua_lsp_config)
+
 
 vim.lsp.enable({
-  'lua-language-server',
+  -- 'lua-language-server',
   'vscode-json-language-server',
+  'emmylua_ls'
   -- 'taplo',
   -- 'vimls',
   -- 'yamlls',
