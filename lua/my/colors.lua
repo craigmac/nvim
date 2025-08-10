@@ -7,7 +7,7 @@ local p = {
   blue = '#004c73',
   magenta = '#470045',
   cyan = '#007373',
-  white = '#2c2e33',        -- same as 'gray3', added as alias
+  white = '#2c2e33', -- same as 'gray3', added as alias
   bright_black = '#9b9ea4', -- same as 'gray4', added as alias
   bright_red = '#ffc0b9',
   bright_green = '#b3f6c0',
@@ -17,7 +17,7 @@ local p = {
   bright_cyan = '#8cf8f7',
   bright_white = '#eef1f8', -- alias for 'bright_gray1'
   gray1 = '#07080d',
-  gray2 = '#14161b',        -- bg in dark mode, fg in light mode
+  gray2 = '#14161b', -- bg in dark mode, fg in light mode
   gray3 = '#2c2e33',
   gray4 = '#4f5258',
   bright_gray1 = '#eef1f8',
@@ -65,3 +65,5 @@ hi('User4', { fg = p.black, bg = p.bright_blue })
 hi('User5', { fg = p.black, bg = p.bright_magenta })
 hi('User6', { fg = p.black, bg = p.bright_cyan })
 hi('User7', { fg = p.black, bg = p.bright_white })
+
+hi('WinSeparator', { fg = p.gray3 })
