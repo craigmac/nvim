@@ -67,3 +67,33 @@ hi('User6', { fg = p.black, bg = p.bright_cyan })
 hi('User7', { fg = p.black, bg = p.bright_white })
 
 hi('WinSeparator', { fg = p.gray3 })
+
+-- Based on Alacritty (>=0.13) default colorscheme.
+--
+-- Alacritty <0.12 used 'Tomorrow Night' as default, but in 0.13 it
+-- switched to 'Default Dark' by Chris Kempson, but added brighter
+-- versions of the 1-6 indexes for the 9-14 colour indexes, whereas
+-- Kempson's did not (1-6 and 9-14 colours were the same).
+--
+-- From:
+-- https://github.com/alacritty/alacritty/blob/9f8fed7c9e76b013f8c2632105d1abec18e6a64e/alacritty/src/config/color.rs#L228
+--
+-- "generated with oklab by multiplying brightness by 1.12 and then adjusting numbers to make them
+--  look 'nicer'. Yellow color was generated the same way, however the first SRGB representable
+--  colour was picked."
+vim.g.terminal_color_0 = '#181818'
+vim.g.terminal_color_1 = '#ab4642'
+vim.g.terminal_color_2 = '#a1b56c'
+vim.g.terminal_color_3 = '#f7ca88'
+vim.g.terminal_color_4 = '#7cafc2'
+vim.g.terminal_color_5 = '#ba8baf'
+vim.g.terminal_color_6 = '#85c1b9'
+vim.g.terminal_color_7 = '#d8d8d8'
+vim.g.terminal_color_8 = '#6b6b6b'
+vim.g.terminal_color_9 = '#c55555'
+vim.g.terminal_color_10 = '#aac474'
+vim.g.terminal_color_11 = '#feca88'
+vim.g.terminal_color_12 = '#82b8c8'
+vim.g.terminal_color_13 = '#c28cb8'
+vim.g.terminal_color_14 = '#93d3c3'
+vim.g.terminal_color_15 = '#f8f8f8'
