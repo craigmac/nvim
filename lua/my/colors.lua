@@ -44,8 +44,8 @@ hi('MatchParen', { reverse = true })
 -- default links to StatusLine, gives ugly black horizontal line on white bg
 hi('MsgSeparator', { fg = p.bright_gray2 })
 
--- switch from bold to italic instead
-hi('Statement', { italic = true })
+-- switch from bold and NvimLightGrey3 (normal fg in dark-mode), to a brighter white
+hi('Statement', { fg = p.bright_gray1 })
 
 -- default doesn't match either PmenuSel or StatusLine, I'd rather it be consistent
 -- with at least one of them
