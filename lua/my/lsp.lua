@@ -1,6 +1,11 @@
 -- Some mappings are done unconditionally in `$VIMRUNTIME/lua/vim/_defaults.lua`: see `:h grr`
 --
 -- set here:
+-- <C-s>    - show code signature in insert mode
+-- K        - like typical K but for lsp
+-- gra      - (r)eveal code (a)tions
+-- grn      - (r)e(n)ame
+-- grr      - (r)efe(r)ences
 -- gd       - (d)efinition
 -- gD       - (D)eclaraction
 -- g(       - incoming calls
@@ -11,73 +16,44 @@
 --
 -- See what attached lsp client supports:
 -- :lua =vim.lsp.get_clients()[1].server_capabilities
+local M = {}
 
-local function lspdetach_cb(args)
-  local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
-  -- Remove the autocommand to format the buffer on save, if it exists
-  if client:supports_method('textDocument/formatting') then
-    vim.api.nvim_clear_autocmds({
-      event = 'BufWritePre',
-      buffer = args.buf,
-    })
-  end
+function M.my_lsp_detach(args)
+  vim.api.nvim_clear_autocmds({
+    event = { 'BufWritePre', 'CursorHold', 'CursorMoved' },
+    buffer = args.buf,
+  })
 end
 
-local function lspattach_cb(args)
+function M.my_lsp_attach(args)
   local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
-
   vim.notify_once(string.format('%s attached.', client.name), vim.log.INFO)
 
-  if client:supports_method('textDocument/definition') then
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = true })
-  end
+  vim.keymap.set('i', '<C-s>', vim.lsp.buf.code_signature, { buffer = true })
+  vim.keymap.set('n', 'grr', vim.lsp.buf.references, { buffer = true })
+  vim.keymap.set('n', 'grn', vim.lsp.buf.rename, { buffer = true })
+  vim.keymap.set('n', 'gra', vim.lsp.buf.code_action, { buffer = true })
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = true })
+  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { buffer = true })
+  vim.keymap.set('n', 'g(', vim.lsp.buf.incoming_calls, { buffer = true })
+  vim.keymap.set('n', 'g)', vim.lsp.buf.outgoing_calls, { buffer = true })
+  vim.keymap.set('n', 'grO', function() require('fzf-lua').lsp_live_workspace_symbols() end, { buffer = true })
+  vim.keymap.set('n', '<Leader>gq', vim.lsp.buf.format, { buffer = true })
 
-  if client:supports_method('textDocument/declaration') then
-    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { buffer = true })
-  end
+  vim.keymap.set('n', 'yoh', function()
+    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+    vim.notify(string.format('Show inlay hints set to %s', vim.lsp.inlay_hint.is_enabled()), vim.log.INFO)
+  end, { buffer = true })
 
-  if client:supports_method('textDocument/completion') then
-    -- autotrigger doesn't work well with nvim default completeopt, unless 'noselect' is added
-    vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = false })
-    vim.keymap.set('i', '<C-i>', function() vim.lsp.completion.get() end)
-  end
-
-  if client:supports_method('textDocument/prepareCallHierarchy') then
-    if client:supports_method('callHierarchy/incomingCalls') then
-      vim.keymap.set('n', 'g(', function() vim.lsp.buf.incoming_calls() end, { buffer = true })
-    end
-    if client:supports_method('callHierarchy/outgoingCalls') then
-      vim.keymap.set('n', 'g)', function() vim.lsp.buf.outgoing_calls() end, { buffer = true })
-    end
-  end
-
-  -- these quickly become annoying when on all the time so I set a vim-unimpaired style map
-  if client:supports_method('textDocument/inlayHint') then
-    vim.keymap.set('n', 'yoh', function()
-      vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-      vim.notify(string.format('Show inlay hints set to %s', vim.lsp.inlay_hint.is_enabled()), vim.log.INFO)
-    end, { buffer = true })
-  end
-
-  if client:supports_method('workspace/symbol') then
-    vim.keymap.set('n', 'grO', function() require('fzf-lua').lsp_live_workspace_symbols() end, { buffer = true })
-  end
-
-  -- Usually not needed if server supports "textDocument/willSaveWaitUntil"
-  if
-      not client:supports_method('textDocument/willSaveWaitUntil')
-      and client:supports_method('textDocument/formatting')
-  then
-    vim.api.nvim_create_autocmd('BufWritePre', {
-      buffer = args.buf,
-      callback = function()
-        vim.lsp.buf.format({
-          bufnr = args.buf,
-          id = client.id,
-        })
-      end,
-    })
-  end
+  vim.api.nvim_create_autocmd('BufWritePre', {
+    buffer = args.buf,
+    callback = function()
+      vim.lsp.buf.format({
+        bufnr = args.buf,
+        id = client.id,
+      })
+    end,
+  })
 
   if client:supports_method('textDocument/documentHighlight') then
     vim.cmd([[
@@ -86,72 +62,12 @@ local function lspattach_cb(args)
     ]])
   end
 
-  if client:supports_method('textDocument/formatting') then
-    vim.keymap.set('n', '<Leader>gq', function() vim.lsp.buf.format() end, { buffer = true })
-  end
-
   if client:supports_method('textDocument/foldingRange') then
     local win = vim.api.nvim_get_current_win()
-    if vim.wo[win].foldmethod == 'marker' then
-      -- if user has fdm set to this, it means they want specific folds in this buffer, so bail
-      return
-    end
+    -- bail if we detect explicitly set foldmarkers
+    if vim.wo[win].foldmethod == 'marker' then return end
     vim.wo[win][0].foldmethod = 'expr'
     vim.wo[win][0].foldexpr = 'v:lua.vim.lsp.foldexpr()'
   end
 end
 
-vim.api.nvim_create_autocmd('LspAttach', {
-  group = vim.api.nvim_create_augroup('my.lsp.attach', {}),
-  callback = lspattach_cb,
-})
-
-vim.api.nvim_create_autocmd('LspDetach', {
-  group = vim.api.nvim_create_augroup('my.lsp.detach', {}),
-  callback = lspdetach_cb,
-})
-
-vim.diagnostic.config({
-  float = {
-    border = 'single',
-    header = 'Diagnostics',
-    severity_sort = true,
-    source = true,
-  },
-  severity_sort = true,
-  virtual_text = false,
-})
-
----@type vim.lsp.Config
-local lua_lsp_config = {
-  on_init = function(client)
-    -- do nothing if not in a proper workspace (no marker, even .git, found)
-    if not client.workspace_folders then return end
-
-    local path = client.workspace_folders[1].name
-    -- do nothing if workspace isn't user neovim config directory
-    if path ~= vim.fn.stdpath('config') then return end
-
-    -- add nvim rtp paths to installed plugins and builtin $VIMRUNTIME/lua
-    client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
-      workspace = {
-        -- Filter out stdpath('config') and it's 'after' directory to fix
-        -- https://github.com/neovim/nvim-lspconfig/issues/3189
-        library = vim.tbl_filter(function(d)
-          return not d:match(vim.fn.stdpath('config') .. '/?a?f?t?e?r?')
-        end, vim.api.nvim_get_runtime_file('', true))
-      },
-    })
-  end,
-}
-vim.lsp.config('emmylua_ls', lua_lsp_config)
-
-
-vim.lsp.enable({
-  -- 'lua-language-server',
-  'vscode-json-language-server',
-  'emmylua_ls'
-  -- 'taplo',
-  -- 'vimls',
-  -- 'yamlls',
-})

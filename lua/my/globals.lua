@@ -5,85 +5,20 @@ vim.g.mapleader = ' '
 vim.g.netrw_banner = 0
 vim.g.netrw_hide = 0
 
--- tells netrw to try fetching from this directory for missing dictionaries on `:h spell-SpellFileMissing`
-vim.g.spellfile_URL = 'https://github.com/craigmac/en_CA/raw/refs/heads/main/spell'
-
--- otherwise $VIMRUNTIME/ftplugin/qf.vim will set one, and it doesn't play nice with laststatus=3 and winbar
-vim.g.qf_disable_statusline = 1
-
--- assembled from `highlight_group.c` in neovim source
-vim.g.nvim_palette = {
-  black = '#07080d', -- same as 'gray1', added for alias
-  red = '#590008',
-  green = '#005523',
-  yellow = '#6b5300',
-  blue = '#004c73',
-  magenta = '#470045',
-  cyan = '#007373',
-  white = '#2c2e33', -- same as 'gray3', added as alias
-  bright_black = '#9b9ea4', -- same as 'gray4', added as alias
-  bright_red = '#ffc0b9',
-  bright_green = '#b3f6c0',
-  bright_yellow = '#fce094',
-  bright_blue = '#a6dbff',
-  bright_magenta = '#ffcaff',
-  bright_cyan = '#8cf8f7',
-  bright_white = '#eef1f8', -- same as 'gray1', added as alias
-  gray1 = '#07080d',
-  gray2 = '#14161b', -- hl-Normal guibg in bg=dark, guifg in bg=light
-  gray3 = '#2c2e33',
-  gray4 = '#4f5258',
-  bright_gray1 = '#eef1f8',
-  bright_gray2 = '#e0e2ea', -- hl-Normal guibg in bg=light
-  bright_gray3 = '#c4c6cd',
-  bright_gray4 = '#9b9ea4',
-}
-
--- when aligning with gl/gL reduces spaces to minimum required
-vim.g.lion_squeeze_spaces = 1
-
--- <C-n>, <C-t>, and <C-w> must be unbound to be used for firenvim instead of browser,
--- on linux firefox you can't unbind these, but you can set alternatives in the extension
--- shortcuts to send them to firenvim using a different shortcuts, I use <A-t> <A-w> and <A-n>.
-vim.g.firenvim_config = {
-  globalSettings = {
-    alt = 'all',
-    -- hide `cmdline='firenvim'` after 3 seconds in we never get message to stop displaying it
-    cmdlineTimeout = 3000,
-  },
-  -- js pattern against full URL, 'priority' is tiebreaker (higher wins) on multiple matches
-  localSettings = {
-    ['.*'] = {
-      -- defaults for when there's no narrower pattern match against the URL
-      cmdline = 'firenvim',
-      content = 'text',
-      priority = 0,
-      -- https://github.com/glacambre/firenvim#configuring-what-elements-firenvim-should-appear-on
-      selector = 'textarea:not([readonly], [aria-readonly]), div[role="textbox"]',
-      takeover = 'never',
-    },
-    ['https?://github.com/.*'] = {
-      content = 'markdown',
-      priority = 1,
-      takeover = 'never',
-    },
-  },
-}
-
----@param _value? number Minwid field value or 0 if no N specified
----@param _mouse_clicks number How many mouse clicks - to detect double click if needed
----@param _mouse_button string Mouse button used, typically l, r, and m but can be any lowercase ASCII
----@param _mods string Modifiers pressed, contains s if shift, c for control, a for alt and m for meta
-function My.ShowDiagnostics(_value, _mouse_clicks, _mouse_button, _mods)
-  vim.diagnostic.open_float({ scope = 'buffer' })
-end
+-- vim.g.loaded_netrwPlugin = 1
+vim.g.loaded_2html = 1
+vim.g.loaded_tutor_mode_plugin = 1
+vim.g.loaded_zipPlugin = 1
+vim.g.loaded_remote_plugins = 1
+vim.g.loaded_gzip = 1
+vim.g.loaded_tarPlugin = 1
+vim.g.loaded_2html_plugin = 1
 
 ---@return string # stl-format string
 function My.Winbar()
   -- local bufnr = vim.fn.bufnr()
   return table.concat({
     '%=',
-    -- string.format('(%d) ', bufnr),
     '%t',
     '%( [%M%R%H%W]%)',
     '%=',
@@ -120,41 +55,4 @@ function My.TabLine()
   -- After last tabpage: Fill with TabLineFill highlight
   vim.list_extend(s, { '%#TabLineFill#' })
   return table.concat(s)
-end
-
----@return string # `:help 'stl` format string
-function My.StatusLine()
-  local parts = {
-    ' @ ',
-    '%{fnamemodify(getcwd(0), ":~")}',
-    ' │ ',
-    '%(%{ v:lua.vim.diagnostic.status() }%)',
-    '%=',
-    '%{% reg_recording() == "" ? "" : "%1*[rec \\""..reg_recording().."]%* " %}',
-    '%{% &showcmdloc == "statusline" ? "%(%4* %S … %*%)" : "" %}',
-    ' %( #%l–%L:%v%)',
-    ' │ ',
-    '%.10(%{&filetype}%)',
-    ' │ ',
-    '%P ',
-  }
-  return table.concat(parts)
-end
-
----https://github.com/neovim/neovim/pull/34545
----
----Evaluated when searching for file names using the `:find` command
----@return string[] results Array of files found
-function My.FindFunc(name)
-  local search_pattern = name or '.'
-  local cmd = vim.list_extend({
-    'rg',
-    '--files',
-    '--color',
-    'never',
-    '--glob',
-    search_pattern,
-  }, vim.opt.path:get())
-  local res = vim.system(cmd, { text = true }):wait()
-  return vim.split(res.stdout or '', '\n', { trimempty = true })
 end
