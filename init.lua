@@ -2,6 +2,7 @@
 
 require('my.globals')
 require('my.options')
+require('my.colors')
 require('my.autocmds')
 require('my.keymaps')
 require('my.commands')

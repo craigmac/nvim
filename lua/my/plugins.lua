@@ -17,6 +17,7 @@ require('paq')({
   'tpope/vim-rhubarb',
   'tpope/vim-rsi',
   'tpope/vim-unimpaired',
+  'justinmk/vim-sneak'
 })
 
 -- https://github.com/ibhagwan/fzf-lua
@@ -183,6 +184,16 @@ gitsigns.setup({
     vim.keymap.set('n', '<Leader>hD', function() gitsigns.diffthis('@') end)
   end,
 })
+
+-- https://github.com/justinmk/vim-sneak
+
+-- https://github.com/justinmk/vim-divish
+-- buf names are the literal dir path, so :lcd % works
+-- also can use x to add/rm from local arglist, dax to empty it
+-- `.` inserts `:! <path>` into cmdline and visual . will setup
+-- `:Shdo {}`
+
+
 
 -- using deprecated old way while on 0.10.4 which doesn't have
 -- vim.lsp.enable(), vim.lsp.config(), LspAttach|Detach, and more yet

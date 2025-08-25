@@ -36,11 +36,11 @@ vim.api.nvim_create_autocmd('UIEnter', {
 
 local ns = vim.api.nvim_create_namespace('my.terminal.prompt')
 vim.api.nvim_create_autocmd('TermRequest', {
-  callback = function(args)
-    if string.match(args.data.sequence, '^\027]133;A') then
+  callback = function(ev)
+    if string.match(vim.v.termresponse, '^\027]133;A') then
       ---@type integer
-      local lnum = args.data.cursor[1]
-      vim.api.nvim_buf_set_extmark(args.buf, ns, lnum - 1, 0, {
+      local lnum = ev.data.cursor[1]
+      vim.api.nvim_buf_set_extmark(ev.buf, ns, lnum - 1, 0, {
         sign_text = '$',
         sign_hl_group = 'SpecialChar',
       })

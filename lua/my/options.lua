@@ -42,6 +42,7 @@ vim.o.secure = true
 vim.o.diffopt = vim.o.diffopt .. ',followwrap,algorithm:minimal'
 vim.o.jumpoptions = vim.o.jumpoptions .. ',view'
 vim.o.sidescrolloff = 2
+vim.o.title = true
 vim.o.undofile = true
 -- shorter delay to trigger `:h vim.lsp.buf.document_highlight()`
 vim.o.updatetime = 500
