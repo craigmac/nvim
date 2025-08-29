@@ -12,7 +12,6 @@ vim.g.loaded_2html = 1
 vim.g.loaded_tutor_mode_plugin = 1
 vim.g.loaded_zipPlugin = 1
 vim.g.loaded_remote_plugins = 1
-vim.g.loaded_gzip = 1
 vim.g.loaded_tarPlugin = 1
 vim.g.loaded_2html_plugin = 1
 
@@ -288,10 +287,10 @@ vim.keymap.set('n', '<Leader>/', function() require('fzf-lua').live_grep_native(
 vim.keymap.set('n', '<Leader><F1>', function() require('fzf-lua').helptags() end)
 vim.keymap.set('n', '<Leader>o', function() require('fzf-lua').oldfiles() end)
 
-vim.keymap.set('n', '<C-M-h>', function() require('smart-splits').resize_left() end)
-vim.keymap.set('n', '<C-M-j>', function() require('smart-splits').resize_down() end)
-vim.keymap.set('n', '<C-M-k>', function() require('smart-splits').resize_up() end)
-vim.keymap.set('n', '<C-M-l>', function() require('smart-splits').resize_right() end)
+vim.keymap.set('n', '<M-H>', function() require('smart-splits').resize_left() end)
+vim.keymap.set('n', '<M-J>', function() require('smart-splits').resize_down() end)
+vim.keymap.set('n', '<M-K>', function() require('smart-splits').resize_up() end)
+vim.keymap.set('n', '<M-L>', function() require('smart-splits').resize_right() end)
 vim.keymap.set('n', '<M-h>', function() require('smart-splits').move_cursor_left() end)
 vim.keymap.set('n', '<M-j>', function() require('smart-splits').move_cursor_down() end)
 vim.keymap.set('n', '<M-k>', function() require('smart-splits').move_cursor_up() end)
