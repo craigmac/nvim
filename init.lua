@@ -231,7 +231,9 @@ require('paq')({
   'tpope/vim-repeat',
   'tpope/vim-rsi',
   'tpope/vim-unimpaired',
-  'justinmk/vim-sneak'
+  'justinmk/vim-sneak',
+  'tpope/vim-fugitive',
+  'tpope/vim-rhubarb'
 })
 
 vim.g.lion_squeeze_spaces = 1
@@ -347,8 +349,24 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
+vim.api.nvim_create_autocmd('FileType', {
+  group = 'my.augroup',
+  pattern = 'fugitive',
+  callback = function()
+    -- on open jump to unstaged section
+    vim.cmd([[norm gU]])
+  end,
+})
+
 -- vim.lsp.enable|config(), LspAttach|Detach unavailable until nvim 0.11
 -- local servers = { 'lua_ls', 'bash_ls', 'clangd' }
 -- for _, lsp in ipairs(servers) do
 --   on_attach = require('my.lsp').on_attach,
 -- end
+
+-- colors {{{1
+vim.cmd([[
+  " default link to Statement is just bold and hard to spot diff line markers quickly,
+  " instead make them cyan like lazygit does
+  hi! diffLine guifg=cyan
+]])
