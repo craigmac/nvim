@@ -34,11 +34,31 @@ function My.TabLine()
   for i = 1, vim.fn.tabpagenr('$') do
     local active_tab = i == vim.fn.tabpagenr()
     local hlgroup = active_tab and '%#TabLineSel#' or '%#TabLine#'
-
     vim.list_extend(s, { hlgroup, (' %%%dT'):format(i), tostring(i), (' %%{v:lua.My.TabLabel(%d)}'):format(i), '%T ', })
   end
   vim.list_extend(s, { '%#TabLineFill#' })
   return table.concat(s)
+end
+
+local function find_terminal_bufnr_in_tab(tabpage)
+  for _, win in ipairs(vim.api.nvim_tabpage_list_wins(tabpage)) do
+    local bufnr = vim.api.nvim_win_get_buf(win)
+    if vim.api.nvim_buf_get_option(bufnr, 'buftype') == 'terminal' then
+      return win, bufnr
+    end
+  end
+  return nil, nil
+end
+
+-- toggle terminal or jump to existing terminal buffer in current tabpage
+function My.ToggleBotrightTerminal()
+  local tabpage = vim.api.nvim_get_current_tabpage()
+  local win, bufnr = find_terminal_bufnr_in_tab(tabpage)
+  if win then
+    vim.api.nvim_set_current_win(win)
+  else
+    vim.cmd("botright split | terminal")
+  end
 end
 
 -- Options {{{1
@@ -49,6 +69,8 @@ vim.o.list = true
 vim.o.foldtext = ''
 vim.o.foldlevelstart = 99
 vim.o.showmode = false
+vim.o.number = true
+vim.o.cursorline = true
 
 -- no wrap, but if we do enable wrap, use these wrap-related settings
 vim.o.wrap = false
@@ -176,6 +198,7 @@ vim.keymap.set('n', 'j', function() return (vim.v.count > 0 or not vim.wo.wrap) 
 vim.keymap.set('n', 'k', function() return (vim.v.count > 0 or not vim.wo.wrap) and 'k' or 'gk' end, { expr = true })
 vim.keymap.set('n', '<Leader>vr', ':<C-u>silent tabedit $VIMRUNTIME | tcd $VIMRUNTIME<CR>')
 vim.keymap.set('n', '<Leader>vp', ':tabe <C-r>=stdpath("data").."/site/pack"<CR> | tcd <C-r>=stdpath("data")<CR><CR>')
+vim.keymap.set('n', '<leader>tt', function() My.ToggleBotrightTerminal() end)
 
 vim.keymap.set({ 'n', 'x' }, '<Leader>y', '"+y')
 vim.keymap.set({ 'n', 'x' }, '<Leader>Y', '"+Y')
@@ -233,7 +256,8 @@ require('paq')({
   'tpope/vim-unimpaired',
   'justinmk/vim-sneak',
   'tpope/vim-fugitive',
-  'tpope/vim-rhubarb'
+  'tpope/vim-rhubarb',
+  'willothy/flatten.nvim'
 })
 
 vim.g.lion_squeeze_spaces = 1
@@ -301,6 +325,10 @@ vim.keymap.set({ 't', 'n' }, '<M-p>', function() require('smart-splits').move_cu
 
 vim.keymap.set('n', '<Leader>q', '<Plug>(qf_qf_toggle)')
 vim.keymap.set('n', '<Leader>l', '<Plug>(qf_loc_toggle)')
+
+require('flatten').setup({
+  window = { open = 'alternate' }
+})
 
 local gitsigns = require('gitsigns')
 gitsigns.setup({
