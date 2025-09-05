@@ -6,13 +6,13 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = mygroup,
 })
 
-vim.api.nvim_create_autocmd({ 'WinEnter', 'BufEnter', 'InsertLeave' }, {
+vim.api.nvim_create_autocmd({ 'WinEnter', 'InsertLeave' 'TermLeave' }, {
   command = 'setlocal cursorline',
   desc = 'Turn on cursorline highlight.',
   group = mygroup,
 })
 
-vim.api.nvim_create_autocmd({ 'WinLeave', 'BufLeave', 'InsertEnter' }, {
+vim.api.nvim_create_autocmd({ 'WinLeave', 'InsertEnter', 'TermEnter' }, {
   command = 'setlocal nocursorline',
   desc = 'Turn off cursorline highlight.',
   group = mygroup,
@@ -28,27 +28,6 @@ vim.api.nvim_create_autocmd('BufReadPost', {
   group = mygroup,
 })
 
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = '*',
-  callback = function()
-    local ok, _ = pcall(vim.treesitter.start)
-    if not ok then return end
-    -- only set this if we know treesitter started without error
-    vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-    -- if additional legacy regex syntax is needed
-    -- vim.bo[args.buf].syntax = 'on'
-  end,
-  desc = 'Try starting treesitter, ignoring errors.',
-  group = mygroup,
-})
-
-vim.api.nvim_create_autocmd('CmdlineChanged', {
-  desc = 'Autocompletion suggestions as you type in search and commandline',
-  group = mygroup,
-  pattern = '[:/\\?]',
-  command = 'call wildtrigger()',
-})
-
 vim.api.nvim_create_autocmd('UIEnter', {
   callback = function()
     local client = vim.api.nvim_get_chan_info(vim.v.event.chan or 0).client
@@ -58,7 +37,6 @@ vim.api.nvim_create_autocmd('UIEnter', {
       vim.o.winbar = ''
       vim.o.background = 'light'
       vim.cmd.colorscheme('default')
-      vim.o.spelllang = 'canadian' -- « Canadien, s'îl vous plait! »
       vim.o.spelloptions = 'camel' -- 'ConsideredFourSeparateWords' = 4 words to check
       vim.o.spellsuggest = 'best,5' -- only show 5 suggestions
       vim.o.spell = true
@@ -72,6 +50,7 @@ vim.api.nvim_create_autocmd('UIEnter', {
 vim.api.nvim_create_autocmd('TermOpen', {
   command = 'setlocal signcolumn=auto',
 })
+
 local ns = vim.api.nvim_create_namespace('my.terminal.prompt')
 vim.api.nvim_create_autocmd('TermRequest', {
   callback = function(args)
@@ -79,7 +58,7 @@ vim.api.nvim_create_autocmd('TermRequest', {
       ---@type integer
       local lnum = args.data.cursor[1]
       vim.api.nvim_buf_set_extmark(args.buf, ns, lnum - 1, 0, {
-        sign_text = '▶',
+        sign_text = '$',
         sign_hl_group = 'SpecialChar',
       })
     end

@@ -1,19 +1,12 @@
 -- special characters and display
-vim.o.fillchars =
-'eob:-,diff: ,fold: ,foldclose:▶,foldopen:▼,horiz: ,horizdown: ,horizup: ,vert:│,vertleft:│,vertright:│,verthoriz:│,lastline:⋯,msgsep:─,trunc:⋯,truncrl:⋯'
+vim.o.fillchars = 'eob: ,diff:-,fold: ,foldclose:▶,foldopen:▼,lastline:⋯,msgsep:─'
 vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,t:ver25-TermCursor'
-vim.o.listchars = 'eol: ,tab:⇥ ,trail:█,extends:»,precedes:«,nbsp:⍽'
+vim.o.listchars = 'eol: ,tab:⇥ ,trail:░,extends:»,precedes:«,nbsp:⍽'
 vim.o.list = true
--- some fonts don't render the rounded border well
+vim.o.number = true
 vim.o.winborder = 'single'
 vim.o.foldtext = ''
 vim.o.foldlevelstart = 99
-vim.o.showmode = false
-
-require('vim._extui').enable({
-    enable = true,
-    msg = { target = 'msg', timeout = 4000 },
-})
 
 -- no wrap, but if we do enable wrap, use these wrap-related settings
 vim.o.wrap = false
@@ -37,26 +30,24 @@ vim.o.shortmess = vim.o.shortmess
         -- 'S', -- no [1/5] search count shown
     })
 vim.o.wildcharm = vim.keycode('<C-z>'):byte()
-vim.o.wildmode = 'noselect:lastused,full'
 
 -- bars and lines
-vim.o.laststatus = 3
-vim.o.showcmd = false -- BUG: https://github.com/vim/vim/issues/11535
--- the flickering was driving me nuts, for every movement key it would draw
--- vim.o.showcmdloc = 'statusline'
-vim.o.showtabline = 1
+vim.o.cursorline = true
 vim.o.signcolumn = 'yes'
-vim.o.statusline = '%!v:lua.My.StatusLine()'
-vim.o.tabline = '%!v:lua.My.TabLine()'
-vim.o.winbar = '%!v:lua.My.Winbar()'
+-- vim.o.statusline = '%!v:lua.require("my.functions").StatusLine()'
+-- vim.o.statusline = '%!v:lua.My.StatusLine()'
+-- vim.o.tabline = '%!v:lua.My.TabLine()'
+-- vim.o.winbar = '%!v:lua.My.Winbar()'
 
--- spelling
--- vim.o.spelllang = 'canadian'
+-- editing
+vim.o.expandtab = true
+vim.o.shiftwidth = 2
+vim.o.softtabstop = -1 -- use shiftwidth
+vim.o.spelllang = 'en_gb'
 vim.o.spelloptions = 'camel,noplainbuffer'
 vim.o.spellsuggest = 'fast,5'
 
 -- startup/behaviour
-vim.o.cpoptions = vim.o.cpoptions .. '~'
 vim.o.exrc = true
 vim.o.secure = true
 vim.o.diffopt = vim.o.diffopt .. ',followwrap,algorithm:minimal'

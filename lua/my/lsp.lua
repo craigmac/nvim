@@ -26,7 +26,7 @@ end
 local function lspattach_cb(args)
   local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
 
-  vim.notify_once(string.format('%s attached.', client.name), vim.log.INFO)
+  -- vim.notify_once(string.format('%s attached.', client.name), vim.log.INFO)
 
   if client:supports_method('textDocument/definition') then
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = true })
@@ -101,6 +101,7 @@ local function lspattach_cb(args)
   end
 end
 
+-- setup our attach/detach custom callbacks to run on LspAttach|Detach events
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('my.lsp.attach', {}),
   callback = lspattach_cb,
@@ -128,15 +129,16 @@ local lua_lsp_config = {
     -- do nothing if not in a proper workspace (no marker, even .git, found)
     if not client.workspace_folders then return end
 
+    -- do nothing if workspace isn't the user's neovim config directory
     local path = client.workspace_folders[1].name
-    -- do nothing if workspace isn't user neovim config directory
     if path ~= vim.fn.stdpath('config') then return end
 
-    -- add nvim rtp paths to installed plugins and builtin $VIMRUNTIME/lua
+    -- workspace is in neovim user config directory, so we extend lsp context to
+    -- include nvim runtime paths. see `:set rtp?` to see locations in scope
     client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
       workspace = {
-        -- Filter out stdpath('config') and it's 'after' directory to fix
-        -- https://github.com/neovim/nvim-lspconfig/issues/3189
+        -- BUG: https://github.com/neovim/nvim-lspconfig/issues/3189
+        -- solution: filter out stdpath('config') and it's 'after' directory manually
         library = vim.tbl_filter(function(d)
           return not d:match(vim.fn.stdpath('config') .. '/?a?f?t?e?r?')
         end, vim.api.nvim_get_runtime_file('', true))
@@ -144,14 +146,11 @@ local lua_lsp_config = {
     })
   end,
 }
+
+--merge our extra config, in to existing `lsp\emmylua_ls.lua`
 vim.lsp.config('emmylua_ls', lua_lsp_config)
 
-
+-- setup auto start/stopping of these lsp servers
 vim.lsp.enable({
-  -- 'lua-language-server',
-  'vscode-json-language-server',
   'emmylua_ls'
-  -- 'taplo',
-  -- 'vimls',
-  -- 'yamlls',
 })
