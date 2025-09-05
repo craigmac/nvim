@@ -71,3 +71,11 @@ function M.my_lsp_attach(args)
   end
 end
 
+-- vim.lsp.enable|config(), LspAttach|Detach unavailable until nvim 0.11
+--
+-- local servers = { 'lua_ls', 'bash_ls', 'clangd' }
+-- for _, lsp in ipairs(servers) do
+--   on_attach = my_lsp_attach,
+--   on_detach = my_lsp_detach,
+-- end
+

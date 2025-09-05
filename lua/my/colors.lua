@@ -1,9 +1,7 @@
-vim.cmd.colorscheme('habamax')
 
 vim.cmd([[
-hi! VertSplit guibg=bg guifg=fg
-" rm bg/fg and let term emulator handle those
-" to provide more integrated feel with
-hi! Normal guibg=NONE ctermbg=NONE
-" [~])j
+  " default link to Statement is just bold and hard to spot diff line markers quickly,
+  " instead make them cyan like lazygit does
+  hi! diffLine guifg=cyan
+  hi! TermCursor gui=none guibg=lightreg guifg=white
 ]])
