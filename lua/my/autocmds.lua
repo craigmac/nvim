@@ -6,7 +6,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = mygroup,
 })
 
-vim.api.nvim_create_autocmd({ 'WinEnter', 'InsertLeave' 'TermLeave' }, {
+vim.api.nvim_create_autocmd({ 'WinEnter', 'InsertLeave', 'TermLeave' }, {
   command = 'setlocal cursorline',
   desc = 'Turn on cursorline highlight.',
   group = mygroup,
