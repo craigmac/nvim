@@ -1,10 +1,12 @@
 -- special characters and display
-vim.o.fillchars = 'eob:-,diff:-,fold: ,foldclose:▶,foldopen:▼,lastline:⋯,msgsep:─'
-vim.o.listchars = 'eol:¬,tab:⇥ ,trail:░,extends:»,precedes:«,nbsp:⍽'
+vim.o.fillchars = 'eob: ,diff:-,fold: ,foldclose:▶,foldopen:▼,lastline:⋯,msgsep:─'
+vim.o.listchars = 'eol: ,tab:⇥ ,trail:░,extends:»,precedes:«,nbsp:⍽'
 vim.o.list = true
 vim.o.foldtext = ''
 vim.o.foldlevelstart = 99
 vim.o.showmode = false
+vim.o.number = true
+vim.o.cursorline = true
 
 -- no wrap, but if we do enable wrap, use these wrap-related settings
 vim.o.wrap = false
@@ -24,9 +26,9 @@ vim.o.wildcharm = vim.keycode('<C-z>'):byte()
 
 -- bars and lines
 vim.o.signcolumn = 'yes'
--- vim.o.statusline = '%!v:lua.My.StatusLine()'
--- vim.o.tabline = '%!v:lua.My.TabLine()'
--- vim.o.winbar = '%!v:lua.My.Winbar()'
+-- vim.o.statusline = '%!v:lua.require("my.functions").StatusLine()'
+-- vim.o.tabline = '%!v:lua.require("my.functions").TabLine()'
+-- vim.o.winbar = '%!v:lua.require("my.functions").Winbar()'
 
 -- editing
 vim.o.expandtab = true

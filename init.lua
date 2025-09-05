@@ -1,127 +1,8 @@
 -- vi: et tw=120 sw=2 sts=-1 fdm=marker
 -- nvim debian stable config (0.10.4)
 
--- Globals Variables / Functions {{{1
-My = {}
-
-vim.g.mapleader = ' '
-vim.g.netrw_banner = 0
-vim.g.netrw_hide = 0
-
-vim.g.loaded_2html = 1
-vim.g.loaded_tutor_mode_plugin = 1
-vim.g.loaded_zipPlugin = 1
-vim.g.loaded_remote_plugins = 1
-vim.g.loaded_tarPlugin = 1
-vim.g.loaded_2html_plugin = 1
-
-function My.Winbar()
-  return table.concat({ '%=', '%t', '%( [%M%R%H%W]%)', '%=', })
-end
-
-function My.TabLabel(n)
-  local buflist = vim.fn.tabpagebuflist(n)
-  local winnr = vim.fn.tabpagewinnr(n)
-  local bufname = vim.fn.bufname(buflist[winnr])
-  local isdir = bufname:sub(#bufname) == '/'
-  local name = vim.fn.fnamemodify(bufname, isdir and ':h:t' or ':t') .. (isdir and '/' or '')
-  name = name:len() > 20 and name:sub(1, 20) .. '…' or name
-  return name == '' and 'No Name' or name
-end
-
-function My.TabLine()
-  local s = {}
-  for i = 1, vim.fn.tabpagenr('$') do
-    local active_tab = i == vim.fn.tabpagenr()
-    local hlgroup = active_tab and '%#TabLineSel#' or '%#TabLine#'
-    vim.list_extend(s, { hlgroup, (' %%%dT'):format(i), tostring(i), (' %%{v:lua.My.TabLabel(%d)}'):format(i), '%T ', })
-  end
-  vim.list_extend(s, { '%#TabLineFill#' })
-  return table.concat(s)
-end
-
-local function find_terminal_bufnr_in_tab(tabpage)
-  for _, win in ipairs(vim.api.nvim_tabpage_list_wins(tabpage)) do
-    local bufnr = vim.api.nvim_win_get_buf(win)
-    if vim.api.nvim_buf_get_option(bufnr, 'buftype') == 'terminal' then
-      return win, bufnr
-    end
-  end
-  return nil, nil
-end
-
--- toggle terminal or jump to existing terminal buffer in current tabpage
-function My.ToggleBotrightTerminal()
-  local tabpage = vim.api.nvim_get_current_tabpage()
-  local win, bufnr = find_terminal_bufnr_in_tab(tabpage)
-  if win then
-    vim.api.nvim_set_current_win(win)
-  else
-    vim.cmd("botright split | terminal")
-  end
-end
-
--- Options {{{1
--- special characters and display
-vim.o.fillchars = 'eob:-,diff:-,fold: ,foldclose:▶,foldopen:▼,lastline:⋯,msgsep:─'
-vim.o.listchars = 'eol:¬,tab:⇥ ,trail:░,extends:»,precedes:«,nbsp:⍽'
-vim.o.list = true
-vim.o.foldtext = ''
-vim.o.foldlevelstart = 99
-vim.o.showmode = false
-vim.o.number = true
-vim.o.cursorline = true
-
--- no wrap, but if we do enable wrap, use these wrap-related settings
-vim.o.wrap = false
-vim.o.breakindent = true
-vim.o.joinspaces = false
-vim.o.linebreak = true
-vim.o.showbreak = '↳ '
-vim.o.smoothscroll = true
-
--- searching/matching
-vim.o.ignorecase = true
-vim.o.smartcase = true
-vim.o.inccommand = 'split'
-vim.o.pumheight = 10
-vim.o.shortmess = vim.o.shortmess .. 'cs'
-vim.o.wildcharm = vim.keycode('<C-z>'):byte()
-
--- bars and lines
-vim.o.signcolumn = 'yes'
--- vim.o.statusline = '%!v:lua.My.StatusLine()'
-vim.o.tabline = '%!v:lua.My.TabLine()'
--- vim.o.winbar = '%!v:lua.My.Winbar()'
-
--- editing
-vim.o.expandtab = true
-vim.o.shiftwidth = 2
-vim.o.softtabstop = -1
-vim.o.spelllang = 'gb'
-vim.o.spelloptions = 'camel,noplainbuffer'
-vim.o.spellsuggest = 'fast,5'
-
--- startup/behaviour
-vim.o.exrc = true
-vim.o.secure = true
-vim.o.diffopt = vim.o.diffopt .. ',followwrap,algorithm:minimal'
-vim.o.jumpoptions = vim.o.jumpoptions .. ',view'
-vim.o.sidescrolloff = 2
-vim.o.title = true
-vim.o.undofile = true
-vim.o.updatetime = 500
-
-vim.diagnostic.config({
-  float = {
-    border = 'single',
-    header = 'Diagnostics',
-    severity_sort = true,
-    source = true,
-  },
-  severity_sort = true,
-  virtual_text = false,
-})
+require('my.globals')
+require('my.options')
 
 -- Autocommands / FileTypes {{{1
 local myaugroup = vim.api.nvim_create_augroup('my.augroup', { clear = true })
@@ -181,6 +62,23 @@ vim.api.nvim_create_autocmd('TermRequest', {
       })
     end
   end,
+})
+
+vim.api.nvim_create_autocmd('TermOpen', {
+  group = myaugroup,
+  callback = function(args)
+      vim.api.nvim_set_option_value('number', false, {})
+      vim.cmd.startinsert()
+  end
+})
+
+vim.api.nvim_create_autocmd({ 'BufEnter', 'WinEnter' }, {
+  group = myaugroup,
+  callback = function(args)
+    if vim.api.nvim_get_option_value('buftype', { buf = args.buf }) == 'terminal' then
+      vim.cmd.startinsert()
+    end
+  end
 })
 
 -- Keymaps {{{1
