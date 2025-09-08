@@ -33,33 +33,11 @@ vim.o.pumblend = 5
 -- small transparency on floating windows
 vim.o.winblend = 5
 
--- default bg #07080d (black aka gray1) doesn't work well when you use border characters,
--- as it 'bleeds' beyond the border char boundaries
-hi('NormalFloat', { link = 'Normal' })
-
--- default links to StatusLine, gives ugly black horizontal line on white bg
-hi('MsgSeparator', { fg = p.bright_gray2 })
-
--- switch from bold+NvimLightGrey3 #e0e2ea, to brighter white #eef1f8
-hi('Statement', { fg = p.bright_gray1 })
-
--- default doesn't match either PmenuSel or StatusLine, I'd rather it be consistent
--- with at least one of them
-hi('TabLineSel', { link = 'PmenuSel' })
--- hi('TabLineFill', { link = 'Pmenu' })
-hi('TabLine', { link = 'Pmenu' })
-
--- default: cterm=underline gui=underline. blue like html links: #a6dbff
-hi('Underlined', { underline = true, fg = p.bright_blue, sp = p.bright_blue })
-
 -- for use in `:h 'stl` format strings -> %1*<User1 hl applied: black fg on red bg>%*<colors reset>
 hi('User1', { fg = p.black, bg = p.bright_red })
 hi('User2', { fg = p.black, bg = p.bright_green })
 hi('User3', { fg = p.black, bg = p.bright_yellow })
 hi('User4', { fg = p.black, bg = p.bright_blue })
-
 hi('User5', { fg = p.black, bg = p.bright_magenta })
 hi('User6', { fg = p.black, bg = p.bright_cyan })
 hi('User7', { fg = p.black, bg = p.bright_white })
-
-hi('WinSeparator', { fg = p.gray3 })

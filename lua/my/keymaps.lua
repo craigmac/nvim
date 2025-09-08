@@ -2,10 +2,8 @@ vim.keymap.set('n', '<Leader>w', '<Cmd>silent update ++p<CR>')
 vim.keymap.set('n', '<Leader><CR>', '<Cmd>source %<CR>')
 vim.keymap.set('n', '<Leader><Space>', '<Cmd>b #<CR>')
 vim.keymap.set('n', '<Leader>,', ':<C-u>silent tabedit $MYVIMRC <Bar> :tcd %:h<CR>', { silent = true })
-vim.keymap.set('n', "'", '`')
 vim.keymap.set('n', 'zS', '<Cmd>Inspect<CR>')
 vim.keymap.set('n', 'g:', ':<C-u>lua =')
-vim.keymap.set('n', 'gV', ':<C-u>normal! `[v`]<CR>')
 vim.keymap.set({ 'n', 'x' }, '<Leader>y', '"+y')
 vim.keymap.set({ 'n', 'x' }, '<Leader>Y', '"+Y')
 vim.keymap.set({ 'n', 'x' }, '<Leader>p', "\"+pv'[']")
@@ -58,3 +56,10 @@ end, { expr = true, silent = true })
 
 -- (g)o (m)enu - overwrites default `:h gm` that I never use
 vim.keymap.set('n', 'gm', function() require('my.menus').lsp_popup_menu() end)
+
+-- mimic my tmux bindings for :terminal buffers when tmux not running
+if not vim.env.tmux then
+  vim.keymap.set({ 't', 'n' }, '<C-Space>s', '<Cmd>horizontal terminal<CR>')
+  vim.keymap.set({ 't', 'n' }, '<C-Space>v', '<Cmd>vertical terminal<CR>')
+end
+
