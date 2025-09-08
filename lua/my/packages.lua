@@ -144,4 +144,9 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
+-- from fugitive docs
+vim.cmd([[
+set statusline=%<%f\ %h%m%r%{FugitiveStatusline()}%=%-14.(%l,%c%V%)\ %P
+"set statusline=%<%f\ %h%m%r%{FugitiveHead()}%=%-.14(%l,%c%V%)\ %P
+]])
 

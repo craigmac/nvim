@@ -9,4 +9,8 @@ require('my.packages')
 require('my.lsp')
 require('my.colors')
 
--- vi: et tw=120 sw=2 sts=-1 fdm=marker
+if vim.g.neovide then
+ vim.o.guifont = 'Adwaita Mono:h14'
+end
+
+-- vi: et tw=120 sw=2 sts=-1
