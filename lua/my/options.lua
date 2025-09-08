@@ -63,3 +63,9 @@ vim.o.tabclose = 'uselast'
 vim.o.undofile = true
 -- shorter delay to trigger `:h vim.lsp.buf.document_highlight()`
 vim.o.updatetime = 500
+
+-- remove right-click menu entry
+vim.cmd([[
+aunmenu PopUp.How-to\ disable\ mouse
+aunmenu PopUp.-2-
+]])
