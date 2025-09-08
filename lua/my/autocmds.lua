@@ -1,4 +1,4 @@
-local mygroup = vim.api.nvim_create_augroup('my.augroup', { clear = true })
+local mygroup = vim.api.nvim_create_augroup('my.augroup', {})
 
 vim.api.nvim_create_autocmd('TextYankPost', {
   callback = function() vim.hl.on_yank() end,

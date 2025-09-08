@@ -1,12 +1,13 @@
 -- special characters and display
+vim.o.cursorline = true
 vim.o.fillchars = 'eob: ,diff:-,fold: ,foldclose:▶,foldopen:▼,lastline:⋯,msgsep:─'
+vim.o.guifont = 'Adwaita Mono,Inconsolata:h14'
 vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,t:ver25-TermCursor'
 vim.o.listchars = 'eol: ,tab:⇥ ,trail:░,extends:»,precedes:«,nbsp:⍽'
 vim.o.list = true
 vim.o.number = true
 vim.o.winborder = 'single'
 vim.o.foldtext = ''
-vim.o.foldlevelstart = 99
 
 -- no wrap, but if we do enable wrap, use these wrap-related settings
 vim.o.wrap = false
@@ -30,10 +31,15 @@ vim.o.shortmess = vim.o.shortmess
         -- 'S', -- no [1/5] search count shown
     })
 vim.o.wildcharm = vim.keycode('<C-z>'):byte()
+-- `:h cmdline-completion`
+vim.o.wildmode = 'noselect:lastused,full'
 
 -- bars and lines
-vim.o.cursorline = true
+-- 'stc total-width calculation uses this (default 4) when drawing
+vim.numberwidth = 4
 vim.o.signcolumn = 'yes'
+vim.o.statuscolumn = '%s%=%l%C '
+vim.o.foldcolumn = '1'
 -- vim.o.statusline = '%!v:lua.require("my.functions").StatusLine()'
 -- vim.o.statusline = '%!v:lua.My.StatusLine()'
 -- vim.o.tabline = '%!v:lua.My.TabLine()'

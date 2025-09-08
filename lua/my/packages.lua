@@ -142,11 +142,20 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
-vim.api.nvim_create_autocmd('FileType', {
-  group = augroup,
-  pattern = 'fugitive',
-  callback = function()
-    -- on open jump to unstaged section
-    vim.cmd([[norm gU]])
-  end,
-})
+-- -- `:h fugitive-autocommands`
+-- vim.api.nvim_create_autocmd('FugitiveIndex', {
+--   pattern = '*',
+--   desc = 'When fugitive-summary buffer is loaded.',
+--   group = augroup,
+--   callback = function()
+--     vim.cmd([[norm gU]])
+--   end,
+-- })
+
+-- vim.api.nvim_create_autocmd('FugitiveEditor', {
+--   pattern = '*',
+--   callback = function()
+--     vim.cmd.startinsert()
+--   end,
+--   desc = 'After a :Git ... command edits a file like commit msg.'
+-- })
