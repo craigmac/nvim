@@ -51,3 +51,6 @@ else
   hi('User6', { fg = p.white, bg = p.cyan })
   hi('User7', { fg = p.white, bg = p.white })
 end
+
+-- Make trailing whitespace too obvious
+vim.api.nvim_set_hl(0, 'NonText', { fg = 'Red' })
