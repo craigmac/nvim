@@ -34,10 +34,20 @@ vim.o.pumblend = 5
 vim.o.winblend = 5
 
 -- for use in `:h 'stl` format strings -> %1*<User1 hl applied: black fg on red bg>%*<colors reset>
-hi('User1', { fg = p.black, bg = p.bright_red })
-hi('User2', { fg = p.black, bg = p.bright_green })
-hi('User3', { fg = p.black, bg = p.bright_yellow })
-hi('User4', { fg = p.black, bg = p.bright_blue })
-hi('User5', { fg = p.black, bg = p.bright_magenta })
-hi('User6', { fg = p.black, bg = p.bright_cyan })
-hi('User7', { fg = p.black, bg = p.bright_white })
+if vim.o.background == 'dark' then
+  hi('User1', { fg = p.black, bg = p.bright_red })
+  hi('User2', { fg = p.black, bg = p.bright_green })
+  hi('User3', { fg = p.black, bg = p.bright_yellow })
+  hi('User4', { fg = p.black, bg = p.bright_blue })
+  hi('User5', { fg = p.black, bg = p.bright_magenta })
+  hi('User6', { fg = p.black, bg = p.bright_cyan })
+  hi('User7', { fg = p.black, bg = p.bright_white })
+else
+  hi('User1', { fg = p.white, bg = p.red })
+  hi('User2', { fg = p.white, bg = p.green })
+  hi('User3', { fg = p.white, bg = p.yellow })
+  hi('User4', { fg = p.white, bg = p.blue })
+  hi('User5', { fg = p.white, bg = p.magenta })
+  hi('User6', { fg = p.white, bg = p.cyan })
+  hi('User7', { fg = p.white, bg = p.white })
+end
