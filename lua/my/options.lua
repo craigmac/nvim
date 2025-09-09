@@ -31,8 +31,8 @@ vim.o.shortmess = vim.o.shortmess
         -- 'S', -- no [1/5] search count shown
     })
 vim.o.wildcharm = vim.keycode('<C-z>'):byte()
--- `:h cmdline-completion`
-vim.o.wildmode = 'noselect:lastused,full'
+-- useful for `:h cmdline-completion`
+-- vim.o.wildmode = 'noselect:lastused,full'
 
 -- bars and lines
 -- 'stc total-width calculation uses this (default 4) when drawing
@@ -64,8 +64,11 @@ vim.o.undofile = true
 -- shorter delay to trigger `:h vim.lsp.buf.document_highlight()`
 vim.o.updatetime = 500
 
--- remove right-click menu entry
-vim.cmd([[
-aunmenu PopUp.How-to\ disable\ mouse
-aunmenu PopUp.-2-
-]])
+-- remove popup menu entry, guarded to prevent error on re-sourcing this file
+if not vim.g.popup_menu_fixed then
+  vim.cmd([[
+  aunmenu PopUp.How-to\ disable\ mouse
+  aunmenu PopUp.-2-
+  ]])
+  vim.g.popup_menu_fixed = true
+end

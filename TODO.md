@@ -2,7 +2,8 @@
 
 ## TODO
 
-- Remove "how to remove mouse" from menu
+- set listchars to FB to make it stand out more with Red
+- Fix neovide spacing, use builtin instead of font chars
 - determine &shellpipe for Windows pwsh.exe PowerShell 7.5.x
 
 ## GUIs
@@ -24,9 +25,12 @@ $VIMRUNTIME/pack/dist/opt/netrw/autoload/netrw.vim:9097
 
 ## IDEAS
 
+- , should always be left/down and ; should always be up/right
 - Mouse right back button for <C-o>? how
 - Look again at my gm right-menu plugin and integrate it instead as an optional
   plugin that adds lsp context stuff.
 - add nonumber nolist in location list and quickfix list, and turn off cursorline too
 - can we get smart-splits.nvim to work in VSCode via vscode-neovim plugin
 
+- why can't you do lua vim.opt.listcharts['eol'] = '$' doesn't seem to work
+- all along the watch
