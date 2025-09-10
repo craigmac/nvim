@@ -18,12 +18,6 @@ vim.api.nvim_create_autocmd({ 'WinLeave', 'InsertEnter', 'TermEnter' }, {
   group = mygroup,
 })
 
-vim.api.nvim_create_autocmd('InsertEnter', {
-  command = 'setlocal nolist',
-  desc = 'Turn off &list in insert-mode so no "trail" listchars shown while typing',
-  group = mygroup,
-})
-
 vim.api.nvim_create_autocmd('BufReadPost', {
   callback = function()
     local ln = vim.fn.line('\'"')

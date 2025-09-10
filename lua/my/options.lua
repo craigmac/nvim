@@ -5,7 +5,6 @@ vim.o.guifont = 'Adwaita Mono,Inconsolata:h14'
 vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,t:ver25-TermCursor'
 -- first 3 highlighted by hl-NonText, the rest: hl-WhiteSpace
 vim.o.listchars = 'eol:¶,extends:»,precedes:«,tab:⇥ ,trail:█,nbsp:⍽'
-vim.o.list = true
 vim.o.number = true
 vim.o.winborder = 'single'
 vim.o.foldtext = ''
