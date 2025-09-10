@@ -1,6 +1,10 @@
 --- https://github.com/EmmyLuaLs/emmylua-analyzer-rust
+---
 --- install rust with https://rustup.rs, then
 --- `cargo install emmylua_ls`
+
+-- there is also `nvim-lspconfig/lsp/emmylua_ls.lua` which is more
+-- barebones
 return {
   cmd = { 'emmylua_ls' },
   filetypes = { 'lua' },
@@ -37,9 +41,9 @@ return {
         typeCall = true,
         arrayIndex = true,
       },
-      workspace = {
-        checkThirdParty = false,
-      },
+      -- workspace = {
+      --   checkThirdParty = false,
+      -- },
     },
   },
 }

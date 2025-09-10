@@ -20,13 +20,7 @@ vim.api.nvim_create_autocmd({ 'WinLeave', 'InsertEnter', 'TermEnter' }, {
 
 vim.api.nvim_create_autocmd('InsertEnter', {
   command = 'setlocal nolist',
-  desc = 'Turn off &list in insert-mode so no "trail:█" listchars shown while typing',
-  group = mygroup,
-})
-
-vim.api.nvim_create_autocmd('InsertLeave', {
-  command = 'setlocal list',
-  desc = 'Turn &list back on when leaving Insert mode so we see trailing whitespace.',
+  desc = 'Turn off &list in insert-mode so no "trail" listchars shown while typing',
   group = mygroup,
 })
 

@@ -7,7 +7,6 @@ require('my.options')
 require('my.autocmds')
 require('my.keymaps')
 require('my.commands')
-require('my.lsp')
 require('my.colors')
 
 -- runtime plugins shipped with nvim
