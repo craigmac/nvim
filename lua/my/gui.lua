@@ -17,6 +17,16 @@ if vim.g.neovide then
   vim.keymap.set('n', '<F11>', ':<C-u>let g:neovide_fullscreen = !g:neovide_fullscreen<CR>')
   -- <C-[> is distinct from <Esc> in GUI
   vim.keymap.set('t', '<C-[><C-[>', '<C-\\><C-n>')
+
+  -- on Windows native
+  if vim.fn.has('win64') == 1 then
+    vim.o.shellslash = true
+    vim.o.shell = 'pwsh -NoLogo'
+    vim.o.shellcmdflag = '-NoProfile -ExecutionPolicy RemoteSigned -Command'
+    vim.o.shellxquote = ''
+    vim.o.shellpipe = '>%s 2>&1'
+    vim.o.shellredir = '>%s 2>&1'
+  end
 end
 
 local guis_augroup = vim.api.nvim_create_augroup('my.augroup.guis', {})

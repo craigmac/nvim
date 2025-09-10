@@ -3,7 +3,8 @@ vim.o.cursorline = true
 vim.o.fillchars = 'eob: ,diff:-,fold: ,foldclose:▶,foldopen:▼,lastline:⋯,msgsep:─'
 vim.o.guifont = 'Adwaita Mono,Inconsolata:h14'
 vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,t:ver25-TermCursor'
-vim.o.listchars = 'eol: ,tab:⇥ ,trail:█,extends:»,precedes:«,nbsp:⍽'
+-- first 3 highlighted by hl-NonText, the rest: hl-WhiteSpace
+vim.o.listchars = 'eol:¶,extends:»,precedes:«,tab:⇥ ,trail:█,nbsp:⍽'
 vim.o.list = true
 vim.o.number = true
 vim.o.winborder = 'single'
@@ -25,12 +26,8 @@ vim.o.inccommand = 'split'
 vim.o.pumheight = 10
 vim.o.shortmess = vim.o.shortmess .. 'cs'
 vim.o.wildcharm = vim.keycode('<C-z>'):byte()
--- useful for `:h cmdline-completion`
--- vim.o.wildmode = 'noselect:lastused,full'
 
 -- bars and lines
--- 'stc total-width calculation uses this (default 4) when drawing
-vim.numberwidth = 4
 vim.o.signcolumn = 'yes'
 vim.o.statuscolumn = '%s%=%l%C '
 vim.o.foldcolumn = '1'
@@ -40,9 +37,6 @@ vim.o.foldcolumn = '1'
 -- vim.o.winbar = '%!v:lua.My.Winbar()'
 
 -- editing
-vim.o.expandtab = true
-vim.o.shiftwidth = 2
-vim.o.softtabstop = -1 -- use shiftwidth
 vim.o.spelllang = 'en_gb'
 vim.o.spelloptions = 'camel,noplainbuffer'
 vim.o.spellsuggest = 'fast,5'

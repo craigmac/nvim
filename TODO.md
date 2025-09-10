@@ -2,10 +2,6 @@
 
 ## TODO
 
-- set listchars to FB to make it stand out more with Red
-- Fix neovide spacing, use builtin instead of font chars
-- determine &shellpipe for Windows pwsh.exe PowerShell 7.5.x
-
 ## GUIs
 
 - right click menu stuff
