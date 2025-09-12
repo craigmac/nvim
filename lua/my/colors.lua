@@ -34,20 +34,25 @@ vim.o.pumblend = 5
 vim.o.winblend = 5
 
 -- for use in `:h 'stl` format strings -> %1*<User1 hl applied: black fg on red bg>%*<colors reset>
+local hi = function(group, value) vim.api.nvim_set_hl(0, group, value) end
 if vim.o.background == 'dark' then
-  hi('User1', { fg = p.black, bg = p.bright_red })
-  hi('User2', { fg = p.black, bg = p.bright_green })
-  hi('User3', { fg = p.black, bg = p.bright_yellow })
-  hi('User4', { fg = p.black, bg = p.bright_blue })
-  hi('User5', { fg = p.black, bg = p.bright_magenta })
-  hi('User6', { fg = p.black, bg = p.bright_cyan })
-  hi('User7', { fg = p.black, bg = p.bright_white })
-else
-  hi('User1', { fg = p.white, bg = p.red })
-  hi('User2', { fg = p.white, bg = p.green })
-  hi('User3', { fg = p.white, bg = p.yellow })
-  hi('User4', { fg = p.white, bg = p.blue })
-  hi('User5', { fg = p.white, bg = p.magenta })
-  hi('User6', { fg = p.white, bg = p.cyan })
-  hi('User7', { fg = p.white, bg = p.white })
+  hi('User1', { fg = 'Black', bg = 'LightRed' })
+  hi('User2', { fg = 'Black', bg = 'LightGreen' })
+  hi('User3', { fg = 'Black', bg = 'LightYellow' })
+  hi('User4', { fg = 'Black', bg = 'LightBlue' })
+  hi('User5', { fg = 'Black', bg = 'LightMagenta' })
+  hi('User6', { fg = 'Black', bg = 'LightCyan' })
+  hi('User7', { fg = 'Black', bg = 'White' })
+else -- darker variants for light bg need brighter fg for contrast
+  hi('User1', { fg = 'White', bg = 'Red' })
+  hi('User2', { fg = 'White', bg = 'Green' })
+  hi('User3', { fg = 'White', bg = 'Yellow' })
+  hi('User4', { fg = 'White', bg = 'Blue' })
+  hi('User5', { fg = 'White', bg = 'Magenta' })
+  hi('User6', { fg = 'White', bg = 'Cyan' })
+  hi('User7', { fg = 'White', bg = 'LightGrey' })
 end
+
+-- technically there are 9 supported so let's make 8/9 dark-mode and light-mode
+hi('User8', { fg = 'White', bg = 'Black' })
+hi('User9', { fg = 'Black', bg = 'White' })
