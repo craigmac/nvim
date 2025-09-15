@@ -1,7 +1,6 @@
 -- special characters and display
 vim.o.fillchars = 'eob:~,diff:-,fold: ,foldclose:▶,foldopen:▼,lastline:⋯,msgsep:─'
 vim.o.listchars = 'eol:¶,tab:⇥ ,trail:░,extends:»,precedes:«,nbsp:⍽'
-vim.o.list = true
 vim.o.foldcolumn = 'auto'
 vim.o.foldtext = ''
 vim.o.foldlevelstart = 99

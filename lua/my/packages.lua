@@ -1,4 +1,4 @@
---[[ fist install paq-nvim:
+--[[
 git clone --depth=1 --branch=debian https://github.com/savq/paq-nvim.git \
 "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/pack/paqs/start/paq-nvim
 --]]
@@ -23,9 +23,9 @@ require('paq')({
 })
 
 vim.g.lion_squeeze_spaces = 1
-vim.g.qf_mapping_ack_style = 1
-vim.g.qf_disable_statusline = 1
+
 vim.g['sneak#label'] = 1
+
 vim.g.firenvim_config = {
   globalSettings = {
     alt = 'all',
@@ -67,6 +67,7 @@ require('fzf-lua').setup({
   },
   winopts = { fullscreen = true },
 })
+vim.api.nvim_create_autocmd('UIEnter', { command = 'FzfLua register_ui_select', group = 'my.augroup' })
 
 vim.keymap.set('n', '<Leader>:', function() require('fzf-lua').command_history() end)
 vim.keymap.set('n', '<Leader>f', function() require('fzf-lua').files() end)
@@ -85,9 +86,6 @@ vim.keymap.set({ 't', 'n' }, '<M-k>', function() require('smart-splits').move_cu
 vim.keymap.set({ 't', 'n' }, '<M-l>', function() require('smart-splits').move_cursor_right() end)
 vim.keymap.set({ 't', 'n' }, '<M-p>', function() require('smart-splits').move_cursor_previous() end)
 
-vim.keymap.set('n', '<Leader>q', '<Plug>(qf_qf_toggle)')
-vim.keymap.set('n', '<Leader>l', '<Plug>(qf_loc_toggle)')
-
 local gitsigns = require('gitsigns')
 gitsigns.setup({
   signs_staged_enable = false,
@@ -96,19 +94,11 @@ gitsigns.setup({
     vim.keymap.set('n', 'yog', gitsigns.toggle_signs)
 
     vim.keymap.set('n', ']c', function()
-      if vim.wo.diff then
-        vim.cmd.normal({ ']c', bang = true })
-      else
-        gitsigns.nav_hunk('next')
-      end
+      if vim.wo.diff then vim.cmd.normal({ ']c', bang = true }) else gitsigns.nav_hunk('next') end
     end)
 
     vim.keymap.set('n', '[c', function()
-      if vim.wo.diff then
-        vim.cmd.normal({ '[c', bang = true })
-      else
-        gitsigns.nav_hunk('prev')
-      end
+      if vim.wo.diff then vim.cmd.normal({ '[c', bang = true }) else gitsigns.nav_hunk('prev') end
     end)
 
     vim.keymap.set({ 'x', 'n' }, '<Leader>hs', gitsigns.stage_hunk)
@@ -121,11 +111,6 @@ gitsigns.setup({
   end,
 })
 
-vim.api.nvim_create_autocmd('UIEnter', {
-  command = 'FzfLua register_ui_select',
-  group = 'my.augroup'
-})
-
 vim.api.nvim_create_autocmd('FileType', {
   group = 'my.augroup',
   pattern = 'qf',
@@ -135,18 +120,9 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
-vim.api.nvim_create_autocmd('FileType', {
-  group = 'my.augroup',
-  pattern = 'fugitive',
-  callback = function()
-    -- on open jump to unstaged section
-    vim.cmd([[norm gU]])
-  end,
-})
+vim.g.qf_mapping_ack_style = 1
+vim.g.qf_disable_statusline = 1
 
--- from fugitive docs
-vim.cmd([[
-set statusline=%<%f\ %h%m%r%{FugitiveStatusline()}%=%-14.(%l,%c%V%)\ %P
-"set statusline=%<%f\ %h%m%r%{FugitiveHead()}%=%-.14(%l,%c%V%)\ %P
-]])
+vim.keymap.set('n', '<Leader>q', '<Plug>(qf_qf_toggle)')
+vim.keymap.set('n', '<Leader>l', '<Plug>(qf_loc_toggle)')
 
