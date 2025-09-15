@@ -1,12 +1,10 @@
 -- special characters and display
-vim.o.fillchars = 'eob: ,diff:-,fold: ,foldclose:▶,foldopen:▼,lastline:⋯,msgsep:─'
-vim.o.listchars = 'eol: ,tab:⇥ ,trail:░,extends:»,precedes:«,nbsp:⍽'
+vim.o.fillchars = 'eob:~,diff:-,fold: ,foldclose:▶,foldopen:▼,lastline:⋯,msgsep:─'
+vim.o.listchars = 'eol:¶,tab:⇥ ,trail:░,extends:»,precedes:«,nbsp:⍽'
 vim.o.list = true
+vim.o.foldcolumn = 'auto'
 vim.o.foldtext = ''
 vim.o.foldlevelstart = 99
-vim.o.showmode = false
-vim.o.number = true
-vim.o.cursorline = true
 
 -- no wrap, but if we do enable wrap, use these wrap-related settings
 vim.o.wrap = false
@@ -30,11 +28,9 @@ vim.o.signcolumn = 'yes'
 -- vim.o.tabline = '%!v:lua.require("my.functions").TabLine()'
 -- vim.o.winbar = '%!v:lua.require("my.functions").Winbar()'
 
--- editing
-vim.o.expandtab = true
+-- editing - use option 1 of 5 (!!) ways to use `:h 'tabstop`
 vim.o.shiftwidth = 2
 vim.o.softtabstop = -1
-vim.o.spelllang = 'gb'
 vim.o.spelloptions = 'camel,noplainbuffer'
 vim.o.spellsuggest = 'fast,5'
 
@@ -46,8 +42,6 @@ vim.o.jumpoptions = vim.o.jumpoptions .. ',view'
 vim.o.sidescrolloff = 2
 vim.o.title = true
 vim.o.undofile = true
--- shorter delay to trigger `:h vim.lsp.buf.document_highlight()`
-vim.o.updatetime = 500
 
 vim.diagnostic.config({
   float = {
