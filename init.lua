@@ -7,7 +7,6 @@ require('my.keymaps')
 require('my.commands')
 require('my.packages')
 require('my.lsp')
-require('my.colors')
 
 if vim.g.neovide then
  vim.o.guifont = 'Adwaita Mono:h14'

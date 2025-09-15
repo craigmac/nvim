@@ -4,6 +4,7 @@ vim.o.listchars = 'eol:¶,tab:⇥ ,trail:░,extends:»,precedes:«,nbsp:⍽'
 vim.o.foldcolumn = 'auto'
 vim.o.foldtext = ''
 vim.o.foldlevelstart = 99
+vim.o.termguicolors = true
 
 -- no wrap, but if we do enable wrap, use these wrap-related settings
 vim.o.wrap = false
