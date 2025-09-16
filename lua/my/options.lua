@@ -5,7 +5,6 @@ vim.o.guifont = 'Adwaita Mono,Inconsolata:h14'
 vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,t:ver25-TermCursor'
 -- first 3 highlighted by hl-NonText, the rest: hl-WhiteSpace
 vim.o.listchars = 'eol:¶,extends:»,precedes:«,tab:⇥ ,trail:█,nbsp:⍽'
-vim.o.number = true
 vim.o.winborder = 'single'
 vim.o.foldtext = ''
 
@@ -19,8 +18,6 @@ vim.o.smoothscroll = true
 
 -- searching/matching
 vim.o.findfunc = 'v:lua.My.FindFunc'
-vim.o.ignorecase = true
-vim.o.smartcase = true
 vim.o.inccommand = 'split'
 vim.o.pumheight = 10
 vim.o.shortmess = vim.o.shortmess
@@ -33,9 +30,8 @@ vim.o.shortmess = vim.o.shortmess
 vim.o.wildcharm = vim.keycode('<C-z>'):byte()
 
 -- bars and lines
-vim.o.signcolumn = 'yes'
 vim.o.statuscolumn = '%s%=%l%C '
-vim.o.foldcolumn = '1'
+vim.o.foldcolumn = 'auto'
 -- vim.o.statusline = '%!v:lua.require("my.functions").StatusLine()'
 -- vim.o.statusline = '%!v:lua.My.StatusLine()'
 -- vim.o.tabline = '%!v:lua.My.TabLine()'
