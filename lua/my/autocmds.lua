@@ -32,14 +32,21 @@ vim.api.nvim_create_autocmd('UIEnter', {
   callback = function()
     local client = vim.api.nvim_get_chan_info(vim.v.event.chan or 0).client
     if client ~= nil and client.name == 'Firenvim' then
-      vim.o.laststatus = 0
-      vim.o.showtabline = 0
+      vim.o.laststatus = 1
+      vim.o.showtabline = 1
       vim.o.winbar = ''
       vim.o.background = 'light'
       vim.cmd.colorscheme('default')
-      vim.o.spelloptions = 'camel' -- 'ConsideredFourSeparateWords' = 4 words to check
+      vim.bo.spelloptions = 'camel' -- 'ConsideredFourSeparateWords' = 4 words to check
       vim.o.spellsuggest = 'best,5' -- only show 5 suggestions
-      vim.o.spell = true
+      vim.wo.spell = true
+      vim.wo.foldcolumn = 0
+      vim.wo.foldenable = false
+      vim.wo.signcolumn = auto
+      vim.wo.number = false
+      vim.wo.relativenumber = false
+      vim.wo.list = false
+      vim.o.guifont = 'Adwaita Mono:h11,Deja Vu Sans Mono:h11,Inconsolata:h11,Monaco:h11'
       vim.cmd.startinsert()
     end
   end,
