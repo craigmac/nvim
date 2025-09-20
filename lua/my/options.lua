@@ -50,10 +50,6 @@ vim.o.statusline = '%!v:lua.My.StatusLine()'
 vim.o.tabline = '%!v:lua.My.TabLine()'
 vim.o.winbar = '%!v:lua.My.Winbar()'
 
--- tabs and spaces, `:h usr_30.txt`
-vim.o.shiftwidth = 4   -- columns per level of (auto)indentation, 0 uses `&ts`
-vim.o.softtabstop = -1 -- use value of &sw
-
 -- spelling
 -- vim.o.spelllang = 'canadian'
 vim.o.spelloptions = 'camel,noplainbuffer'

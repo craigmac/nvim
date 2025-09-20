@@ -14,6 +14,7 @@ require('my.colors')
 vim.cmd.packadd('nohlsearch')
 
 vim.pack.add({
+    'https://github.com/neovim/nvim-lspconfig',
     'https://github.com/ibhagwan/fzf-lua',
     'https://github.com/mrjones2014/smart-splits.nvim',
     'https://github.com/tpope/vim-rsi',
