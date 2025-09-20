@@ -3,8 +3,7 @@ vim.o.cursorline = true
 vim.o.fillchars = 'eob: ,diff:-,fold: ,foldclose:▶,foldopen:▼,lastline:⋯,msgsep:─'
 vim.o.guifont = 'Adwaita Mono,Inconsolata:h14'
 vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,t:ver25-TermCursor'
--- first 3 highlighted by hl-NonText, the rest: hl-WhiteSpace
-vim.o.listchars = 'eol:¶,extends:»,precedes:«,tab:⇥ ,trail:█,nbsp:⍽'
+vim.o.listchars = 'eol: ,extends:»,precedes:«,tab:⇥ ,trail:█,nbsp:⍽'
 vim.o.winborder = 'single'
 vim.o.foldtext = ''
 
@@ -22,19 +21,17 @@ vim.o.smartcase = true
 vim.o.findfunc = 'v:lua.My.FindFunc'
 vim.o.inccommand = 'split'
 vim.o.pumheight = 10
-vim.o.shortmess = vim.o.shortmess
-    .. table.concat({
-        'c', -- no 'match 1 of 2' etc. messages when scrolling through completions
-        's', -- no 'search hit BOTTOM...' messages and don't show 'W' for wrapped before [1/3]
-        'q', -- no 'recording @q' when recording macro
-        -- 'S', -- no [1/5] search count shown
-    })
+vim.o.shortmess = vim.o.shortmess .. table.concat({
+  'c', -- no 'match 1 of 2' etc. messages when scrolling through completions
+  's', -- no 'search hit BOTTOM...' messages and don't show 'W' for wrapped before [1/3]
+  'q', -- no 'recording @q' when recording macro
+  -- 'S', -- no [1/5] search count shown
+})
 vim.o.wildcharm = vim.keycode('<C-z>'):byte()
 
 -- bars and lines
 vim.o.statuscolumn = '%s%=%l%C '
 vim.o.foldcolumn = 'auto'
--- vim.o.statusline = '%!v:lua.require("my.functions").StatusLine()'
 -- vim.o.statusline = '%!v:lua.My.StatusLine()'
 -- vim.o.tabline = '%!v:lua.My.TabLine()'
 -- vim.o.winbar = '%!v:lua.My.Winbar()'

@@ -69,7 +69,7 @@ vim.api.nvim_create_autocmd('ColorScheme', {
     vim.api.nvim_set_hl(0, 'CurSearch', { link = 'IncSearch' })
 
     -- specific colorschemes
-    if ev.data.match == 'default' then
+    if ev.match == 'default' then
       if vim.o.background == 'dark' then
       end
     end
