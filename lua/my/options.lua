@@ -17,6 +17,8 @@ vim.o.showbreak = '↳ '
 vim.o.smoothscroll = true
 
 -- searching/matching
+vim.o.ignorecase = true
+vim.o.smartcase = true
 vim.o.findfunc = 'v:lua.My.FindFunc'
 vim.o.inccommand = 'split'
 vim.o.pumheight = 10
