@@ -12,14 +12,12 @@ require('paq')({
   'mrjones2014/smart-splits.nvim',
   'neovim/nvim-lspconfig',
   'romainl/vim-qf',
+  'romainl/vim-cool',
   'tommcdo/vim-lion',
   'tpope/vim-repeat',
   'tpope/vim-rsi',
   'tpope/vim-unimpaired',
   'justinmk/vim-sneak',
-  'tpope/vim-fugitive',
-  'tpope/vim-rhubarb',
-  'catgoose/nvim-colorizer.lua'
 })
 
 vim.g.lion_squeeze_spaces = 1

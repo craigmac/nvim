@@ -8,8 +8,6 @@ require('my.commands')
 require('my.packages')
 require('my.lsp')
 
-if vim.g.neovide then
- vim.o.guifont = 'Adwaita Mono:h14'
-end
+vim.cmd([[hi! Normal guibg=NONE guifg=NONE]])
 
 -- vi: et tw=120 sw=2 sts=-1
