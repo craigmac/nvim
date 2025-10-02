@@ -6,14 +6,12 @@ vim.g.netrw_banner = 0
 vim.g.netrw_hide = 0
 
 -- special characters and display
-vim.o.background = dark
 vim.o.fillchars = 'eob:~,diff:-,fold: ,foldclose:▶,foldopen:▼,lastline:⋯,msgsep:─'
 vim.o.list = true
 vim.o.listchars = 'eol: ,tab:⇥ ,trail:░,extends:»,precedes:«,nbsp:⍽'
 vim.o.foldcolumn = 'auto'
 vim.o.foldtext = ''
 vim.o.foldlevelstart = 99
-vim.o.termguicolors = true
 
 -- no wrap, but if we do enable wrap, use these wrap-related settings
 vim.o.wrap = false
@@ -113,4 +111,8 @@ end, { expr = true, silent = true })
 
 vim.api.nvim_create_user_command('Cd', 'tcd %:h', {})
 
+-- BUG: workaround for https://github.com/neovim/neovim/issues/33096
+vim.api.nvim_create_autocmd('VimEnter', {
+  command = 'set termguicolors'
+})
 -- vi: et tw=120 sw=2 sts=-1
