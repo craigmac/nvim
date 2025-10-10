@@ -7,6 +7,11 @@ require('paq')({
   'tpope/vim-repeat',
   'tpope/vim-rsi',
   'tpope/vim-unimpaired',
+  'tpope/vim-fugitive',
+  'tpope/vim-rhubarb',
+  'tommcdo/vim-lion',
+  'romainl/vim-qf',
+  'justinmk/vim-sneak',
   'neovim/nvim-lspconfig',
   'ibhagwan/fzf-lua',
   'glacambre/firenvim', -- requires :call firenvim#install(0) after an update

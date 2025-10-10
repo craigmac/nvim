@@ -63,3 +63,10 @@ if not vim.env.tmux then
   vim.keymap.set({ 't', 'n' }, '<C-Space>v', '<Cmd>vertical terminal<CR>')
 end
 
+
+-- alt. French digraphs for default e' e`|e! c, 
+vim.fn.digraph_setlist({
+  {'e/',  'é'}, -- defaults: e'
+  {'e\\', 'è'}, -- defaults: e` e!
+  {'c?',  'ç'}, -- defaults: c,
+})

@@ -34,23 +34,31 @@ end
 
 ---@return string # `:help 'stl` format string
 function M.StatusLine()
+  -- default in 0.12 (its long so not in `:h 'stl`) it's in src/nvim/options.lua is neovim git repo
+  --   '%<',
+  --   '%f %h%w%m%r ',
+  --   '%=',
+  --   "%{% &showcmdloc == 'statusline' ? '%-10.S ' : '' %}",
+  --   "%{% exists('b:keymap_name') ? '<'..b:keymap_name..'> ' : '' %}",
+  --   "%{% &busy > 0 ? '◐ ' : '' %}",
+  --   "%(%{luaeval('(package.loaded[''vim.diagnostic''] and vim.diagnostic.status()) or '''' ')} %)",
+  --   "%{% &ruler ? ( &rulerformat == '' ? '%-14.(%l,%c%V%) %P' : &rulerformat ) : '' %}",
   local parts = {
-    -- ex: ` @ ~/.config/nvim/lua/my `
-    '@ ',
-    '%{fnamemodify(getcwd(0), ":~")}',
-    -- ex: ` W:1 H:3 E:5 ` native API only works in 0.12
-    -- '%(%{ v:lua.vim.diagnostics.get() }%)',
-    '%=',
-    -- ex: `[rec "w] ` using `:hi User1` if recording, otherwise empty
-    '%{% reg_recording() == "" ? "" : "%1*[rec \\""..reg_recording().."]%*" %}',
-    -- ex: ` da …` using `:hi User4` if &sloc == 'statusline' otherwise empty
-    '%{% &showcmdloc == "statusline" ? "%( %4*%S … %*%)" : "" %}',
-    -- ex: ` #9–112:85 │ ` 
-    '%( #%l–%L:%v%)',
-    -- ex: `python │ ` if no filetype, empty string, otherwise max len of 10 chars 
-    '%.10( %{&filetype}%)',
-    -- ex: `Top|Bot|68%`
-    ' %P',
+    '%<',
+    '%f ',
+    '%(%h%w%m%r %)',
+    '%3p%% « %l/%L|%v ',
+    "%{% reg_recording() == '' ? '' : '%#DiffAdd#@'..reg_recording()..'%* ' %}",
+    "%{% &showcmdloc == 'statusline' ? '%(%S «%)' : '' %}",
+    "%{% exists('b:keymap_name') ? '<'..b:keymap_name..'> ' : '' %}",
+    "%{% &busy > 0 ? '◐ ' : '' %}",
+    -- working:
+    "%(%{luaeval('(package.loaded[''vim.diagnostic''] and vim.diagnostic.status()) or '''' ')} %)",
+    -- experiment with [[ ... ]] syntax: did not work!
+    -- "%(%{luaeval([[(package.loaded['vim.diagnostic'] and vim.diagnostic.status()) or '' ]])} %)",
+    --
+    -- if ruler is off use empty string, if it's on: is rulerformat empty? use default value - else use rulerformat
+    -- "%{% &ruler ? ( &rulerformat == '' ? '%-14.(%l,%c%V%) %P' : &rulerformat ) : '' %}",
   }
   return table.concat(parts)
 end
