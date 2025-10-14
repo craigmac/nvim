@@ -16,6 +16,10 @@
       "rev": "1ee5c1f",
       "src": "https://github.com/lewis6991/gitsigns.nvim"
     },
+    "leap.nvim": {
+      "rev": "89b8481",
+      "src": "https://github.com/ggandor/leap.nvim"
+    },
     "nvim-lspconfig": {
       "rev": "623bcf0",
       "src": "https://github.com/neovim/nvim-lspconfig"

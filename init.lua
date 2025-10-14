@@ -32,6 +32,7 @@ vim.pack.add({
   'https://github.com/glacambre/firenvim',
   'https://github.com/romainl/vim-qf',
   'https://github.com/lewis6991/gitsigns.nvim',
+  'https://github.com/ggandor/leap.nvim',
 })
 
 require('my.plugins.fzf-lua')
@@ -42,3 +43,4 @@ require('my.plugins.nvim-treesitter-textobjects')
 require('my.plugins.gitsigns')
 require('my.plugins.fugitive')
 require('my.plugins.vim-qf')
+require('my.plugins.leap')
