@@ -10,6 +10,8 @@ vim.o.listchars = 'eol: ,extends:»,precedes:«,tab:⇥ ,trail:█,nbsp:⍽'
 vim.o.list = true
 vim.o.winborder = 'single'
 vim.o.foldtext = ''
+vim.o.number = true
+vim.o.relativenumber = true
 
 -- no wrap, but if we do enable wrap, use these wrap-related settings
 vim.o.wrap = false
