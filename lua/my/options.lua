@@ -11,7 +11,7 @@ vim.o.list = true
 vim.o.winborder = 'single'
 vim.o.foldtext = ''
 vim.o.number = true
-vim.o.relativenumber = true
+-- vim.o.relativenumber = true
 
 -- no wrap, but if we do enable wrap, use these wrap-related settings
 vim.o.wrap = false
@@ -75,4 +75,13 @@ if not vim.g.popup_menu_fixed then
   aunmenu PopUp.-2-
   ]])
   vim.g.popup_menu_fixed = true
+end
+
+if vim.fn.has('win64') == 1 then
+  vim.o.shell = vim.fn.executable('pwsh') == 1 and 'pwsh' or 'powershell'
+  vim.o.shellcmdflag = '-NoLogo -NonInteractive -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();$PSDefaultParameterValues[\'Out-File:Encoding\']=\'utf8\';$PSStyle.OutputRendering=\'plaintext\';Remove-Alias -Force -ErrorAction SilentlyContinue tee;'
+  vim.o.shellredir = '2>&1 | %%{ "$_" } | Out-File %s; exit $LastExitCode'
+  vim.o.shellpipe  = '2>&1 | %%{ "$_" } | tee %s; exit $LastExitCode'
+  vim.o.shellquote = ''
+  vim.o.shellxquote = ''
 end

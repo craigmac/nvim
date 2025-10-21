@@ -4,6 +4,8 @@ My = {} --  reserve a global table/namespace, view with `:=My`
 vim.g.mapleader = ' '
 vim.g.netrw_banner = 0
 vim.g.netrw_hide = 0
+-- turn off highlighting strings in vim ft comments, if not using treesitter
+vim.g.vimsyn_comment_strings  = false
 
 -- stops these $VIMRUNTIME/plugin files from loading completely (tiny impact on startup)
 vim.g.loaded_gzip = 'any string should fail exists() test'
