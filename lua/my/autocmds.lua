@@ -50,5 +50,6 @@ vim.api.nvim_create_autocmd('UIEnter', {
       vim.cmd.startinsert()
     end
   end,
+  desc = 'Runs code when a UI attaches, like options specifically for firenvim in browser',
+  group = mygroup,
 })
-

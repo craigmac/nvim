@@ -1,3 +1,6 @@
+-- https://github.com/neovim/nvim-lspconfig
+-- using newer way which just uses the nvim-lspconfig/lsp/*.lua data files
+
 -- Some mappings are done unconditionally in `$VIMRUNTIME/lua/vim/_defaults.lua`: see `:h grr`
 --
 -- set here:
@@ -14,6 +17,7 @@
 
 local function lspdetach_cb(args)
   local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+
   -- Remove the autocommand to format the buffer on save, if it exists
   if client:supports_method('textDocument/formatting') then
     vim.api.nvim_clear_autocmds({
@@ -81,8 +85,8 @@ local function lspattach_cb(args)
 
   if client:supports_method('textDocument/documentHighlight') then
     vim.cmd([[
-    autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()
-    autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+    autocmd! CursorHold  <buffer> lua vim.lsp.buf.document_highlight()
+    autocmd! CursorMoved <buffer> lua vim.lsp.buf.clear_references()
     ]])
   end
 
@@ -103,12 +107,12 @@ end
 
 -- setup our attach/detach custom callbacks to run on LspAttach|Detach events
 vim.api.nvim_create_autocmd('LspAttach', {
-  group = vim.api.nvim_create_augroup('my.lsp.attach', {}),
+  group = vim.api.nvim_create_augroup('my.augroup.lsp', {}),
   callback = lspattach_cb,
 })
 
 vim.api.nvim_create_autocmd('LspDetach', {
-  group = vim.api.nvim_create_augroup('my.lsp.detach', {}),
+  group = vim.api.nvim_create_augroup('my.augroup.lsp', {}),
   callback = lspdetach_cb,
 })
 
@@ -124,17 +128,15 @@ vim.diagnostic.config({
 })
 
 ---@type vim.lsp.Config
-local lua_lsp_config = {
+---Adds in extra runtime paths for lua completions of $VIMRUNTIME/lua files
+---and plugin files, if when server starts the workspace is the user neovim config dir
+local extra_lua_lsp_config = {
   on_init = function(client)
-    -- do nothing if not in a proper workspace (no marker, even .git, found)
     if not client.workspace_folders then return end
 
-    -- do nothing if workspace isn't the user's neovim config directory
     local path = client.workspace_folders[1].name
     if path ~= vim.fn.stdpath('config') then return end
 
-    -- workspace is in neovim user config directory, so we extend lsp context to
-    -- include nvim runtime paths. see `:set rtp?` to see locations in scope
     client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
       workspace = {
         -- BUG: https://github.com/neovim/nvim-lspconfig/issues/3189
@@ -147,8 +149,8 @@ local lua_lsp_config = {
   end,
 }
 
---merge our extra config, in to existing `lsp\emmylua_ls.lua`
-vim.lsp.config('emmylua_ls', lua_lsp_config)
+-- merge our extra config, in to existing `lsp\emmylua_ls.lua`
+vim.lsp.config('emmylua_ls', extra_lua_lsp_config)
 
 -- setup auto start/stopping of these lsp servers
 vim.lsp.enable({

@@ -56,15 +56,3 @@ end
 -- technically there are 9 supported so let's make 8/9 dark-mode and light-mode
 hi('User8', { fg = 'White', bg = 'Black' })
 hi('User9', { fg = 'Black', bg = 'White' })
-
--- fixes to various colorschemes, pattern is matched against colorscheme name
-local id = vim.api.nvim_create_augroup('my.augroup.colorscheme', {})
-vim.api.nvim_create_autocmd('ColorScheme', {
-  group = id,
-  pattern = '*',
-  desc = 'Set tweaks to colors depending on colorscheme',
-  callback = function(_)
-    -- highlight overrides for every colorscheme
-    vim.api.nvim_set_hl(0, 'CurSearch', { link = 'IncSearch' })
-  end,
-})

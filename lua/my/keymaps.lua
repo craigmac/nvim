@@ -1,17 +1,20 @@
 vim.keymap.set('n', '<Leader>w', '<Cmd>silent update ++p<CR>')
 vim.keymap.set('n', '<Leader><CR>', '<Cmd>source %<CR>')
 vim.keymap.set('n', '<Leader><Space>', '<Cmd>b #<CR>')
-vim.keymap.set('n', '<Leader>,', ':<C-u>silent tabedit $MYVIMRC <Bar> :tcd %:h<CR>', { silent = true })
+vim.keymap.set('n', '<Leader>,', ':<C-u>silent edit $MYVIMRC<CR>', { silent = true })
 vim.keymap.set('n', 'zS', '<Cmd>Inspect<CR>')
 vim.keymap.set('n', 'g:', ':<C-u>lua =')
 vim.keymap.set({ 'n', 'x' }, '<Leader>y', '"+y')
 vim.keymap.set({ 'n', 'x' }, '<Leader>Y', '"+Y')
 vim.keymap.set({ 'n', 'x' }, '<Leader>p', "\"+pv'[']")
 vim.keymap.set({ 'n', 'x' }, '<Leader>P', "\"+Pv'[']")
--- n always goes down, N always goes up, and never think about it again
+
+-- n|; always goes forward and N|, always goes backwards - never think about it again!
 vim.cmd([[
 nnoremap <expr> n 'Nn'[v:searchforward]
 nnoremap <expr> N 'nN'[v:searchforward]
+nnoremap <expr> ; ',;'[getcharsearch().forward]
+nnoremap <expr> , ';,'[getcharsearch().forward]
 ]])
 
 vim.keymap.set('n', 'j', function() return (vim.v.count > 0 or not vim.wo.wrap) and 'j' or 'gj' end, { expr = true })
