@@ -1,6 +1,18 @@
 -- special characters and display
 vim.o.cursorline = true
+
+-- Unicode upgrades, and symbols whose function has been replaced elsewhere:
+-- * empty 'eob' works when you have line numbers on (see where buffer ends)
+--   or you have some other means to see that there is/are empty lines at the end of the
+--   visible buffer.
+-- * empty 'fold' means don't replace folded sections with a custom fold 'header' showing size of
+--   fold, again 'number fixes that and having a foldcolumn in the gutter with fold closed/open
+--   indicators fixes the need for in-buffer solution
+-- * 'foldclose/foldopen': nicer unicode symbols
+-- * 'lastline': this thing is archaic and I wish it would disappear, but it's here so we
+-- at least give it a nice symbol than the default '@@@'
 vim.o.fillchars = 'eob: ,diff:-,fold: ,foldclose:▶,foldopen:▼,lastline:⋯,msgsep:─'
+
 vim.o.guifont = 'Adwaita Mono,Inconsolata:h14'
 vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,t:ver25-TermCursor'
 -- first 3 highlighted by hl-NonText, the rest: hl-WhiteSpace
@@ -10,7 +22,6 @@ vim.o.listchars = 'eol: ,extends:»,precedes:«,tab:⇥ ,trail:█,nbsp:⍽'
 vim.o.list = true
 vim.o.winborder = 'single'
 vim.o.foldtext = ''
-vim.o.number = true
 -- vim.o.relativenumber = true
 
 -- no wrap, but if we do enable wrap, use these wrap-related settings
@@ -85,3 +96,11 @@ if vim.fn.has('win64') == 1 then
   vim.o.shellquote = ''
   vim.o.shellxquote = ''
 end
+
+vim.cmd([[
+hi! link WinSeparator Normal
+" requires we have a border so we can see the outline better
+hi! link Float Normal
+" easy way to hide 'eob' fillchar
+"hi! EndOfBuffer guibg=bg guifg=bg
+]])

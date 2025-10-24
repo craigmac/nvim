@@ -3,3 +3,4 @@ spell/
 .DS_Store
 TODO.txt
 tmp/
+Session.vim

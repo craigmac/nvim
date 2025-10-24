@@ -1,6 +1,6 @@
 -- nvim nightly config
 
--- require('my.experimental')
+require('my.experimental')
 require('my.packages')
 require('my.options')
 require('my.autocmds')
