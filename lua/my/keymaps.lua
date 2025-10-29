@@ -8,7 +8,8 @@ vim.keymap.set({ 'n', 'x' }, '<Leader>y', '"+y')
 vim.keymap.set({ 'n', 'x' }, '<Leader>Y', '"+Y')
 vim.keymap.set({ 'n', 'x' }, '<Leader>p', "\"+pv'[']")
 vim.keymap.set({ 'n', 'x' }, '<Leader>P', "\"+Pv'[']")
--- n always goes down, N always goes up, and never think about it again
+
+-- `n` and `;` always go forward and `N` and `,` always goes backwards - never think about it again!
 vim.cmd([[
 nnoremap <expr> n 'Nn'[v:searchforward]
 nnoremap <expr> N 'nN'[v:searchforward]
@@ -24,7 +25,7 @@ vim.keymap.set('n', '<Leader>vr', function()
 end, { silent = true })
 
 vim.keymap.set('n', '<Leader>vp', function()
-  local d = vim.fn.stdpath('data') .. '/site/pack/paqs'
+  local d = vim.fn.stdpath('data') .. '/lazy'
   vim.cmd.tabedit(d)
   vim.cmd.tcd(d)
 end, { silent = true })
@@ -50,21 +51,18 @@ vim.keymap.set('n', '<Leader>e', function()
     else
       return ':Ex .<CR>'
     end
+  elseif vim.g.loaded_netrwPlugin ~= nil then
+    return '<Cmd>Explore .<CR>'
+  else
+    vim.cmd.packadd('netrw')
+    return '<Cmd>Explore .<CR>'
   end
-  return ':Ex .<CR>'
 end, { expr = true, silent = true })
 
 -- (g)o (m)enu - overwrites default `:h gm` that I never use
 vim.keymap.set('n', 'gm', function() require('my.menus').lsp_popup_menu() end)
 
--- mimic my tmux bindings for :terminal buffers when tmux not running
-if not vim.env.tmux then
-  vim.keymap.set({ 't', 'n' }, '<C-Space>s', '<Cmd>horizontal terminal<CR>')
-  vim.keymap.set({ 't', 'n' }, '<C-Space>v', '<Cmd>vertical terminal<CR>')
-end
-
-
--- alt. French digraphs for default e' e`|e! c, 
+-- alt. French digraphs for default e' e`|e! c,
 vim.fn.digraph_setlist({
   {'e/',  'é'}, -- defaults: e'
   {'e\\', 'è'}, -- defaults: e` e!
