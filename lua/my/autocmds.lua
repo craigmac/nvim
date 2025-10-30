@@ -52,3 +52,8 @@ vim.api.nvim_create_autocmd('UIEnter', {
   end,
 })
 
+vim.api.nvim_create_autocmd('FileType', {
+  callback = function(args) pcall(vim.treesitter.start) end,
+  group = vim.api.nvim_create_augroup('my.augroup.treesitter', {}),
+  desc = 'Try starting treesitter for every filetype, ignoring if parser missing.'
+})
