@@ -1,32 +1,27 @@
--- Some mappings are done unconditionally in `$VIMRUNTIME/lua/vim/_defaults.lua`: see `:h grr`
---
--- set here:
--- gd       - (d)efinition
--- gD       - (D)eclaraction
--- g(       - incoming calls
--- g)       - outgoing calls
--- yoh      - toggle inlay hints
--- grO      - workspace symbols, like gO is for buffer symbols but using gr-prefix for lsp stuff
--- <Leader>gq - like gq to format, but for whole buffer
---
--- See what attached lsp client supports:
--- :lua =vim.lsp.get_clients()[1].server_capabilities
+--[[
+Some mappings are done unconditionally in `$VIMRUNTIME/lua/vim/_defaults.lua`: see `:h grr`
 
-local function lspdetach_cb(args)
-  local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
-  -- Remove the autocommand to format the buffer on save, if it exists
-  if client:supports_method('textDocument/formatting') then
-    vim.api.nvim_clear_autocmds({
-      event = 'BufWritePre',
-      buffer = args.buf,
-    })
-  end
-end
+set here:
+gd       - (d)efinition
+gD       - (D)eclaraction
+g(       - incoming calls
+g)       - outgoing calls
+yoh      - toggle inlay hints
+grO      - workspace symbols, like gO is for buffer symbols but using gr-prefix for lsp stuff
+<Leader>gq - like gq to format, but for whole buffer
+
+NOTE: to see what an attached LSP server supports, run:
+:lua =vim.lsp.get_clients()[1].server_capabilities
+--]]
+
+local ok, lspconfig = pcall(require, 'nvim-lspconfig')
+if not ok then return end
+
+local augroup = vim.api.nvim_create_augroup('my.augroup.lsp', {})
 
 local function lspattach_cb(args)
   local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
-
-  -- vim.notify_once(string.format('%s attached.', client.name), vim.log.INFO)
+  vim.notify_once(string.format('%s attached.', client.name), vim.log.INFO)
 
   if client:supports_method('textDocument/definition') then
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = true })
@@ -39,7 +34,7 @@ local function lspattach_cb(args)
   if client:supports_method('textDocument/completion') then
     -- autotrigger doesn't work well with nvim default completeopt, unless 'noselect' is added
     vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = false })
-    vim.keymap.set('i', '<C-i>', function() vim.lsp.completion.get() end)
+    -- vim.keymap.set('i', '<C-i>', function() vim.lsp.completion.get() end)
   end
 
   if client:supports_method('textDocument/prepareCallHierarchy') then
@@ -81,8 +76,8 @@ local function lspattach_cb(args)
 
   if client:supports_method('textDocument/documentHighlight') then
     vim.cmd([[
-    autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()
-    autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+    autocmd! CursorHold  <buffer> lua vim.lsp.buf.document_highlight()
+    autocmd! CursorMoved <buffer> lua vim.lsp.buf.clear_references()
     ]])
   end
 
@@ -101,54 +96,58 @@ local function lspattach_cb(args)
   end
 end
 
--- setup our attach/detach custom callbacks to run on LspAttach|Detach events
 vim.api.nvim_create_autocmd('LspAttach', {
-  group = vim.api.nvim_create_augroup('my.lsp.attach', {}),
+  group = augroup,
   callback = lspattach_cb,
+  desc = 'Called when an LSP server attaches to the buffer'
 })
 
+local function lspdetach_cb(args)
+  local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+  if not client:supports_method('textDocument/formatting') then return end
+  vim.api.nvim_clear_autocmds({
+    event = 'BufWritePre',
+    buffer = args.buf,
+  })
+end
+
 vim.api.nvim_create_autocmd('LspDetach', {
-  group = vim.api.nvim_create_augroup('my.lsp.detach', {}),
+  group = augroup,
   callback = lspdetach_cb,
+  desc = 'Called when a LSP server detaches from buffer'
 })
 
 vim.diagnostic.config({
   float = {
-    border = 'single',
     header = 'Diagnostics',
-    severity_sort = true,
-    source = true,
+    source = 'if_many',
   },
-  severity_sort = true,
-  virtual_text = false,
 })
 
 ---@type vim.lsp.Config
-local lua_lsp_config = {
+---Adds in extra runtime paths for lua completions of $VIMRUNTIME/lua files
+---and plugin files, if when server starts the workspace is the user neovim config dir
+local extra_lua_lsp_config = {
   on_init = function(client)
-    -- do nothing if not in a proper workspace (no marker, even .git, found)
     if not client.workspace_folders then return end
 
-    -- do nothing if workspace isn't the user's neovim config directory
     local path = client.workspace_folders[1].name
     if path ~= vim.fn.stdpath('config') then return end
 
-    -- workspace is in neovim user config directory, so we extend lsp context to
-    -- include nvim runtime paths. see `:set rtp?` to see locations in scope
     client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
       workspace = {
         -- BUG: https://github.com/neovim/nvim-lspconfig/issues/3189
         -- solution: filter out stdpath('config') and it's 'after' directory manually
-        library = vim.tbl_filter(function(d)
-          return not d:match(vim.fn.stdpath('config') .. '/?a?f?t?e?r?')
+        library = vim.tbl_filter(function(dir)
+          return not dir:match(vim.fn.stdpath('config') .. '/?a?f?t?e?r?')
         end, vim.api.nvim_get_runtime_file('', true))
       },
     })
   end,
 }
 
---merge our extra config, in to existing `lsp\emmylua_ls.lua`
-vim.lsp.config('emmylua_ls', lua_lsp_config)
+-- force merge our extra config (priority ours) into any existing `lsp\emmylua_ls.lua` on &rtp
+vim.lsp.config('emmylua_ls', extra_lua_lsp_config)
 
 -- setup auto start/stopping of these lsp servers
 vim.lsp.enable({

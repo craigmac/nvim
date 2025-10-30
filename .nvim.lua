@@ -1,2 +1,2 @@
-vim.o.path = vim.o.path .. ',lua/,colors/'
+vim.o.path = vim.o.path .. ',lua/,after/'
 

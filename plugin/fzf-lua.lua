@@ -1,11 +1,12 @@
-local fzf = require('fzf-lua')
+local ok, fzf = pcall(require, 'fzf-lua')
+if not ok then return end
 
 fzf.setup({
   defaults = { file_icons = false },
-  fzf_colors = true, -- use colors from nvim
+  fzf_colors = true, -- sample colors from nvim to use instead of CLI defined ones
   keymap = {
     builtin = {
-      true, -- override the defaults
+      true, -- keep the default builtin keymaps as well
       ['<M-p>'] = 'toggle-preview',
       ['<C-d>'] = 'preview-page-down',
       ['<C-u>'] = 'preview-page-up',

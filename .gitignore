@@ -2,5 +2,7 @@ tags
 spell/
 .DS_Store
 TODO.txt
+TODO.md
 tmp/
 Session.vim
+.vscode/

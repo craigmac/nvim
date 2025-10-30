@@ -1,3 +1,7 @@
+-- run `:call firenvim#install(0)` when this plugin is updated and on first install
+local ok, firenvim = pcall(require, 'firenvim')
+if not ok then return end
+
 vim.g.firenvim_config = {
   globalSettings = {
     alt = 'all',

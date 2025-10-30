@@ -1,3 +1,6 @@
+local ok, leap = pcall(require, 'leap')
+if not ok then return end
+
 -- leap is lua/nvim version of classic vim-sneak, but has better defaults
 -- (for how I use vim-sneak with label-mode): one key, s, for all directions
 -- search, and another key, S, for all windows all directions search. use

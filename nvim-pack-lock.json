@@ -1,35 +1,31 @@
 {
   "plugins": {
-    "debugprint.nvim": {
-      "rev": "47e297e",
-      "src": "https://github.com/andrewferrier/debugprint.nvim"
-    },
     "firenvim": {
       "rev": "a18ef90",
       "src": "https://github.com/glacambre/firenvim"
     },
     "fzf-lua": {
-      "rev": "db3ccff",
+      "rev": "a8458b7",
       "src": "https://github.com/ibhagwan/fzf-lua"
     },
     "gitsigns.nvim": {
-      "rev": "1ee5c1f",
+      "rev": "20ad441",
       "src": "https://github.com/lewis6991/gitsigns.nvim"
     },
     "leap.nvim": {
-      "rev": "89b8481",
+      "rev": "44e3a60",
       "src": "https://github.com/ggandor/leap.nvim"
     },
     "nvim-lspconfig": {
-      "rev": "623bcf0",
+      "rev": "87d3018",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-surround": {
-      "rev": "75de178",
+      "rev": "fcfa7e0",
       "src": "https://github.com/kylechui/nvim-surround"
     },
     "nvim-treesitter": {
-      "rev": "de003000",
+      "rev": "64f4755b",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
     },
@@ -39,20 +35,8 @@
       "version": "'main'"
     },
     "smart-splits.nvim": {
-      "rev": "acbfa16",
+      "rev": "6c7c64b",
       "src": "https://github.com/mrjones2014/smart-splits.nvim"
-    },
-    "vim-dispatch": {
-      "rev": "a2ff28a",
-      "src": "https://github.com/tpope/vim-dispatch"
-    },
-    "vim-endwise": {
-      "rev": "eab5301",
-      "src": "https://github.com/tpope/vim-endwise"
-    },
-    "vim-fugitive": {
-      "rev": "61b51c0",
-      "src": "https://github.com/tpope/vim-fugitive"
     },
     "vim-lion": {
       "rev": "ce46593",
@@ -65,10 +49,6 @@
     "vim-repeat": {
       "rev": "6584602",
       "src": "https://github.com/tpope/vim-repeat"
-    },
-    "vim-rhubarb": {
-      "rev": "5496d7c",
-      "src": "https://github.com/tpope/vim-rhubarb"
     },
     "vim-rsi": {
       "rev": "4554063",

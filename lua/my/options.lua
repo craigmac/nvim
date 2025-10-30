@@ -1,3 +1,5 @@
+vim.g.mapleader = ' '
+
 -- special characters and display
 vim.o.cursorline = true
 
@@ -20,6 +22,8 @@ vim.o.listchars = 'eol:¬,extends:»,precedes:«,tab:⇥ ,trail:█,nbsp:⍽'
 -- `set list` is useful to spot trailing characters, hard tabs (0x09), and scrolling hints « and ».
 -- with eol listchar set to empty, having `list` on is unintrusive and there's no need to toggle it on/off.
 vim.o.list = true
+-- default &stl conditionally shows incomplete/selection counts if this value is set
+vim.o.showcmdloc = 'statusline'
 vim.o.winborder = 'single'
 vim.o.foldtext = ''
 -- vim.o.relativenumber = true
@@ -52,7 +56,7 @@ vim.o.statuscolumn = '%s%l%=%C '
 vim.o.foldcolumn = 'auto:2'
 -- always save 1 column space for signs - default 'auto' pops column in/out as needed if we are really tight on space
 vim.o.signcolumn = 'yes:1'
-vim.o.statusline = "%!v:lua.require'my.functions'.StatusLine()"
+-- vim.o.statusline = "%!v:lua.require'my.functions'.StatusLine()"
 -- vim.o.tabline = '%!v:lua.My.TabLine()'
 -- vim.o.winbar = '%!v:lua.My.Winbar()'
 -- default is 20, and so doesn't respect &equalalways

@@ -44,11 +44,15 @@ function M.StatusLine()
   --   "%(%{luaeval('(package.loaded[''vim.diagnostic''] and vim.diagnostic.status()) or '''' ')} %)",
   --   "%{% &ruler ? ( &rulerformat == '' ? '%-14.(%l,%c%V%) %P' : &rulerformat ) : '' %}",
   local parts = {
+    -- NOTE: there's no way to get value of 'vert' in &fillchars if it wasn't set explicitly by the user
+    -- because it's set in C code based on heuristics to either the full height │ (0x2502) or the simpler | (0x7c)
+    ' %{% toupper(mode()) %} │ ',
+
     '%<',
     '%f ',
     '%(%h%w%m%r %)',
     '%3p%% « %l/%L|%v ',
-    "%{% reg_recording() == '' ? '' : '%#DiffAdd#@'..reg_recording()..'%* ' %}",
+    "%{% reg_recording() == '' ? '' : '%#DiagnosticError#@'..reg_recording()..'%* ' %}",
     "%{% &showcmdloc == 'statusline' ? '%(%S «%)' : '' %}",
     "%{% exists('b:keymap_name') ? '<'..b:keymap_name..'> ' : '' %}",
     "%{% &busy > 0 ? '◐ ' : '' %}",
