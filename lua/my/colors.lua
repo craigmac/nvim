@@ -43,8 +43,17 @@ hi('User7', { link = 'Normal' })                   -- depends on &bg value
 hi('User8', { fg = 'White', bg = 'Black' })
 hi('User9', { fg = 'Black', bg = 'White' })
 
+-- using this requires we set something sensible for fillchar 'msgsep' to show split
 hi('MsgSeparator', { link = 'Normal' })
 
--- works better with a &winborder set so we can see the outline of the window
+-- set 'winborder' so we can see the outline of the window
 hi('NormalFloat', { link =  'Normal' })
 hi('Float', { link =  'Normal' })
+
+-- with 'list' option on, this hides the characters until selected or cursorline on
+if vim.o.background == 'light' then
+  hi('NonText', { fg = 'NvimLightGrey2' })
+else
+  hi('NonText', { fg = 'NvimDarkGrey2' })
+end
+
