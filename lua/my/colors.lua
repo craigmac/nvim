@@ -53,6 +53,10 @@ hi('Float', { link =  'Normal' })
 -- with 'list' option on, this hides the characters until selected or cursorline on
 if vim.o.background == 'light' then
   hi('NonText', { fg = 'NvimLightGrey2' })
+  -- defaults for these use NvimDark* which are too dark for small areas to be distinct
+  hi('Added', { fg = 'Green' })
+  -- 'Cyan' is too light
+  hi('Changed', { fg = 'Orange' })
 else
   hi('NonText', { fg = 'NvimDarkGrey2' })
 end

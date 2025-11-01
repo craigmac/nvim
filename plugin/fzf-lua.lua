@@ -17,6 +17,7 @@ fzf.setup({
 
 vim.api.nvim_create_autocmd('UIEnter', { command = 'FzfLua register_ui_select' })
 
+vim.keymap.set('n', '<Leader>F', '<Cmd>FzfLua<CR>')
 vim.keymap.set('n', '<Leader>:', fzf.command_history)
 vim.keymap.set('n', '<Leader>f', fzf.files)
 vim.keymap.set('n', '<Leader>b', fzf.buffers)

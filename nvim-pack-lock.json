@@ -13,11 +13,11 @@
       "src": "https://github.com/lewis6991/gitsigns.nvim"
     },
     "leap.nvim": {
-      "rev": "44e3a60",
+      "rev": "673517c",
       "src": "https://github.com/ggandor/leap.nvim"
     },
     "nvim-lspconfig": {
-      "rev": "87d3018",
+      "rev": "a89bfcf",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-surround": {
@@ -30,12 +30,12 @@
       "version": "'main'"
     },
     "nvim-treesitter-textobjects": {
-      "rev": "1b2d85d",
+      "rev": "1f29f2f",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
       "version": "'main'"
     },
     "smart-splits.nvim": {
-      "rev": "6c7c64b",
+      "rev": "1611946",
       "src": "https://github.com/mrjones2014/smart-splits.nvim"
     },
     "vim-lion": {
