@@ -1,14 +1,15 @@
 -- nvim nightly config
 
-require('my.experimental')
-require('my.options')
-require('my.autocmds')
-require('my.keymaps')
-require('my.commands')
-require('my.colors')
+require 'my.experimental'
+require 'my.options'
+require 'my.autocmds'
+require 'my.keymaps'
+require 'my.commands'
+-- BUG: https://github.com/neovim/neovim/issues/36416
+vim.api.nvim_create_autocmd('OptionSet', { pattern = 'background', command = "lua require 'my.colors'" })
 
 -- runtime plugins shipped with nvim
-vim.cmd.packadd('nohlsearch')
+vim.cmd.packadd 'nohlsearch'
 
 -- configs go in `./plugins` and are loaded after this file
 vim.pack.add {
