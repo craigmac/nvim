@@ -25,7 +25,7 @@ vim.keymap.set('n', '<Leader>vr', function()
 end, { silent = true })
 
 vim.keymap.set('n', '<Leader>vp', function()
-  local d = vim.fn.stdpath('data') .. '/lazy'
+  local d = vim.fn.stdpath('data') .. '/site/pack/core/opt/'
   vim.cmd.tabedit(d)
   vim.cmd.tcd(d)
 end, { silent = true })
