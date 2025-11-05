@@ -1,17 +1,16 @@
 -- nvim nightly config
 
 require 'my.experimental'
-require 'my.options'
+require 'my.settings'
 require 'my.autocmds'
 require 'my.keymaps'
 require 'my.commands'
+if vim.fn.has('gui_running') == 1 then require 'my.gui' end
+
 -- BUG: https://github.com/neovim/neovim/issues/36416
 vim.api.nvim_create_autocmd('OptionSet', { pattern = 'background', command = "lua require 'my.colors'" })
 
--- runtime plugins shipped with nvim
-vim.cmd.packadd 'nohlsearch'
-
--- configs go in `./plugins` and are loaded after this file
+-- put configurations for these in `./after/plugins`, so plugin runtimes have been sourced
 vim.pack.add {
   'https://github.com/neovim/nvim-lspconfig',
   { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main' },
@@ -27,15 +26,6 @@ vim.pack.add {
   'https://github.com/glacambre/firenvim',
   'https://github.com/romainl/vim-qf',
   'https://github.com/lewis6991/gitsigns.nvim',
-  'https://github.com/ggandor/leap.nvim',
 }
-
--- TODO: add Enter and Backspace as aliases to these on lspattach
--- vim.keymap.set('x', 'an', function()
---   vim.lsp.buf.selection_range(vim.v.count1)
--- end, { desc = 'vim.lsp.buf.selection_range(vim.v.count1)' })
-
--- vim.keymap.set('x', 'in', function()
---   vim.lsp.buf.selection_range(-vim.v.count1)
--- end, { desc = 'vim.lsp.buf.selection_range(-vim.v.count1)' })
+vim.cmd.packadd 'nohlsearch'
 

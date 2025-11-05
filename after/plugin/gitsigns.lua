@@ -5,6 +5,8 @@ gitsigns.setup({
   signs_staged_enable = false,
   signcolumn = true,
   on_attach = function(_bufnr)
+    -- show signs only when I toggle them on
+    gitsigns.toggle_signs()
     vim.keymap.set('n', 'yog', gitsigns.toggle_signs)
 
     vim.keymap.set('n', ']c', function()
