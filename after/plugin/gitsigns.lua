@@ -2,6 +2,9 @@ local ok, gitsigns = pcall(require, 'gitsigns')
 if not ok then return end
 
 gitsigns.setup({
+  -- show signs for already staged chunks? by default the signs look exactly
+  -- the same so can't tell what has/hasn't been staged. with this disabled,
+  -- you can't use gitsigns.reset_hunk(), use fugitive/lazygit
   signs_staged_enable = false,
   signcolumn = true,
   on_attach = function(_bufnr)
@@ -25,16 +28,17 @@ gitsigns.setup({
       end
     end)
 
-    vim.keymap.set({ 'x', 'n' }, '<Leader>hs', function() gitsigns.stage_hunk() end)
-    vim.keymap.set('n', '<Leader>hS', function() gitsigns.stage_buffer() end)
+    -- switched from 'h<key>' to 'c<key>' to match ]c and [c. mnemonic: (c)hange
+    vim.keymap.set({ 'x', 'n' }, '<Leader>cs', function() gitsigns.stage_hunk() end)
+    vim.keymap.set('n', '<Leader>cS', function() gitsigns.stage_buffer() end)
 
     vim.keymap.set({ 'x', 'n' }, '<Leader>cr', function() gitsigns.reset_hunk() end)
     vim.keymap.set('n', '<Leader>cR', function() gitsigns.reset_buffer() end)
 
-    vim.keymap.set('n', '<Leader>hp', function() gitsigns.preview_hunk() end)
-    vim.keymap.set('n', '<Leader>hb', function() gitsigns.blame_line() end)
+    vim.keymap.set('n', '<Leader>cp', function() gitsigns.preview_hunk() end)
+    vim.keymap.set('n', '<Leader>cb', function() gitsigns.blame_line() end)
 
-    vim.keymap.set('n', '<Leader>hd', function() gitsigns.diffthis() end)
-    vim.keymap.set('n', '<Leader>hD', function() gitsigns.diffthis('@') end)
+    vim.keymap.set('n', '<Leader>cd', function() gitsigns.diffthis() end)
+    vim.keymap.set('n', '<Leader>cD', function() gitsigns.diffthis('@') end)
   end,
 })
