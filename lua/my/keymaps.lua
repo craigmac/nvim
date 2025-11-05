@@ -8,6 +8,7 @@ vim.keymap.set({ 'n', 'x' }, '<Leader>y', '"+y')
 vim.keymap.set({ 'n', 'x' }, '<Leader>Y', '"+Y')
 vim.keymap.set({ 'n', 'x' }, '<Leader>p', "\"+pv'[']")
 vim.keymap.set({ 'n', 'x' }, '<Leader>P', "\"+Pv'[']")
+vim.keymap.set('n', '<Leader>d', vim.diagnostic.setqflist)
 
 -- `n` and `;` always go forward and `N` and `,` always goes backwards - never think about it again!
 vim.cmd([[
