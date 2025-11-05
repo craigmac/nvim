@@ -1,81 +1,69 @@
--- yanked from $VIMRUNTIME/menu.vim - eventually translate to lua and make z= do this default menu instead
-vim.cmd([[
-if has("spell")
-  " Spell suggestions in a popup menu.
-  func s:SpellPopup()
-    if exists("s:changeitem") && s:changeitem != ''
-      call <SID>SpellDel()
-    endif
+-- WIP: translating from .plugin/spell_menu.vim
+-- translated to lua from original $VIMRUNTIME/menu.vim
+-- spell suggestions in a popup menu on z=
 
-    " Return quickly if spell checking is not enabled.
-    if !&spell || &spelllang == ''
-      return
-    endif
+local function spell_popup()
+  if changeitem and changeitem != '' then
+    spell_del()
+  end
 
-    let curcol = col('.')
-    let [w, a] = spellbadword()
-    if col('.') > curcol " don't use word after the cursor
-      let w = ''
-    endif
-    if w != ''
-      if a == 'caps'
-        let s:suglist = [substitute(w, '.*', '\u&', '')]
-      else
-        let s:suglist = spellsuggest(w, 10)
-      endif
-      if len(s:suglist) > 0
-        if !exists("g:menutrans_spell_change_ARG_to")
-          let g:menutrans_spell_change_ARG_to = 'Change\ "%s"\ to'
-        endif
-        let s:changeitem = printf(g:menutrans_spell_change_ARG_to, escape(w, ' .'))
-        let s:fromword = w
-        let pri = 1
-        " set 'cpo' to include the <CR>
-        let cpo_save = &cpo
-        set cpo&vim
-        for sug in s:suglist
-          exe 'anoremenu 1.5.' . pri . ' PopUp.' . s:changeitem . '.' . escape(sug, ' .')
-                \ . ' :call <SID>SpellReplace(' . pri . ')<CR>'
-          let pri += 1
-        endfor
+  -- quick return if spell checking off or no language set
+  if not vim.o.spell or vim.o.spelllang == '' then return end
 
-        if !exists("g:menutrans_spell_add_ARG_to_word_list")
-          let g:menutrans_spell_add_ARG_to_word_list = 'Add\ "%s"\ to\ Word\ List'
-        endif
-        let s:additem = printf(g:menutrans_spell_add_ARG_to_word_list, escape(w, ' .'))
-        exe 'anoremenu 1.6 PopUp.' . s:additem . ' :spellgood ' . w . '<CR>'
+  ---@type number byte index of current cursor position
+  local cursor_col = vim.fn.col('.')
+  ---@type string # The badly spelled word, or empty string if none found on line
+  ---@type 'bad'|'rare'|'locale'|'caps' # Type of spelling error
+  local bad_word, bad_type = vim.fn.spellbadword()
+  
+  -- NOTE: why do we do this?
+  -- don't use any word after the cursor
+  if vim.fn.col('.') > cursor_col then
+    local bad_word = ''
+  end
 
-        if !exists("g:menutrans_spell_ignore_ARG")
-          let g:menutrans_spell_ignore_ARG = 'Ignore\ "%s"'
-        endif
-        let s:ignoreitem = printf(g:menutrans_spell_ignore_ARG, escape(w, ' .'))
-        exe 'anoremenu 1.7 PopUp.' . s:ignoreitem . ' :spellgood! ' . w . '<CR>'
+  -- we have a badly spelled word on current line
+  if bad_word != '' then
+    ---@type string[]|string
+    local suggestions = spell_get_suggestions(bad_word, bad_type)
+  end
 
-        anoremenu 1.8 PopUp.-SpellSep- :
-        let &cpo = cpo_save
-      endif
-    endif
-    call cursor(0, curcol)      " put the cursor back where it was
-  endfunc
+  -- put cursor back to where it was when we started
+  vim.fn.cursor(0, cursor_col)
+end
 
-  func s:SpellReplace(n)
-    let l = getline('.')
-    " Move the cursor to the start of the word.
-    call spellbadword()
-    call setline('.', strpart(l, 0, col('.') - 1) . s:suglist[a:n - 1]
-          \ . strpart(l, col('.') + len(s:fromword) - 1))
-  endfunc
+---@param bad_word string
+---@param 'bad'|'rare'|'locale'|'caps'
+---@return string[]|string
+local function spell_get_suggestions(bad_word, bad_type)
+  if bad_type == 'caps' then
+    ---@type string
+    local suggestions = vim.fn.substitute(bad_word, '.*', '\u&', '')
+  else
+    ---@type string[]
+    local suggestions = vim.fn.spellsuggest(bad_word, 10)
+  end
 
-  func s:SpellDel()
-    exe "aunmenu PopUp." . s:changeitem
-    exe "aunmenu PopUp." . s:additem
-    exe "aunmenu PopUp." . s:ignoreitem
-    aunmenu PopUp.-SpellSep-
-    let s:changeitem = ''
-  endfun
+  if type(suggestions) == 'table' then
 
-  augroup SpellPopupMenu
-    au! MenuPopup * call <SID>SpellPopup()
-  augroup END
-endif
-]])
+  end
+
+  return suggestions
+end
+
+local function spell_replace()
+end
+
+local function spell_del()
+end
+
+local augroup = vim.api.nvim_create_augroup('my.augroup.spelling.menu_popup', {})
+vim.api.nvim_create_autocmd('MenuPopup', {
+  callback = function()
+    spell_popup()
+  end,
+  desc = 'Present a menu to correct a spelling mistake',
+  group = augroup,
+  pattern = '*',
+})
+

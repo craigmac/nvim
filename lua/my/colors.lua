@@ -30,19 +30,6 @@ vim.o.pumblend = 10
 
 local hi = function(group, value) vim.api.nvim_set_hl(0, group, value) end
 
--- linking to these because they auto handle light/dark background
-hi('User1', { link = 'DiagnosticError' })          -- red
-hi('User2', { link = 'DiagnosticOk' })             -- green
-hi('User3', { link = 'DiagnosticWarn' })           -- yellow
-hi('User4', { link = 'DiagnosticHint' })           -- blue
-hi('User5', { fg = 'Black', bg = 'LightMagenta' }) -- magenta
-hi('User6', { link = 'DiagnosticInfo' })           -- cyan
-hi('User7', { link = 'Normal' })                   -- depends on &bg value
-
--- technically there are 9 supported so let's make 8/9 explicit dark/light-mode
-hi('User8', { fg = 'White', bg = 'Black' })
-hi('User9', { fg = 'Black', bg = 'White' })
-
 -- using this requires we set something sensible for fillchar 'msgsep' to show split
 hi('MsgSeparator', { link = 'Normal' })
 
@@ -53,11 +40,30 @@ hi('Float', { link =  'Normal' })
 -- with 'list' option on, this hides the characters until selected or cursorline on
 if vim.o.background == 'light' then
   hi('NonText', { fg = 'NvimLightGrey2' })
-  -- defaults for these use NvimDark* which are too dark for small areas to be distinct
+  -- defaults for these use NvimDark* which are too dark for small symbols/areas to be distinct
+  -- like gitsigns in gutter
   hi('Added', { fg = 'Green' })
-  -- 'Cyan' is too light
   hi('Changed', { fg = 'Orange' })
+  hi('Removed', { fg = 'Red' })
+  -- use NvimLight* 8-15 indexes here because they are used against dark statusline
+  -- and so the NvimDark* 0-7 are nearly invisible againt the NvimDarkGrey3 (statusline bg)
+  hi('User1', { fg = p.bright_black })
+  hi('User2', { fg = p.bright_red })
+  hi('User3', { fg = p.bright_green })
+  hi('User4', { fg = p.bright_yellow })
+  hi('User5', { fg = p.bright_blue })
+  hi('User6', { fg = p.bright_magenta })
+  hi('User7', { fg = p.bright_cyan })
+  hi('User8', { fg = p.bright_white })
 else
   hi('NonText', { fg = 'NvimDarkGrey2' })
+  hi('User1', { fg = p.black })
+  hi('User2', { fg = p.red })
+  hi('User3', { fg = p.green })
+  hi('User4', { fg = p.yellow })
+  hi('User5', { fg = p.blue })
+  hi('User6', { fg = p.magenta })
+  hi('User7', { fg = p.cyan })
+  hi('User8', { fg = p.white })
 end
 

@@ -32,39 +32,43 @@ function M.TabLine()
   return table.concat(s)
 end
 
+-- default in 0.12 (its long so not in `:h 'stl`) it's in src/nvim/options.lua is neovim git repo
+--   '%<',
+--   '%f %h%w%m%r ',
+--   '%=',
+--   "%{% &showcmdloc == 'statusline' ? '%-10.S ' : '' %}",
+--   "%{% exists('b:keymap_name') ? '<'..b:keymap_name..'> ' : '' %}",
+--   "%{% &busy > 0 ? '◐ ' : '' %}",
+--   "%(%{luaeval('(package.loaded[''vim.diagnostic''] and vim.diagnostic.status()) or '''' ')} %)",
+--   "%{% &ruler ? ( &rulerformat == '' ? '%-14.(%l,%c%V%) %P' : &rulerformat ) : '' %}",
 ---@return string # `:help 'stl` format string
 function M.StatusLine()
-  -- default in 0.12 (its long so not in `:h 'stl`) it's in src/nvim/options.lua is neovim git repo
-  --   '%<',
-  --   '%f %h%w%m%r ',
-  --   '%=',
-  --   "%{% &showcmdloc == 'statusline' ? '%-10.S ' : '' %}",
-  --   "%{% exists('b:keymap_name') ? '<'..b:keymap_name..'> ' : '' %}",
-  --   "%{% &busy > 0 ? '◐ ' : '' %}",
-  --   "%(%{luaeval('(package.loaded[''vim.diagnostic''] and vim.diagnostic.status()) or '''' ')} %)",
-  --   "%{% &ruler ? ( &rulerformat == '' ? '%-14.(%l,%c%V%) %P' : &rulerformat ) : '' %}",
-  local parts = {
-    -- NOTE: there's no way to get value of 'vert' in &fillchars if it wasn't set explicitly by the user
-    -- because it's set in C code based on heuristics to either the full height │ (0x2502) or the simpler | (0x7c)
-    ' %{% toupper(mode()) %} │ ',
-
-    '%<',
-    '%f ',
-    '%(%h%w%m%r %)',
-    '%3p%% « %l/%L|%v ',
-    "%{% reg_recording() == '' ? '' : '%#DiagnosticError#@'..reg_recording()..'%* ' %}",
-    "%{% &showcmdloc == 'statusline' ? '%(%S «%)' : '' %}",
-    "%{% exists('b:keymap_name') ? '<'..b:keymap_name..'> ' : '' %}",
-    "%{% &busy > 0 ? '◐ ' : '' %}",
-    -- working:
-    "%(%{luaeval('(package.loaded[''vim.diagnostic''] and vim.diagnostic.status()) or '''' ')} %)",
-    -- experiment with [[ ... ]] syntax: did not work!
-    -- "%(%{luaeval([[(package.loaded['vim.diagnostic'] and vim.diagnostic.status()) or '' ]])} %)",
-    --
-    -- if ruler is off use empty string, if it's on: is rulerformat empty? use default value - else use rulerformat
-    -- "%{% &ruler ? ( &rulerformat == '' ? '%-14.(%l,%c%V%) %P' : &rulerformat ) : '' %}",
-  }
-  return table.concat(parts)
+  return table.concat({
+    "%2{% toupper(mode()) %} │ ",
+    "%(%{% exists('b:gitsigns_head') ? b:gitsigns_head .. ' │ ' : '' %}%)",
+    "%f ",
+    "%{% &modified ? '%3*●%* ' : '' %}",
+    "%{% &readonly ? '%2*━%* ' : '' %}",
+    -- minor flags, (h)elp, Previe(w) window, (a)rgs position (non-empty %a leads with one empty space)
+    "%([%H%W]%)%a",
+    -- search count, kept left to not confuse with %S (which will show '1' or '1x3' on selections)
+    "%{% v:hlsearch ? printf(' ⌕ %s/%s ', searchcount().current, searchcount().total) : '' %}",
+    '%=',
+    "%2*%{% reg_recording() != '' ? printf('@%s ', reg_recording()) : '' %}%*",
+    '%{% (&showcmdloc == "statusline") || (&cmdheight == 0) ? "%-5.S " : "" %}',
+    '%(%{ exists("b:keymap_name") ? "<" .. b:keymap_name .. "> " : "" }%)',
+    '%(%{ &busy ? "◐ " : "" }%)',
+    -- example: `E:2 W:3 I:4 H:5`
+    "%(%{ v:lua.vim.diagnostic.status() } %)",
+    -- 1. no ruler?                                  => use ''
+    -- 2. ruler is on:
+    --    A. 'rulerformat' is set (default is '')    => use &rulerformat
+    --    B. 'rulerformat' is not set (empty string) => use string we define
+    "%{% !&ruler ? '' : !empty(&rulerformat) ? &rulerformat : '%-20.(▤ %l/%L ▥ %c/%{col(''$'')-1}%) %-4(%p%%%)' %}",
+    -- if not utf-8 show encoding in red
+    "%2*%{% &fenc != 'utf-8' ? &fenc : '' %}%*",
+    " %(%{ &filetype } %)"
+    })
 end
 
 ---https://github.com/neovim/neovim/pull/34545

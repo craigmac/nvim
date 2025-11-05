@@ -17,37 +17,18 @@ if vim.g.neovide then
   vim.keymap.set('t', '<C-[><C-[>', '<C-\\><C-n>')
 end
 
--- Windows native (nvim.exe), we want to use pwsh.exe not cmd.exe for `:term`
-if vim.fn.has('win64') == 1 then
-  vim.o.shellslash = true
-  vim.o.shell = 'pwsh -NoLogo'
-  vim.o.shellcmdflag = '-NoProfile -ExecutionPolicy RemoteSigned -Command'
-  vim.o.shellxquote = ''
-  vim.o.shellpipe = '>%s 2>&1'
-  vim.o.shellredir = '>%s 2>&1'
-end
-
-local guis_augroup = vim.api.nvim_create_augroup('my.augroup.guis', {})
-
+local augroup = vim.api.nvim_create_augroup('my.augroup.uienter', {})
 -- Fired when external UIs attach - this is main way nvim handles the idea of ginit.vim
 vim.api.nvim_create_autocmd('UIEnter', {
   callback = function(args)
     -- vim.notify('External UI has attached.')
   end,
   desc = 'Set config based on the GUI/External UI that has attached.',
-  group = guis_augroup,
+  group = augroup
 })
 
--- set terminal buffers to use 'Dimidium' palette
--- NOTE: terminal buffer background/foreground can't be set easily - there's no dedicated TermNormal group, it just
--- inherits from Normal, so we need to use `:h 'winhighlight` in coordination with autocmds to set/unset bg/fg in terminal
--- buffers.
---
--- TODO:
--- vim.
 
 if vim.fn.has('gui_running') then
-
   local ns_id = vim.api.nvim_create_namespace('my.terminal.colours')
 -- TODO: TermOpen, WinEnter autocmds to set this highlights for terminal buffers
 -- vim.api.nvim_set_hl(ns_id, 'Terminal', { bg = '#141414', fg = '#bab7b6 })

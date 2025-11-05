@@ -1,6 +1,23 @@
-vim.g.mapleader = ' '
+-- settings: variables and options
 
--- special characters and display
+-- global variables 
+vim.g.mapleader = ' '
+vim.g.netrw_banner = 0
+vim.g.netrw_hide = 0
+-- make v and o do splitright and splitbelow
+vim.g.netrw_altv = vim.o.splitright
+vim.g.netrw_alto = vim.o.splitbelow
+-- turn off highlighting strings in vim ft comments, if not using treesitter
+vim.g.vimsyn_comment_strings  = false
+
+-- stops these $VIMRUNTIME/plugin files from loading completely (tiny impact on startup)
+vim.g.loaded_gzip = 'any string should fail exists() test'
+vim.g.loaded_zipPlugin = 'keep your bible quotes to yourself'
+vim.g.loaded_remote_plugins = 'never use this'
+vim.g.loaded_tarPlugin = 'nope I never browse .tar files'
+vim.g.loaded_tutor_mode_plugin = 'no more :Tutor'
+
+-- special characters and display (ref. `:digraphs!`)
 vim.o.cursorline = true
 vim.opt.fillchars = {
   eob       = ' ', -- with `set nu` this isn't needed
@@ -8,7 +25,7 @@ vim.opt.fillchars = {
   fold      = ' ', -- remove the 'foldtext' filling symbol, leave the folded line as-is
   foldclose = '▶', -- default is `+`
   foldinner = ' ', -- default would show a number like 2 representing foldlevel when foldcolumn too narrow. ugly.
-  foldopen  = '▼', -- defaultis `-`
+  foldopen  = '▼', -- default is `-`
   foldsep   = ' ', -- default is `│` or `|`, i'd rather none like zed/code/modern editors
   lastline  = ' ', -- archaic, confusing, and pointless - especially with default `@@@`
   msgsep    = '─', -- default is empty. I link hl-MsgSeparator to Normal so a symbol is needed
@@ -64,11 +81,13 @@ vim.o.statuscolumn = '%s%l%=%C '
 vim.o.foldcolumn = 'auto:2'
 -- always save 1 column space for signs - default 'auto' pops column in/out as needed if we are really tight on space
 vim.o.signcolumn = 'yes:1'
--- vim.o.statusline = "%!v:lua.require'my.functions'.StatusLine()"
--- vim.o.tabline = '%!v:lua.My.TabLine()'
--- vim.o.winbar = '%!v:lua.My.Winbar()'
+vim.o.statusline = "%!v:lua.require'my.functions'.StatusLine()"
+
 -- default is 20, and so doesn't respect &equalalways
-vim.o.helpheight = 0
+vim.o.helpheight = 0 
+-- tried the 'native' defaults for years, i still prefer this way like modern editors
+vim.o.splitright = true
+vim.o.splitbelow = true
 
 -- editing
 vim.o.spelllang = 'en_gb'
@@ -101,10 +120,13 @@ if not vim.g.popup_menu_fixed then
 end
 
 if vim.fn.has('win64') == 1 then
-  vim.o.shell = vim.fn.executable('pwsh') == 1 and 'pwsh' or 'powershell'
-  vim.o.shellcmdflag = '-NoLogo -NonInteractive -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();$PSDefaultParameterValues[\'Out-File:Encoding\']=\'utf8\';$PSStyle.OutputRendering=\'plaintext\';Remove-Alias -Force -ErrorAction SilentlyContinue tee;'
-  vim.o.shellredir = '2>&1 | %%{ "$_" } | Out-File %s; exit $LastExitCode'
-  vim.o.shellpipe  = '2>&1 | %%{ "$_" } | tee %s; exit $LastExitCode'
+  vim.o.shell = vim.fn.executable('pwsh') == 1 and 'pwsh -NoLogo' or 'powershell'
+  vim.o.shellcmdflag = '-NonInteractive -ExecutionPolicy RemoteSigned -Command'
+  vim.o.shellslash = true
   vim.o.shellquote = ''
   vim.o.shellxquote = ''
+  -- vim.o.shellpipe  = '2>&1 | %%{ "$_" } | tee %s; exit $LastExitCode'
+  vim.o.shellpipe = '>%s 2>&1'
+  -- vim.o.shellredir = '2>&1 | %%{ "$_" } | Out-File %s; exit $LastExitCode'
+  vim.o.shellredir = '>%s 2>&1'
 end
