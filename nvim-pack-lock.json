@@ -38,6 +38,10 @@
       "rev": "1611946",
       "src": "https://github.com/mrjones2014/smart-splits.nvim"
     },
+    "vim-fugitive": {
+      "rev": "61b51c0",
+      "src": "https://github.com/tpope/vim-fugitive"
+    },
     "vim-lion": {
       "rev": "ce46593",
       "src": "https://github.com/tommcdo/vim-lion"

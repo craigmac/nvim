@@ -35,9 +35,6 @@ vim.keymap.set('t', '<C-[><C-[>', '<C-\\><C-n>')
 
 vim.keymap.set('x', '.', ':normal! .<CR>')
 
-vim.keymap.set('i', 'kj', '<Esc>')
-vim.keymap.set('i', 'jk', '<Esc>')
-
 -- replace standard dumb up/down with improved command-line-history-aware <Up><Down>
 vim.keymap.set('c', '<C-p>', function() return vim.fn.pumvisible() >= 1 and '<C-p>' or '<Up>' end, { expr = true })
 vim.keymap.set('c', '<C-n>', function() return vim.fn.pumvisible() >= 1 and '<C-n>' or '<Down>' end, { expr = true })

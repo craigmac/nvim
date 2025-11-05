@@ -28,8 +28,8 @@ gitsigns.setup({
     vim.keymap.set({ 'x', 'n' }, '<Leader>hs', function() gitsigns.stage_hunk() end)
     vim.keymap.set('n', '<Leader>hS', function() gitsigns.stage_buffer() end)
 
-    vim.keymap.set({ 'x', 'n' }, '<Leader>hr', function() gitsigns.reset_hunk() end)
-    vim.keymap.set('n', '<Leader>hR', function() gitsigns.reset_buffer() end)
+    vim.keymap.set({ 'x', 'n' }, '<Leader>cr', function() gitsigns.reset_hunk() end)
+    vim.keymap.set('n', '<Leader>cR', function() gitsigns.reset_buffer() end)
 
     vim.keymap.set('n', '<Leader>hp', function() gitsigns.preview_hunk() end)
     vim.keymap.set('n', '<Leader>hb', function() gitsigns.blame_line() end)
