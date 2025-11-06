@@ -67,9 +67,17 @@ end, { expr = true, silent = true })
 -- (g)o (m)enu - overwrites default `:h gm` that I never use
 vim.keymap.set('n', 'gm', function() require('my.menus').lsp_popup_menu() end)
 
+vim.keymap.set('i', '<Tab>', function()
+  return vim.fn.pumvisible() == 1 and '<C-n>' or '<Tab>'
+end, { expr = true })
+
+vim.keymap.set('i', '<S-Tab>', function()
+  return vim.fn.pumvisible() == 1 and '<C-p>' or '<S-Tab>'
+end, { expr = true })
+
 -- alt. French digraphs for default e' e`|e! c,
 vim.fn.digraph_setlist({
-  {'e/',  'é'}, -- defaults: e'
-  {'e\\', 'è'}, -- defaults: e` e!
-  {'c?',  'ç'}, -- defaults: c,
+  { 'e/',  'é' }, -- defaults: e'
+  { 'e\\', 'è' }, -- defaults: e` e!
+  { 'c?',  'ç' }, -- defaults: c,
 })

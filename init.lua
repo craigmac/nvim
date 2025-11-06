@@ -5,6 +5,7 @@ require 'my.settings'
 require 'my.autocmds'
 require 'my.keymaps'
 require 'my.commands'
+require 'my.lsp'
 if vim.fn.has('gui_running') == 1 then require 'my.gui' end
 
 -- BUG: https://github.com/neovim/neovim/issues/36416
