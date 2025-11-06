@@ -12,10 +12,6 @@
       "rev": "20ad441",
       "src": "https://github.com/lewis6991/gitsigns.nvim"
     },
-    "leap.nvim": {
-      "rev": "673517c",
-      "src": "https://github.com/ggandor/leap.nvim"
-    },
     "nvim-lspconfig": {
       "rev": "2010fc6",
       "src": "https://github.com/neovim/nvim-lspconfig"
@@ -25,7 +21,7 @@
       "src": "https://github.com/kylechui/nvim-surround"
     },
     "nvim-treesitter": {
-      "rev": "896e92a7",
+      "rev": "5eca61b3",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
     },

@@ -27,3 +27,19 @@ vim.api.nvim_create_user_command("Cgetprog", function(args)
         group = augrp
     })
 end, { nargs = "+" })
+
+-- fuzzy find :oldfiles list with :Oldfiles 
+vim.api.nvim_create_user_command("Oldfiles", function(args)
+  vim.cmd("e " .. args.args)
+end,
+{
+  nargs = 1,
+  complete = function(arglead)
+    local files = vim.tbl_filter(function(f)
+      return vim.fn.filereadable(f) > 0
+    end, vim.v.oldfiles)
+
+    local list = vim.fn.matchfuzzy(files, arglead)
+    return #list > 0 and list or files
+  end
+})

@@ -109,3 +109,9 @@ vim.api.nvim_create_autocmd('WinEnter', {
   desc = 'Enter terminal-mode immediately when entering a terminal buffer window.',
   group = augroup_term_autoinsert,
 })
+
+local augroup_cmdline_changed = vim.api.nvim_create_augroup('my.augroup.cmdlinechanged', {})
+vim.api.nvim_create_autocmd('CmdlineChanged', {
+  callback = function() vim.fn.wildtrigger() end,
+})
+

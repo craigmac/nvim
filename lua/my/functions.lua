@@ -64,7 +64,7 @@ function M.StatusLine()
     -- 2. ruler is on:
     --    A. 'rulerformat' is set (default is '')    => use &rulerformat
     --    B. 'rulerformat' is not set (empty string) => use string we define
-    "%{% !&ruler ? '' : !empty(&rulerformat) ? &rulerformat : '%-20.(▤ %l/%L ▥ %c/%{col(''$'')-1}%) %-4(%p%%%)' %}",
+    "%{% !&ruler ? '' : !empty(&rulerformat) ? &rulerformat : '%-20.(▼ %l/%L ▶ %c/%{col(''$'')-1}%) %-4(%p%%%)' %}",
     -- if not utf-8 show encoding in red
     "%2*%{% &fenc != 'utf-8' ? &fenc : '' %}%*",
     " %(%{ &filetype } %)"
@@ -88,5 +88,21 @@ function M.FindFunc(name)
   local res = vim.system(cmd, { text = true }):wait()
   return vim.split(res.stdout or '', '\n', { trimempty = true })
 end
+
+-- Using builtin glob() example (vim script):
+--[[
+function! FindFuncGlob(cmdarg, cmdcomplete)
+  let pat = a:cmdcomplete ? $'{a:cmdarg}*' : a:cmdarg
+  return glob(pat, v:false, v:true)
+endfunction
+set findfunc=FindFuncGlob
+
+-- Use the 'git ls-files' output
+function FindGitFiles(cmdarg, cmdcomplete)
+  let fnames = systemlist('git ls-files')
+  return fnames->filter('v:val =~? a:cmdarg')
+endfunction
+set findfunc=FindGitFiles
+--]]
 
 return M

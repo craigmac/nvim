@@ -11,7 +11,7 @@ if vim.fn.has('gui_running') == 1 then require 'my.gui' end
 vim.api.nvim_create_autocmd('OptionSet', { pattern = 'background', command = "lua require 'my.colors'" })
 
 -- put configurations for these in `./after/plugins`, so plugin runtimes have been sourced
-vim.pack.add {
+vim.pack.add({
   'https://github.com/neovim/nvim-lspconfig',
   { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main' },
   { src = 'https://github.com/nvim-treesitter/nvim-treesitter-textobjects', version = 'main' },
@@ -27,6 +27,6 @@ vim.pack.add {
   'https://github.com/glacambre/firenvim',
   'https://github.com/romainl/vim-qf',
   'https://github.com/lewis6991/gitsigns.nvim',
-}
+})
 vim.cmd.packadd 'nohlsearch'
 

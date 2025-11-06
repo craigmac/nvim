@@ -2,12 +2,19 @@ vim.keymap.set('n', '<Leader>w', '<Cmd>silent update ++p<CR>')
 vim.keymap.set('n', '<Leader><CR>', '<Cmd>source %<CR>')
 vim.keymap.set('n', '<Leader><Space>', '<Cmd>b #<CR>')
 vim.keymap.set('n', '<Leader>,', '<Cmd>edit $MYVIMRC<CR>', { silent = true })
+
+-- fallbacks, these are overwritten by fzf-lua when it's installed
+vim.keymap.set('n', '<Leader>b', ':<C-u>buffer<Space>')
+vim.keymap.set('n', '<Leader>f', ':<C-u>find<Space>')
+
 vim.keymap.set('n', 'zS', '<Cmd>Inspect<CR>')
 vim.keymap.set('n', 'g:', ':<C-u>lua =')
+
 vim.keymap.set({ 'n', 'x' }, '<Leader>y', '"+y')
 vim.keymap.set({ 'n', 'x' }, '<Leader>Y', '"+Y')
 vim.keymap.set({ 'n', 'x' }, '<Leader>p', "\"+pv'[']")
 vim.keymap.set({ 'n', 'x' }, '<Leader>P', "\"+Pv'[']")
+
 vim.keymap.set('n', '<Leader>d', vim.diagnostic.setqflist)
 
 -- `n` and `;` always go forward and `N` and `,` always goes backwards - never think about it again!

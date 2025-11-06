@@ -1,6 +1,6 @@
 -- settings: variables and options
 
--- global variables 
+-- global variables
 vim.g.mapleader = ' '
 vim.g.netrw_banner = 0
 vim.g.netrw_hide = 0
@@ -17,7 +17,7 @@ vim.g.loaded_remote_plugins = 'never use this'
 vim.g.loaded_tarPlugin = 'nope I never browse .tar files'
 vim.g.loaded_tutor_mode_plugin = 'no more :Tutor'
 
--- special characters and display (ref. `:digraphs!`)
+-- special characters and display
 vim.o.cursorline = true
 vim.opt.fillchars = {
   eob       = ' ', -- with `set nu` this isn't needed
@@ -53,9 +53,12 @@ vim.o.winborder = 'single'
 vim.o.foldtext = ''
 vim.o.number = true
 
+
+-- wrapping
 -- no wrap, but if we do enable wrap, use these wrap-related settings
 vim.o.wrap = false
 vim.o.breakindent = true
+vim.o.breakindentopt = 'sbr'
 vim.o.joinspaces = false
 vim.o.linebreak = true
 vim.o.showbreak = '↳ '
@@ -71,16 +74,29 @@ vim.o.shortmess = vim.o.shortmess .. table.concat({
   'c', -- no 'match 1 of 2' etc. messages when scrolling through completions
   's', -- no 'search hit BOTTOM...' messages and don't show 'W' for wrapped before [1/3]
   'q', -- no 'recording @q' when recording macro
-  -- 'S', -- no [1/5] search count shown
+  'S', -- no [1/5] search count shown
 })
 vim.o.wildcharm = vim.keycode('<C-z>'):byte()
 
 -- bars/lines/windows
-vim.o.statuscolumn = '%s%l%=%C '
--- auto spares wasting cols when no folds are present
+
+-- see docs for how width is determined (it's complicated)
+vim.o.statuscolumn = table.concat({
+  '%@SignCb@',
+  '%s',  -- (s)ign like git-related or diagnostics
+  '%X',  -- end click area for callback
+  -- '%@LineCb@',
+  '%@call v:lua.print"hey"@',
+  '%l',  -- (l)ine number for currently drawn line, consults 'numberwidth' for minimum width
+  '%X',  -- end click area for callback
+  '%=',  -- divider, push following content to far-right
+  '%C ', -- fold (C)olumn for currently drawn line
+})
+-- 'auto' spares wasted cols when no folds are present
 vim.o.foldcolumn = 'auto:2'
 -- always save 1 column space for signs - default 'auto' pops column in/out as needed if we are really tight on space
 vim.o.signcolumn = 'yes:1'
+-- `%!` here means use string as an expression: eval it, and use the result as the option value
 vim.o.statusline = "%!v:lua.require'my.functions'.StatusLine()"
 
 -- default is 20, and so doesn't respect &equalalways
@@ -93,6 +109,16 @@ vim.o.splitbelow = true
 vim.o.spelllang = 'en_gb'
 vim.o.spelloptions = 'camel,noplainbuffer'
 vim.o.spellsuggest = 'fast,5'
+
+-- completion/finding
+vim.o.autocomplete = true
+vim.o.complete = 'o^10,.^10,w^5,b^5'
+vim.o.completeopt = 'menuone,popup,fuzzy,noselect'
+vim.o.completefuzzycollect = 'keyword,files,whole_line'
+-- special `:h v:lua` required here to pass lua callback name, see `:h option-value-function`
+vim.o.findfunc = "v:lua.require'my.functions'.FindFunc"
+vim.o.wildmode = 'noselect:lastused,full'
+vim.o.wildoptions = 'exacttext,fuzzy,pum,tagfile'
 
 -- startup/behaviour
 vim.o.exrc = true
@@ -110,15 +136,13 @@ vim.o.undofile = true
 -- shorter delay to trigger `:h vim.lsp.buf.document_highlight()`
 vim.o.updatetime = 500
 
--- remove popup menu entry, guarded to prevent error on re-sourcing this file
-if not vim.g.popup_menu_fixed then
-  vim.cmd([[
-  aunmenu PopUp.How-to\ disable\ mouse
-  aunmenu PopUp.-2-
-  ]])
-  vim.g.popup_menu_fixed = true
-end
+-- remove default popup menu entries
+vim.cmd([[
+silent! aunmenu PopUp.How-to\ disable\ mouse
+silent! aunmenu PopUp.-2-
+]])
 
+-- Windows 10+ settings
 if vim.fn.has('win64') == 1 then
   vim.o.shell = vim.fn.executable('pwsh') == 1 and 'pwsh -NoLogo' or 'powershell'
   vim.o.shellcmdflag = '-NonInteractive -ExecutionPolicy RemoteSigned -Command'
