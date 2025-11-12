@@ -153,5 +153,7 @@ vim.lsp.config('emmylua_ls', lua_lsp_config)
 
 -- setup auto start/stopping of these lsp servers
 vim.lsp.enable({
-  'emmylua_ls'
+  'emmylua_ls',
+  -- code-centric spellchecker
+  -- 'harper_ls'
 })

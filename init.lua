@@ -14,8 +14,9 @@ vim.api.nvim_create_autocmd('OptionSet', { pattern = 'background', command = "lu
 -- put configurations for these in `./after/plugins`, so plugin runtimes have been sourced
 vim.pack.add({
   'https://github.com/neovim/nvim-lspconfig',
-  { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main' },
+  { src = 'https://github.com/nvim-treesitter/nvim-treesitter',             version = 'main' },
   { src = 'https://github.com/nvim-treesitter/nvim-treesitter-textobjects', version = 'main' },
+  'https://github.com/RRethy/nvim-treesitter-endwise',
   'https://github.com/ibhagwan/fzf-lua',
   'https://github.com/mrjones2014/smart-splits.nvim',
   -- $VIMRUNTIME/lua/vim/_defaults.lua did not implement: `>p` `=p` (and variants), `yo<key>`,  `]e` `[e`
@@ -30,4 +31,3 @@ vim.pack.add({
   'https://github.com/lewis6991/gitsigns.nvim',
 })
 vim.cmd.packadd 'nohlsearch'
-

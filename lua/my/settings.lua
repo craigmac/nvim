@@ -1,25 +1,29 @@
 -- settings: variables and options
 
 -- global variables
-vim.g.mapleader = ' '
-vim.g.netrw_banner = 0
-vim.g.netrw_hide = 0
+vim.g.mapleader                = ' '
+vim.g.netrw_banner             = 0
+vim.g.netrw_hide               = 0
 -- make v and o do splitright and splitbelow
-vim.g.netrw_altv = vim.o.splitright
-vim.g.netrw_alto = vim.o.splitbelow
+vim.g.netrw_altv               = vim.o.splitright
+vim.g.netrw_alto               = vim.o.splitbelow
 -- turn off highlighting strings in vim ft comments, if not using treesitter
-vim.g.vimsyn_comment_strings  = false
+vim.g.vimsyn_comment_strings   = false
 
 -- stops these $VIMRUNTIME/plugin files from loading completely (tiny impact on startup)
-vim.g.loaded_gzip = 'any string should fail exists() test'
-vim.g.loaded_zipPlugin = 'keep your bible quotes to yourself'
-vim.g.loaded_remote_plugins = 'never use this'
-vim.g.loaded_tarPlugin = 'nope I never browse .tar files'
+vim.g.loaded_gzip              = 'any string should fail exists() test'
+vim.g.loaded_zipPlugin         = 'keep your bible quotes to yourself'
+vim.g.loaded_remote_plugins    = 'never use this'
+vim.g.loaded_tarPlugin         = 'nope I never browse .tar files'
 vim.g.loaded_tutor_mode_plugin = 'no more :Tutor'
+-- I'm giving up on trying to get a Canadian English .spl dictionary file to build and work
+-- (cf. https://github.com/vim/vim/issues/9042 and other open issues summarize the poor builtin spelling support)
+-- instead use one of the many external maintained spelling LSPs like Harper/Vale/Codebook
+vim.g.loaded_spellfile_plugin  = true
 
 -- special characters and display
-vim.o.cursorline = true
-vim.opt.fillchars = {
+vim.o.cursorline               = true
+vim.opt.fillchars              = {
   eob       = ' ', -- with `set nu` this isn't needed
   diff      = ' ', -- default is `-`. deleted lines of the 'diff' option. rely on hl-DiffDelete for that.
   fold      = ' ', -- remove the 'foldtext' filling symbol, leave the folded line as-is
@@ -32,26 +36,24 @@ vim.opt.fillchars = {
   trunc     = ' ', -- default `>`. no need.
   truncrl   = ' ', -- ditto, but `<`
 }
-vim.o.guifont = 'Adwaita Mono,Inconsolata:h14'
-vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,t:ver25-TermCursor'
-vim.opt.listchars = {
+vim.o.guifont                  = 'Adwaita Mono,Inconsolata:h14'
+vim.o.guicursor                = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,t:ver25-TermCursor'
+vim.opt.listchars              = {
   -- these use hl-NonText
-  eol      = '¬',  -- upgrade from `$`
-  extends  = ' ',  -- no modern editor uses this, not needed
-  precedes = ' ',  -- no modern editor uses this, not needed
+  eol      = '¬', -- upgrade from `$`
+  extends  = ' ', -- no modern editor uses this, not needed
+  precedes = ' ', -- no modern editor uses this, not needed
   -- these use hl-WhiteSpace, which is by default linked to NonText
   tab      = '⇥ ', -- upgrade from `> `
-  trail    = '█',  -- trailing space at eol. full block to make it more obvious
-  nbsp     = '⍽',  -- for a couple of non-breaking-space unicode characters
-  space    = '·'   -- common in modern editors to use middle dot
+  trail    = '█', -- trailing space at eol. full block to make it more obvious
+  nbsp     = '⍽', -- for a couple of non-breaking-space unicode characters
+  space    = '·' -- common in modern editors to use middle dot
 }
--- turn on but hide them until cursor on same line or visually selected by tweaking hl-WhiteSpace and hl-NonText
-vim.o.list = true
 -- default &stl conditionally shows incomplete/selection counts if this value is set
-vim.o.showcmdloc = 'statusline'
-vim.o.winborder = 'single'
-vim.o.foldtext = ''
-vim.o.number = true
+vim.o.showcmdloc               = 'statusline'
+vim.o.winborder                = 'single'
+vim.o.foldtext                 = ''
+vim.o.number                   = true
 
 
 -- wrapping
@@ -83,8 +85,8 @@ vim.o.wildcharm = vim.keycode('<C-z>'):byte()
 -- see docs for how width is determined (it's complicated)
 vim.o.statuscolumn = table.concat({
   '%@SignCb@',
-  '%s',  -- (s)ign like git-related or diagnostics
-  '%X',  -- end click area for callback
+  '%s', -- (s)ign like git-related or diagnostics
+  '%X', -- end click area for callback
   -- '%@LineCb@',
   '%@call v:lua.print"hey"@',
   '%l',  -- (l)ine number for currently drawn line, consults 'numberwidth' for minimum width
@@ -94,21 +96,18 @@ vim.o.statuscolumn = table.concat({
 })
 -- 'auto' spares wasted cols when no folds are present
 vim.o.foldcolumn = 'auto:2'
+-- always start with nothing folded
+vim.o.foldlevelstart = 99
 -- always save 1 column space for signs - default 'auto' pops column in/out as needed if we are really tight on space
 vim.o.signcolumn = 'yes:1'
 -- `%!` here means use string as an expression: eval it, and use the result as the option value
 vim.o.statusline = "%!v:lua.require'my.functions'.StatusLine()"
 
 -- default is 20, and so doesn't respect &equalalways
-vim.o.helpheight = 0 
+vim.o.helpheight = 0
 -- tried the 'native' defaults for years, i still prefer this way like modern editors
 vim.o.splitright = true
 vim.o.splitbelow = true
-
--- editing
-vim.o.spelllang = 'en_gb'
-vim.o.spelloptions = 'camel,noplainbuffer'
-vim.o.spellsuggest = 'fast,5'
 
 -- completion/finding
 vim.o.autocomplete = true

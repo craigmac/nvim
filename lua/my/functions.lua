@@ -32,43 +32,62 @@ function M.TabLine()
   return table.concat(s)
 end
 
--- default in 0.12 (its long so not in `:h 'stl`) it's in src/nvim/options.lua is neovim git repo
---   '%<',
---   '%f %h%w%m%r ',
---   '%=',
---   "%{% &showcmdloc == 'statusline' ? '%-10.S ' : '' %}",
---   "%{% exists('b:keymap_name') ? '<'..b:keymap_name..'> ' : '' %}",
---   "%{% &busy > 0 ? '◐ ' : '' %}",
---   "%(%{luaeval('(package.loaded[''vim.diagnostic''] and vim.diagnostic.status()) or '''' ')} %)",
---   "%{% &ruler ? ( &rulerformat == '' ? '%-14.(%l,%c%V%) %P' : &rulerformat ) : '' %}",
+---Returns an stl-format string to use with `:h 'statusline`
+---
+---The nvim default value is not in docs because it's so long, you can find it in the
+---nvim repo source file:  `src/nvim/options.lua`
+---
+---Wrapping an expression with `%( %{%` and `%}%)` will:
+---* prepend one leading space to the expression result, BUT
+---* only if result is not empty string/whitespace.
+---* when it is empty string/whitespace the entire group contained in %( %) does not take up any space
+---* using `%{ ... }` for an expr is simpler, but if the expr returns %f it isn't re-evaluated
+---  as an stl-format string. just always use %{% %} and forget about it, like nmap vs nnoremap.
 ---@return string # `:help 'stl` format string
 function M.StatusLine()
-  return table.concat({
-    "%2{% toupper(mode()) %} │ ",
-    "%(%{% exists('b:gitsigns_head') ? b:gitsigns_head .. ' │ ' : '' %}%)",
-    "%f ",
-    "%{% &modified ? '%3*●%* ' : '' %}",
-    "%{% &readonly ? '%2*━%* ' : '' %}",
-    -- minor flags, (h)elp, Previe(w) window, (a)rgs position (non-empty %a leads with one empty space)
-    "%([%H%W]%)%a",
-    -- search count, kept left to not confuse with %S (which will show '1' or '1x3' on selections)
-    "%{% v:hlsearch ? printf(' ⌕ %s/%s ', searchcount().current, searchcount().total) : '' %}",
-    '%=',
-    "%2*%{% reg_recording() != '' ? printf('@%s ', reg_recording()) : '' %}%*",
-    '%{% (&showcmdloc == "statusline") || (&cmdheight == 0) ? "%-5.S " : "" %}',
-    '%(%{ exists("b:keymap_name") ? "<" .. b:keymap_name .. "> " : "" }%)',
-    '%(%{ &busy ? "◐ " : "" }%)',
-    -- example: `E:2 W:3 I:4 H:5`
-    "%(%{ v:lua.vim.diagnostic.status() } %)",
-    -- 1. no ruler?                                  => use ''
-    -- 2. ruler is on:
-    --    A. 'rulerformat' is set (default is '')    => use &rulerformat
-    --    B. 'rulerformat' is not set (empty string) => use string we define
-    "%{% !&ruler ? '' : !empty(&rulerformat) ? &rulerformat : '%-20.(▼ %l/%L ▶ %c/%{col(''$'')-1}%) %-4(%p%%%)' %}",
-    -- if not utf-8 show encoding in red
-    "%2*%{% &fenc != 'utf-8' ? &fenc : '' %}%*",
-    " %(%{ &filetype } %)"
-    })
+  local stl_parts = {
+    -- example: ` I|N|C|R|V|B |` replacing ^V (two chars) with B for visual (B)lock
+    "%( %{% toupper(mode() == '' ? 'b' : printf('%s │', mode())) %}%)",
+    -- example: ` main |` if gitsigns installed and loaded
+    "%( %{% exists('b:gitsigns_head') ? b:gitsigns_head .. ' │' : '' %}%)",
+    -- example: `<ua\foo\bar\main.lua` shorten lefthand side when not enough room
+    "%<%f",
+    -- add modified symbol if buffer modified - ignore `:term` buffers which report as modified
+    "%( %{% &modified && &buftype != 'terminal' ? '±' : '' %}%)",
+    -- not (!) modifiable - again, ignore what a `:term` buffer reports
+    "%( %{% !&modifiable && &buftype != 'terminal' ? '!±' : '' %}%)",
+    -- readonly - unsure on difference from `set nomodifiable`
+    "%( %{% &readonly ? '[RO]' : '' %}%)",
+    -- example: ` [Preview Window]` builtin %W gives ',PRV' and %w gives '[Preview]'
+    "%( %{% &previewwindow ? '[Preview Window]' : '' %}%)",
+    -- example: ` (1 of 3)` current position in args list, non-empty %a always leads with one space
+    "%(%a%)",
+    -- example: ` ⌕ 1/1000` show current search match position of total search matches
+    "%( %{% v:hlsearch ? printf('⌕ %s/%s', searchcount().current, searchcount().total) : '' %}%)",
+    "%=",
+    -- example: ` @q` while recording to register 'q'
+    "%( %{% reg_recording() != '' ? printf('@%s', reg_recording()) : '' %}%)",
+    -- examples:
+    -- partial cmd (waiting):    ` di`
+    -- visual selection example: ` 1`
+    -- visual block example:     ` 12x34`
+    "%( %{% &showcmdloc == 'statusline' ? '%S' : '' %}%)",
+    -- example: ` <hangul>` when `:h :lmap` is active
+    "%( %{% exists('b:keymap_name') ? printf('<%s>', b:keymap_name) : '' %}%)",
+    -- example: ` ◐ ` if busy is set by e.g., LSP server signals busy
+    "%( %{% &busy ? '◐' : '' %}%)",
+    -- example: ` E:2 W:3 I:4 H:5` if diagnostic E/W/I/H using default symbols
+    "%( %{% v:lua.vim.diagnostic.status() %}%)",
+    -- example: ` dos` if not utf-8 filencoding, show it
+    "%( %{ &fenc != 'utf-8' ? &fenc : '' }%)",
+    -- example: ` 123↕123 12→99` (14 char. aligned left, no max)
+    "%-14.( %l↕%L %c→%{col('$')-1}%)",
+    -- examples: ` 0%` | ` 19%` | ` 100%`
+    "%( %p%%%)",
+    -- example: ` help ` relying on this instead of %H help flag
+    "%( %{% &filetype %} %)"
+  }
+  return table.concat(stl_parts)
 end
 
 ---https://github.com/neovim/neovim/pull/34545
