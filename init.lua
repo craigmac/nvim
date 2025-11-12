@@ -16,6 +16,7 @@ vim.pack.add({
   'https://github.com/neovim/nvim-lspconfig',
   { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main' },
   { src = 'https://github.com/nvim-treesitter/nvim-treesitter-textobjects', version = 'main' },
+  'https://github.com/RRethy/nvim-treesitter-endwise',
   'https://github.com/ibhagwan/fzf-lua',
   'https://github.com/mrjones2014/smart-splits.nvim',
   -- $VIMRUNTIME/lua/vim/_defaults.lua did not implement: `>p` `=p` (and variants), `yo<key>`,  `]e` `[e`

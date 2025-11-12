@@ -25,6 +25,10 @@
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
     },
+    "nvim-treesitter-endwise": {
+      "rev": "a61a9de",
+      "src": "https://github.com/RRethy/nvim-treesitter-endwise"
+    },
     "nvim-treesitter-textobjects": {
       "rev": "2e5b873",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
