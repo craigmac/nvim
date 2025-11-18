@@ -9,7 +9,10 @@ require 'my.lsp'
 if vim.fn.has('gui_running') == 1 then require 'my.gui' end
 
 -- BUG: https://github.com/neovim/neovim/issues/36416
-vim.api.nvim_create_autocmd('OptionSet', { pattern = 'background', command = "lua require 'my.colors'" })
+vim.api.nvim_create_autocmd('OptionSet', {
+  pattern = 'background',
+  callback = function(_) require('my.colors') end
+})
 
 -- put configurations for these in `./after/plugins`, so plugin runtimes have been sourced
 vim.pack.add({
@@ -19,7 +22,7 @@ vim.pack.add({
   'https://github.com/RRethy/nvim-treesitter-endwise',
   'https://github.com/ibhagwan/fzf-lua',
   'https://github.com/mrjones2014/smart-splits.nvim',
-  -- $VIMRUNTIME/lua/vim/_defaults.lua did not implement: `>p` `=p` (and variants), `yo<key>`,  `]e` `[e`
+  -- $VIMRUNTIME/lua/vim/_defaults.lua did not implement: `>p` `=p` (and variants), `yo<key>`, `]e` `[e`
   'https://github.com/tpope/vim-unimpaired',
   'https://github.com/tpope/vim-repeat',
   'https://github.com/tpope/vim-rsi',
