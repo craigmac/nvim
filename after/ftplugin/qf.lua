@@ -1,7 +1,6 @@
-vim.o.number = false
-vim.o.list = false
-vim.o.cursorline = false
+vim.bo.number = false
+vim.bo.list = false
+vim.bo.cursorline = false
 
-vim.cmd([[
-let b:undo_ftplugin = "set nu< list< cursorline<"
-]])
+-- see `:h global-local` for `=` vs `<` difference
+vim.b.undo_ftplugin = vim.b.undo_ftplugin .. ' | setl nu< list< cul<'
