@@ -26,7 +26,9 @@ local p = {
   bright_gray4 = "#9b9ea4",
 }
 
-vim.o.pumblend = 10
+-- 'notgc' + &pumblend|&winblend > 0 breaks the UI. we use autogroup `my.augroup.optionset` to adjust.
+vim.o.pumblend = vim.o.termguicolors and 10 or 0
+vim.o.winblend = vim.o.termguicolors and 10 or 0
 
 -- using this requires we set something sensible for fillchar 'msgsep' to show split
 vim.api.nvim_set_hl(0, "MsgSeparator", { link = "Normal" })
