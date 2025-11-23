@@ -1,0 +1,20 @@
+TODO {{{1
+
+- `:h undo-tree` undotree built in now bind to leader-u
+- treesitter expand/contract selection keymappings
+- lua lsp setup
+- oil.nvim
+- toggle term bindings
+- setup `:h fuzzy-file-picker` in case fzf-lua unavailable
+
+BACKLOG {{{1
+
+- no cmdline wildtrigger called when it starts with :! because of super lag on
+  windows
+- / wildtrigger tends to get in the way with incsearch highlighting and when
+  doing :s/ commands
+- SqueezeWhiteSpace command runs `<Cmd>%s/\v\s{2,}/ge<CR>`
+-  
+
+
+# vi: et tw=80 sw=2 sts=-1 fdm=marker
