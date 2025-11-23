@@ -2,6 +2,13 @@ vim.keymap.set('n', '<Leader>w', '<Cmd>silent update ++p<CR>')
 vim.keymap.set('n', '<Leader><CR>', '<Cmd>source %<CR>')
 vim.keymap.set('n', '<Leader><Space>', '<Cmd>b #<CR>')
 vim.keymap.set('n', '<Leader>,', '<Cmd>edit $MYVIMRC<CR>', { silent = true })
+vim.keymap.set('n', '<Leader>u', function()
+  vim.cmd.packadd('nvim.undotree')
+  require('undotree').open({
+    command = 'topleft 30vnew'
+  })
+
+end)
 
 -- fallbacks, these are overwritten by fzf-lua when it's installed
 vim.keymap.set('n', '<Leader>b', ':<C-u>buffer<Space>')
