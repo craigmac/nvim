@@ -37,7 +37,11 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 local augroup_cursorline = vim.api.nvim_create_augroup('my.augroup.cursorline', {})
 vim.api.nvim_create_autocmd({ 'WinEnter', 'InsertLeave', 'TermLeave' }, {
-  command = 'setlocal cursorline',
+  callback = function(args)
+    local bufnr = args.buf
+    if vim.bo[bufnr].buftype == 'quickfix' then return end
+    vim.wo.cursorline = true
+  end,
   desc = 'Turn on cursorline highlight.',
   group = augroup_cursorline,
 })
