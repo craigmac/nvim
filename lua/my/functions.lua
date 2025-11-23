@@ -63,7 +63,9 @@ function M.StatusLine()
     "%( %{% &busy ? '◐' : ''                                            %}%)",
     "%( %{% v:lua.vim.diagnostic.status()                               %}%)",
     "%( %{% &fenc != 'utf-8' ? &fenc : ''                               %}%)",
-    "%-14.( %l↕%L %c→%{% col('$') - 1                                   %}%)",
+    -- thousands separated numbers for humans: 1134485 becomes 1,134,485
+    -- '%{substitute(v:lnum,"\\d\\zs\\ze\\' .. '%(\\d\\d\\d\\)\\+$",",","g")}'
+    "%-14.( %l↕%L %v→%{% virtcol('$') - 1                               %}%)",
     "%( %p%%%)",
     "%( %{% &filetype .. ' '                                            %}%)",
   }
