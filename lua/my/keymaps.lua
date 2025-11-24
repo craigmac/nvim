@@ -41,6 +41,7 @@ end, { silent = true })
 
 vim.keymap.set('n', '<Leader>vp', function()
   local d = vim.fn.stdpath('data') .. '/site/pack/core/opt/'
+  assert(vim.uv.fs_stat(d))
   vim.cmd.tabedit(d)
   vim.cmd.tcd(d)
 end, { silent = true })
