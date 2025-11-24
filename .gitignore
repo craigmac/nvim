@@ -1,8 +1,16 @@
-tags
+# dirs
+.vscode/
+cache/
+doc/
+pack/
 spell/
+tmp/
+
+# files
+*.*~
 .DS_Store
+.netrwhist
+tags
 TODO.txt
 TODO.md
-tmp/
 Session.vim
-.vscode/
