@@ -6,16 +6,12 @@ require('my.autocmds')
 require('my.keymaps')
 require('my.commands')
 require('my.lsp')
-if vim.fn.has('gui_running') == 1 then
-  require('my.gui')
-end
+if vim.fn.has('gui_running') == 1 then require('my.gui') end
 
 -- BUG: https://github.com/neovim/neovim/issues/36416
 vim.api.nvim_create_autocmd('OptionSet', {
   pattern = 'background',
-  callback = function(_)
-    require('my.colors')
-  end,
+  callback = function(_) require('my.colors') end,
 })
 
 -- put configurations for these in `./after/plugins`, so plugin runtimes have been sourced
