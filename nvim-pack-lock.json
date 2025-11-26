@@ -1,65 +1,65 @@
 {
   "plugins": {
     "firenvim": {
-      "rev": "a18ef90",
+      "rev": "a18ef908ac06b52ad9333b70e3e630b0a56ecb3d",
       "src": "https://github.com/glacambre/firenvim"
     },
     "fzf-lua": {
-      "rev": "123cc54",
+      "rev": "f04cff3ae590ce7930de2103eda47b69e1d7d336",
       "src": "https://github.com/ibhagwan/fzf-lua"
     },
     "gitsigns.nvim": {
-      "rev": "cdafc32",
+      "rev": "cdafc320f03f2572c40ab93a4eecb733d4016d07",
       "src": "https://github.com/lewis6991/gitsigns.nvim"
     },
+    "mason.nvim": {
+      "rev": "57e5a8addb8c71fb063ee4acda466c7cf6ad2800",
+      "src": "https://github.com/mason-org/mason.nvim"
+    },
     "nvim-lspconfig": {
-      "rev": "b7c48a7",
+      "rev": "30a2b191bccf541ce1797946324c9329e90ec448",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-surround": {
-      "rev": "fcfa7e0",
+      "rev": "fcfa7e02323d57bfacc3a141f8a74498e1522064",
       "src": "https://github.com/kylechui/nvim-surround"
     },
     "nvim-treesitter": {
-      "rev": "bb83a676",
+      "rev": "c5871d9d870c866fea9f271f1a3b3f29049a4793",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
     },
-    "nvim-treesitter-endwise": {
-      "rev": "a61a9de",
-      "src": "https://github.com/RRethy/nvim-treesitter-endwise"
-    },
     "nvim-treesitter-textobjects": {
-      "rev": "227165a",
+      "rev": "227165aaeb07b567fb9c066f224816aa8f3ce63f",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
       "version": "'main'"
     },
     "smart-splits.nvim": {
-      "rev": "71cf185",
+      "rev": "ca996f2844a4c77d74912a2414af939dc76a73cc",
       "src": "https://github.com/mrjones2014/smart-splits.nvim"
     },
+    "vim-easy-align": {
+      "rev": "9815a55dbcd817784458df7a18acacc6f82b1241",
+      "src": "https://github.com/junegunn/vim-easy-align"
+    },
     "vim-fugitive": {
-      "rev": "61b51c0",
+      "rev": "61b51c09b7c9ce04e821f6cf76ea4f6f903e3cf4",
       "src": "https://github.com/tpope/vim-fugitive"
     },
-    "vim-lion": {
-      "rev": "ce46593",
-      "src": "https://github.com/tommcdo/vim-lion"
-    },
     "vim-qf": {
-      "rev": "7cafff6",
+      "rev": "7cafff6a9e0a1b54364b26a87f1efe749f8fb96b",
       "src": "https://github.com/romainl/vim-qf"
     },
     "vim-repeat": {
-      "rev": "6584602",
+      "rev": "65846025c15494983dafe5e3b46c8f88ab2e9635",
       "src": "https://github.com/tpope/vim-repeat"
     },
     "vim-rsi": {
-      "rev": "4554063",
+      "rev": "45540637ead22f011e8215f1c90142e49d946a54",
       "src": "https://github.com/tpope/vim-rsi"
     },
     "vim-unimpaired": {
-      "rev": "db65482",
+      "rev": "db65482581a28e4ccf355be297f1864a4e66985c",
       "src": "https://github.com/tpope/vim-unimpaired"
     }
   }
