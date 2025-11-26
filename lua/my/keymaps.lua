@@ -7,8 +7,8 @@ vim.keymap.set('n', '<Leader>u', function()
   require('undotree').open({
     command = 'topleft 30vnew'
   })
-
 end)
+vim.keymap.set('n', '<Leader>t', function() vim.cmd.split(vim.fn.stdpath('config')..'/todo.txt') end )
 
 -- fallbacks, these are overwritten by fzf-lua when it's installed
 vim.keymap.set('n', '<Leader>b', ':<C-u>buffer<Space>')
