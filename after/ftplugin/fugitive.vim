@@ -1,34 +1,34 @@
 setlocal nonumber
 setlocal nolist
 
-let b:undo_ftplugin ..= ' | setl nu< list<'
-
-hi! link  fugitiveHelpHeader 	    Title
+" in roughly the order of appearance top to bottom in the `:G` status buffer
 hi! link  fugitiveHeader            Title
-hi! link  fugitiveHelpTag           Special
+hi! link  fugitiveHelpHeader 	    Title
+hi! link  fugitiveUnstagedHeading   fugitiveHeader
+hi! link  fugitiveStagedHeading     fugitiveHeader
+hi! link  fugitiveUntrackedHeading  fugitiveHeader
 
 hi! link  fugitiveHash              Constant
 hi! link  fugitiveCount             Constant
 
-hi! clear fugitiveSymbolicRef
-hi! clear fugitiveHeading
-hi! clear fugitiveModifier
-hi! clear fugitiveDone
-hi! clear fugitiveHunk
-hi! clear fugitiveSection
-hi! clear fugitivePreposition
-hi! clear fugitiveInstruction
-hi! clear fugitiveStop
+hi! link fugitiveSymbolicRef        Underlined
+hi! link  fugitiveHelpTag           Underlined
 
-hi! link  fugitiveUntrackedHeading  Title
-hi! clear fugitiveUntrackedModifier
-hi! clear fugitiveUntrackedSection
+hi! link fugitiveHeading            Title
+hi! link fugitiveCount              Constant
+hi! link fugitiveModifier           Special
 
-hi! link  fugitiveUnstagedHeading   Title
-hi! clear fugitiveUnstagedModifier
-hi! clear fugitiveUnstagedSection
+hi! link  diffLine                  Special
+hi! link  diffAdded                 Added
+hi! link  diffRemoved               Removed
+hi! link  diffChanged               Changed
 
-hi! link  fugitiveStagedHeading     Title
-hi! clear fugitiveStagedModifier
-hi! clear fugitiveStagedSection
+"hi! clear fugitiveDone
+"hi! clear fugitivePreposition
+"hi! clear fugitiveInstruction
+"hi! clear fugitiveStop
+
+if exists("b:did_ftplugin")
+  let b:undo_ftplugin ..= ' | setl nu< list<'
+endif
 
