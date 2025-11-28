@@ -38,9 +38,8 @@ vim.api.nvim_set_hl(0, "NormalFloat", { link = "Normal" })
 vim.api.nvim_set_hl(0, "Float", { link = "Normal" })
 
 if vim.o.background == "light" then
-  -- Harmonize better with light terminal emulator backgrounds by
-  -- changing Normal to match cterm=255
-  vim.api.nvim_set_hl(0, 'Normal', { bg = 'grey95' })
+  -- blend with light terminal emulator backgrounds better
+  vim.api.nvim_set_hl(0, 'Normal', { bg = 'grey98' })
   -- some default colours like `NvimDark[Blue|Green]` are too dark to distinguish between them when applied to
   -- smaller symbols/areas against a light background, like gitsigns markers. fix by picking
   -- non-default palette colours that are more obvious.
@@ -52,7 +51,6 @@ else
   -- dark mode
   vim.api.nvim_set_hl(0, "Changed", { fg = "Orange" })
   vim.api.nvim_set_hl(0, "Title", { fg = "NvimLightMagenta" })
-
 end
 
 -- use `NvimLight*` colours for `User1..9` because they are used against a dark statusline

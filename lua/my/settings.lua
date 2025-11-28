@@ -47,9 +47,10 @@ vim.opt.listchars = {
   nbsp = '⍽', -- for a couple of non-breaking-space unicode characters
   space = '·', -- common in modern editors to use middle dot
 }
--- default &stl conditionally shows incomplete/selection counts if this value is set
+-- default &stl now conditionally shows incomplete/selection counts if this value is set
 vim.o.showcmdloc = 'statusline'
 vim.o.winborder = 'single'
+vim.o.pumborder = vim.o.winborder !== ''
 vim.o.foldtext = ''
 vim.o.number = true
 
@@ -111,7 +112,6 @@ vim.o.splitbelow = true
 vim.o.autocomplete = true
 vim.o.complete = 'o^10,.^10,w^5,b^5'
 vim.o.completeopt = 'menuone,popup,fuzzy,noselect'
--- vim.o.completefuzzycollect = 'keyword,files,whole_line'
 -- special `:h v:lua` required here to pass lua callback name, see `:h option-value-function`
 vim.o.findfunc = "v:lua.require'my.functions'.FindFunc"
 vim.o.wildmode = 'noselect:lastused,full'

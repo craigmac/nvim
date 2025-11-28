@@ -8,6 +8,7 @@ TODO {{{1
 
 BACKLOG {{{1
 
+- set when in nvim: `vim.o.completefuzzycollect = 'keyword,files,whole_line'`
 - oil.nvim? much easier than netrw
 - toggle term bindings
 - setup `:h fuzzy-file-picker` in case fzf-lua unavailable
