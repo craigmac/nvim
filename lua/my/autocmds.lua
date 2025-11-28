@@ -166,7 +166,15 @@ vim.api.nvim_create_autocmd('WinEnter', {
 
 local augroup_cmdline_changed = vim.api.nvim_create_augroup('my.augroup.cmdlinechanged', {})
 vim.api.nvim_create_autocmd('CmdlineChanged', {
+  desc = 'Trigger completion menu as we type in cmdline',
   callback = function()
-    vim.fn.wildtrigger()
+    -- always trigger if not Windows
+    if vim.fn.has('win32') == 0 then vim.fn.wildtrigger() end
+    -- skip Windows lag when trying to complete executables, like `:!whoami`
+    -- and `:read !python3 --version`
+    local ln = vim.fn.getcmdline()
+    if not ln:find('^!') and not ln:find('!', -1) then
+      vim.fn.wildtrigger()
+    end
   end,
 })

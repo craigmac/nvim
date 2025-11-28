@@ -1,20 +1,20 @@
 TODO {{{1
 
-- `:h undo-tree` undotree built in now bind to leader-u
-- treesitter expand/contract selection keymappings
-- lua lsp setup
-- oil.nvim
-- toggle term bindings
-- setup `:h fuzzy-file-picker` in case fzf-lua unavailable
+- TSInstall is hanging/not working on Windows? install treesitter-cli
+- FZFLua colors not right under gui, there's a setting for it
+- lua vim.treesitter.start() on all FileType
+- fix commands.lua TitleCaseLine etc. working on Vim but not here
+- use lua/my/lsp.lua or the one in after/plugin/nvim-lspconfig.lua file
 
 BACKLOG {{{1
 
-- no cmdline wildtrigger called when it starts with :! because of super lag on
-  windows
-- / wildtrigger tends to get in the way with incsearch highlighting and when
-  doing :s/ commands
-- SqueezeWhiteSpace command runs `<Cmd>%s/\v\s{2,}/ge<CR>`
--  
-
+- oil.nvim? much easier than netrw
+- toggle term bindings
+- setup `:h fuzzy-file-picker` in case fzf-lua unavailable
+- fix: '$' signcolumn characters that mark OSC133 prompt start in pwsh are off
+  by one line after first prompt
+- term: mark output areas and add [v and ]v to visual select last/next output, base on
+  OSC 133 work done in `$VIMRUNTIME/lua/vim/_defaults.lua:591`. maybe upstream
+  it.
 
 # vi: et tw=80 sw=2 sts=-1 fdm=marker

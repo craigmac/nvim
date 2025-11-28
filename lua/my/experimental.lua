@@ -17,15 +17,19 @@
 vim.o.cmdheight = 0
 
 -- modules
-vim.loader.enable()
+-- Windows issues again maybe?
+-- vim.loader.enable()
 
-require 'vim._extui'.enable {
-  enable = true,
-  msg = {
-    target = 'msg',
-    timeout = 4000
-  }
-}
+-- this really messes up Neovide 2025-11-28
+if not vim.g.neovide then
+  require 'vim._extui'.enable({
+    enable = true,
+    msg = {
+      target = 'msg',
+      timeout = 4000
+    }
+  })
+end
 
 -- `3` value for laststatus requires carefully thought out winbar value
 -- vim.o.laststatus = 3

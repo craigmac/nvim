@@ -111,7 +111,7 @@ vim.o.splitbelow = true
 vim.o.autocomplete = true
 vim.o.complete = 'o^10,.^10,w^5,b^5'
 vim.o.completeopt = 'menuone,popup,fuzzy,noselect'
-vim.o.completefuzzycollect = 'keyword,files,whole_line'
+-- vim.o.completefuzzycollect = 'keyword,files,whole_line'
 -- special `:h v:lua` required here to pass lua callback name, see `:h option-value-function`
 vim.o.findfunc = "v:lua.require'my.functions'.FindFunc"
 vim.o.wildmode = 'noselect:lastused,full'
@@ -122,11 +122,7 @@ vim.o.exrc = true
 vim.o.secure = true
 vim.o.diffopt = vim.o.diffopt .. ',followwrap,algorithm:minimal'
 vim.o.jumpoptions = vim.o.jumpoptions .. ',view'
--- + fewer instances of stopping coding to do something like <C-o>zz to recenter codevia zz and be able to see
--- + function definition/docs more if did e.g., zt on function definition linezt/zl will not be true top/lower
--- - zt/zb will not place current line to true top/bottom, it will always be &scrolloff lines away
--- ~ some behaviours like jumping to a character 4 lines from the bottom will scroll screen
-vim.o.scrolloff = 5
+vim.o.scrolloff = 5 -- vim's defaults.vim sets it to 5
 vim.o.sidescrolloff = 2
 vim.o.tabclose = 'uselast'
 vim.o.undofile = true
@@ -140,7 +136,7 @@ silent! aunmenu PopUp.-2-
 ]])
 
 -- Windows 10+ settings
-if vim.fn.has('win64') == 1 then
+if vim.fn.has('win32') == 1 then
   vim.o.shell = vim.fn.executable('pwsh') == 1 and 'pwsh -NoLogo' or 'powershell'
   vim.o.shellcmdflag = '-NonInteractive -ExecutionPolicy RemoteSigned -Command'
   vim.o.shellslash = true
@@ -151,3 +147,4 @@ if vim.fn.has('win64') == 1 then
   -- vim.o.shellredir = '2>&1 | %%{ "$_" } | Out-File %s; exit $LastExitCode'
   vim.o.shellredir = '>%s 2>&1'
 end
+

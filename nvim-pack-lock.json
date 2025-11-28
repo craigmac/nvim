@@ -5,7 +5,7 @@
       "src": "https://github.com/glacambre/firenvim"
     },
     "fzf-lua": {
-      "rev": "f04cff3ae590ce7930de2103eda47b69e1d7d336",
+      "rev": "9a0704e8af8f8442110ff22a83b5608366b235df",
       "src": "https://github.com/ibhagwan/fzf-lua"
     },
     "gitsigns.nvim": {
@@ -17,7 +17,7 @@
       "src": "https://github.com/mason-org/mason.nvim"
     },
     "nvim-lspconfig": {
-      "rev": "30a2b191bccf541ce1797946324c9329e90ec448",
+      "rev": "f1237a8b3c243608a7116fa1ad216c441d7c2264",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-surround": {
