@@ -2,15 +2,12 @@ TODO {{{1
 
 - TSInstall is hanging/not working on Windows? install treesitter-cli
 - FZFLua colors not right under gui, there's a setting for it
-- lua vim.treesitter.start() on all FileType
-- fix commands.lua TitleCaseLine etc. working on Vim but not here
-- use lua/my/lsp.lua or the one in after/plugin/nvim-lspconfig.lua file
+- try lua vim.treesitter.start() on all FileType
 
 BACKLOG {{{1
 
+- fix commands.lua TitleCaseLine etc. working on Vim but not here
 - set when in nvim: `vim.o.completefuzzycollect = 'keyword,files,whole_line'`
-- oil.nvim? much easier than netrw
-- toggle term bindings
 - setup `:h fuzzy-file-picker` in case fzf-lua unavailable
 - fix: '$' signcolumn characters that mark OSC133 prompt start in pwsh are off
   by one line after first prompt
@@ -18,4 +15,4 @@ BACKLOG {{{1
   OSC 133 work done in `$VIMRUNTIME/lua/vim/_defaults.lua:591`. maybe upstream
   it.
 
-# vi: et tw=80 sw=2 sts=-1 fdm=marker
+# vi: et tw=80 sw=2 sts=-1 fdm=marker foldlevel=1

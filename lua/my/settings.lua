@@ -50,7 +50,7 @@ vim.opt.listchars = {
 -- default &stl now conditionally shows incomplete/selection counts if this value is set
 vim.o.showcmdloc = 'statusline'
 vim.o.winborder = 'single'
-vim.o.pumborder = vim.o.winborder !== ''
+vim.o.pumborder = 'single'
 vim.o.foldtext = ''
 vim.o.number = true
 

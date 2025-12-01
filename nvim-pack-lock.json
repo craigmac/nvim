@@ -5,11 +5,11 @@
       "src": "https://github.com/glacambre/firenvim"
     },
     "fzf-lua": {
-      "rev": "9a0704e8af8f8442110ff22a83b5608366b235df",
+      "rev": "cae96b04f6cad98a3ad24349731df5e56b384c3c",
       "src": "https://github.com/ibhagwan/fzf-lua"
     },
     "gitsigns.nvim": {
-      "rev": "cdafc320f03f2572c40ab93a4eecb733d4016d07",
+      "rev": "5813e4878748805f1518cee7abb50fd7205a3a48",
       "src": "https://github.com/lewis6991/gitsigns.nvim"
     },
     "mason.nvim": {
@@ -17,7 +17,7 @@
       "src": "https://github.com/mason-org/mason.nvim"
     },
     "nvim-lspconfig": {
-      "rev": "f1237a8b3c243608a7116fa1ad216c441d7c2264",
+      "rev": "effe4bf2e1afb881ea67291c648b68dd3dfc927a",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-surround": {
@@ -25,17 +25,17 @@
       "src": "https://github.com/kylechui/nvim-surround"
     },
     "nvim-treesitter": {
-      "rev": "c5871d9d870c866fea9f271f1a3b3f29049a4793",
+      "rev": "00c906abb9550e72bc0c640545b5499b9525bb40",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
     },
     "nvim-treesitter-textobjects": {
-      "rev": "227165aaeb07b567fb9c066f224816aa8f3ce63f",
+      "rev": "63c4dce4a56312ef1bdeafd16bdefa008fcc950a",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
       "version": "'main'"
     },
     "smart-splits.nvim": {
-      "rev": "ca996f2844a4c77d74912a2414af939dc76a73cc",
+      "rev": "e892a5da963813119d053af5b2260e3cd9d9f037",
       "src": "https://github.com/mrjones2014/smart-splits.nvim"
     },
     "vim-easy-align": {

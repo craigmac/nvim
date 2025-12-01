@@ -7,25 +7,6 @@
 -- subject comes before the event, i.e., 'term.winenter' not 'winenter.term', so that all terminal-related
 -- autocmds are easily found under 'my.augroup.term.*'
 
--- when turning off 'termguicolors' transparency will no longer work,
--- options related to that like winblend will break UI
-local augroup = vim.api.nvim_create_augroup('my.augroup.optionset', {})
-vim.api.nvim_create_autocmd('OptionSet', {
-  pattern = "termguicolors",
-  callback = function(args)
-    if vim.v.option_new == false then
-      -- :set is not supposed to re-trigger OptionSet in the autocmd
-      vim.o.winblend = 0
-      vim.o.pumblend = 0
-    elseif vim.v.option_new == true then
-      vim.o.winblend = 10
-      vim.o.pumblend = 10
-    else
-      vim.notify('[my.augroup.optionset]: "else" branch, `vim.v.option_new value` is: ' .. vim.v.option_new)
-    end
-  end,
-})
-
 local augroup_typ = vim.api.nvim_create_augroup('my.augroup.textyankpost', {})
 vim.api.nvim_create_autocmd('TextYankPost', {
   callback = function()

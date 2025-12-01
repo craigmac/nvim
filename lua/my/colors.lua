@@ -26,10 +26,6 @@ local p = {
   bright_gray4 = "#9b9ea4",
 }
 
--- 'notgc' + &pumblend|&winblend > 0 breaks the UI. we use autogroup `my.augroup.optionset` to adjust.
-vim.o.pumblend = vim.o.termguicolors and 10 or 0
-vim.o.winblend = vim.o.termguicolors and 10 or 0
-
 -- using this requires we set something sensible for fillchar 'msgsep' to show split
 vim.api.nvim_set_hl(0, "MsgSeparator", { link = "Normal" })
 
@@ -63,3 +59,10 @@ vim.api.nvim_set_hl(0, "User5", { fg = p.bright_blue })
 vim.api.nvim_set_hl(0, "User6", { fg = p.bright_magenta })
 vim.api.nvim_set_hl(0, "User7", { fg = p.bright_cyan })
 vim.api.nvim_set_hl(0, "User8", { fg = p.bright_white })
+
+-- changes to linkages made regardless of background
+vim.api.nvim_set_hl(0, 'Pmenu', { link = 'Normal' })
+vim.api.nvim_set_hl(0, 'PmenuExtra', { link = 'Normal' })
+vim.api.nvim_set_hl(0, 'PmenuBorder', {  bg = 'NONE' })
+vim.api.nvim_set_hl(0, 'PmenuMatch', { bg = 'NONE' })
+vim.api.nvim_set_hl(0, 'PmenuKind', { bg = 'NONE' })

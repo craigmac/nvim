@@ -1,16 +1,20 @@
--- Some mappings are done unconditionally in `$VIMRUNTIME/lua/vim/_defaults.lua`: see `:h grr`
---
--- set here:
--- gd       - (d)efinition
--- gD       - (D)eclaraction
--- g(       - incoming calls
--- g)       - outgoing calls
--- yoh      - toggle inlay hints
--- grO      - workspace symbols, like gO is for buffer symbols but using gr-prefix for lsp stuff
--- <Leader>gq - like gq to format, but for whole buffer
---
--- See what attached lsp client supports:
--- :lua =vim.lsp.get_clients()[1].server_capabilities
+--[[
+Some mappings are done unconditionally in `$VIMRUNTIME/lua/vim/_defaults.lua`: see `:h grr`
+
+set here:
+gd       - (d)efinition
+gD       - (D)eclaraction
+g(       - incoming calls
+g)       - outgoing calls
+yoh      - toggle inlay hints
+grO      - workspace symbols, like gO is for buffer symbols but using gr-prefix for lsp stuff
+<Leader>gq - like gq to format, but for whole buffer
+
+NOTE: to see what an attached LSP server supports, run:
+:lua =vim.lsp.get_clients()[1].server_capabilities
+--]]
+
+local augroup = vim.api.nvim_create_augroup('my.augroup.lsp', {})
 
 local function lspdetach_cb(args)
   local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
@@ -26,8 +30,6 @@ end
 local function lspattach_cb(args)
   local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
 
-  -- vim.notify_once(string.format('%s attached.', client.name), vim.log.INFO)
-
   if client:supports_method('textDocument/definition') then
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = true })
   end
@@ -39,7 +41,6 @@ local function lspattach_cb(args)
   if client:supports_method('textDocument/completion') then
     -- autotrigger doesn't work well with nvim default completeopt, unless 'noselect' is added
     vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = false })
-    vim.keymap.set('i', '<C-i>', function() vim.lsp.completion.get() end)
   end
 
   if client:supports_method('textDocument/prepareCallHierarchy') then
@@ -81,8 +82,8 @@ local function lspattach_cb(args)
 
   if client:supports_method('textDocument/documentHighlight') then
     vim.cmd([[
-    autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()
-    autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+    autocmd! CursorHold  <buffer> lua vim.lsp.buf.document_highlight()
+    autocmd! CursorMoved <buffer> lua vim.lsp.buf.clear_references()
     ]])
   end
 
@@ -103,12 +104,13 @@ end
 
 -- setup our attach/detach custom callbacks to run on LspAttach|Detach events
 vim.api.nvim_create_autocmd('LspAttach', {
-  group = vim.api.nvim_create_augroup('my.lsp.attach', {}),
+  group = augroup,
   callback = lspattach_cb,
+  desc = 'Called when an LSP server attaches to the buffer'
 })
 
 vim.api.nvim_create_autocmd('LspDetach', {
-  group = vim.api.nvim_create_augroup('my.lsp.detach', {}),
+  group = augroup,
   callback = lspdetach_cb,
 })
 

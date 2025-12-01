@@ -21,7 +21,6 @@ local augroup = vim.api.nvim_create_augroup('my.augroup.lsp', {})
 
 local function lspattach_cb(args)
   local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
-  vim.notify_once(string.format('%s attached.', client.name), vim.log.INFO)
 
   if client:supports_method('textDocument/definition') then
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = true })
@@ -34,7 +33,6 @@ local function lspattach_cb(args)
   if client:supports_method('textDocument/completion') then
     -- autotrigger doesn't work well with nvim default completeopt, unless 'noselect' is added
     vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = false })
-    -- vim.keymap.set('i', '<C-i>', function() vim.lsp.completion.get() end)
   end
 
   if client:supports_method('textDocument/prepareCallHierarchy') then
@@ -50,12 +48,14 @@ local function lspattach_cb(args)
   if client:supports_method('textDocument/inlayHint') then
     vim.keymap.set('n', 'yoh', function()
       vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-      vim.notify(string.format('Show inlay hints set to %s', vim.lsp.inlay_hint.is_enabled()), vim.log.INFO)
+      vim.notify(string.format('Inlay hints set to: %s', vim.lsp.inlay_hint.is_enabled()), vim.log.INFO)
     end, { buffer = true })
   end
 
   if client:supports_method('workspace/symbol') then
-    vim.keymap.set('n', 'grO', function() require('fzf-lua').lsp_live_workspace_symbols() end, { buffer = true })
+    vim.keymap.set('n', 'grO', function()
+      require('fzf-lua').lsp_live_workspace_symbols()
+    end, { buffer = true })
   end
 
   -- Usually not needed if server supports "textDocument/willSaveWaitUntil"
@@ -102,6 +102,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
   desc = 'Called when an LSP server attaches to the buffer'
 })
 
+vim.api.nvim_create_autocmd('LspDetach', {
+  group = augroup,
+  callback = lspdetach_cb,
+  desc = 'Called when a LSP server detaches from buffer'
+})
+
 local function lspdetach_cb(args)
   local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
   if not client:supports_method('textDocument/formatting') then return end
@@ -110,12 +116,6 @@ local function lspdetach_cb(args)
     buffer = args.buf,
   })
 end
-
-vim.api.nvim_create_autocmd('LspDetach', {
-  group = augroup,
-  callback = lspdetach_cb,
-  desc = 'Called when a LSP server detaches from buffer'
-})
 
 vim.diagnostic.config({
   float = {

@@ -5,16 +5,11 @@ require('my.settings')
 require('my.autocmds')
 require('my.keymaps')
 require('my.commands')
-require('my.lsp')
 if vim.fn.has('gui_running') == 1 then require('my.gui') end
+-- determining bg etc. via termresponse can take non-nil time
+vim.defer_fn(function() require('my.colors') end, 250)
 
--- BUG: https://github.com/neovim/neovim/issues/36416
-vim.api.nvim_create_autocmd('OptionSet', {
-  pattern = 'background',
-  callback = function() require('my.colors') end,
-})
-
--- put configurations for these in `./after/plugins`, so plugin runtimes have been sourced
+-- put configs in `./after/plugins`, so their runtimes have been sourced
 vim.pack.add({
   'https://github.com/neovim/nvim-lspconfig',
   'https://github.com/mason-org/mason.nvim',
@@ -33,4 +28,5 @@ vim.pack.add({
   'https://github.com/tpope/vim-fugitive',
   'https://github.com/lewis6991/gitsigns.nvim',
 })
+vim.cmd([[command! PackUpdate lua vim.pack.update()]])
 vim.cmd.packadd('nohlsearch')
