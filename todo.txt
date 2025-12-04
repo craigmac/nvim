@@ -6,6 +6,9 @@ TODO {{{1
 
 BACKLOG {{{1
 
+- implemented lastchange update on save of .vim/VIMRUNTIME files:
+  `:map <F2> msHmtgg/Last [cC]hange:\s*/e+1<CR>"_D"=strftime("%Y %b %d")<CR>p'tzt`s
+- `[Process exited 0]` on TermClose, just close it!
 - fix commands.lua TitleCaseLine etc. working on Vim but not here
 - set when in nvim: `vim.o.completefuzzycollect = 'keyword,files,whole_line'`
 - setup `:h fuzzy-file-picker` in case fzf-lua unavailable
