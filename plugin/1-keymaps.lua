@@ -10,6 +10,10 @@ vim.keymap.set('n', '<Leader>u', function()
 end)
 vim.keymap.set('n', '<Leader>t', function() vim.cmd.split(vim.fn.stdpath('config')..'/todo.txt') end )
 
+-- $vimruntime/lua/vim/_defaults.lua doesn't includes these vim-unimpaired maps
+vim.keymap.set('x', '[e', ":m '<-2 <bar> normal! gv<CR>")
+vim.keymap.set('x', ']e', ":m '>+1 <bar> normal! gv<CR>")
+
 -- fallbacks, these are overwritten by fzf-lua when it's installed
 vim.keymap.set('n', '<Leader>b', ':<C-u>buffer<Space>')
 vim.keymap.set('n', '<Leader>f', ':<C-u>find<Space>')

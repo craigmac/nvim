@@ -5,7 +5,7 @@
       "src": "https://github.com/glacambre/firenvim"
     },
     "fzf-lua": {
-      "rev": "cae96b04f6cad98a3ad24349731df5e56b384c3c",
+      "rev": "f6d949549cc43fb5d35ef43db56f03131da469a7",
       "src": "https://github.com/ibhagwan/fzf-lua"
     },
     "gitsigns.nvim": {
@@ -17,7 +17,7 @@
       "src": "https://github.com/mason-org/mason.nvim"
     },
     "nvim-lspconfig": {
-      "rev": "effe4bf2e1afb881ea67291c648b68dd3dfc927a",
+      "rev": "9c923997123ff9071198ea3b594d4c1931fab169",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-surround": {
@@ -25,42 +25,18 @@
       "src": "https://github.com/kylechui/nvim-surround"
     },
     "nvim-treesitter": {
-      "rev": "00c906abb9550e72bc0c640545b5499b9525bb40",
+      "rev": "75797cdd8ac125c7ace065b17788b439dcf89a71",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
     },
     "nvim-treesitter-textobjects": {
-      "rev": "63c4dce4a56312ef1bdeafd16bdefa008fcc950a",
+      "rev": "dfbf9596f8aa8b4bed5301647485594ff7252955",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
       "version": "'main'"
     },
     "smart-splits.nvim": {
-      "rev": "e892a5da963813119d053af5b2260e3cd9d9f037",
+      "rev": "076426b93a0654b6e1467258514dd9021a5e33e2",
       "src": "https://github.com/mrjones2014/smart-splits.nvim"
-    },
-    "vim-easy-align": {
-      "rev": "9815a55dbcd817784458df7a18acacc6f82b1241",
-      "src": "https://github.com/junegunn/vim-easy-align"
-    },
-    "vim-fugitive": {
-      "rev": "61b51c09b7c9ce04e821f6cf76ea4f6f903e3cf4",
-      "src": "https://github.com/tpope/vim-fugitive"
-    },
-    "vim-qf": {
-      "rev": "7cafff6a9e0a1b54364b26a87f1efe749f8fb96b",
-      "src": "https://github.com/romainl/vim-qf"
-    },
-    "vim-repeat": {
-      "rev": "65846025c15494983dafe5e3b46c8f88ab2e9635",
-      "src": "https://github.com/tpope/vim-repeat"
-    },
-    "vim-rsi": {
-      "rev": "45540637ead22f011e8215f1c90142e49d946a54",
-      "src": "https://github.com/tpope/vim-rsi"
-    },
-    "vim-unimpaired": {
-      "rev": "db65482581a28e4ccf355be297f1864a4e66985c",
-      "src": "https://github.com/tpope/vim-unimpaired"
     }
   }
 }

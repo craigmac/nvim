@@ -1,11 +1,17 @@
 TODO {{{1
 
 - TSInstall is hanging/not working on Windows? install treesitter-cli
-- FZFLua colors not right under gui, there's a setting for it
 - try lua vim.treesitter.start() on all FileType
+- FZFLua colors not right under gui, is there a setting for it?
+- install that plugin from reddit that shows state of linked issues in the
+  buffer via virtualtext so we don't need to track them ourselves
 
 BACKLOG {{{1
 
+- let's map s/S/C-s to gh,gH,g_CTRL-H (char/line/block Select mode)?
+- add indenting current visual selecting on [e and ]e as well
+- add yo<key> toggles that I use for boolean options
+- investigate how vim-unimpaired does >p and =p 
 - implemented lastchange update on save of .vim/VIMRUNTIME files:
   `:map <F2> msHmtgg/Last [cC]hange:\s*/e+1<CR>"_D"=strftime("%Y %b %d")<CR>p'tzt`s
 - `[Process exited 0]` on TermClose, just close it!

@@ -1,8 +1,9 @@
-local M = {}
+-- Create a global scope
+_G.My = {}
 
 ---@param n integer tabpage number to create label for
 ---@return string # label for tabpage `n`
-function M.TabLabel(n)
+function My.TabLabel(n)
   local buflist = vim.fn.tabpagebuflist(n)
   local winnr = vim.fn.tabpagewinnr(n)
   local bufname = vim.fn.bufname(buflist[winnr])
@@ -13,7 +14,7 @@ function M.TabLabel(n)
 end
 
 ---@return string # stl-format string
-function M.TabLine()
+function My.TabLine()
   local s = {}
   for i = 1, vim.fn.tabpagenr('$') do
     local active_tab = i == vim.fn.tabpagenr()
@@ -44,7 +45,7 @@ end
 ---* using `%{ ... }` for an expr is simpler, but if the expr returns %f it isn't re-evaluated
 ---  as an stl-format string. just always use %{% %} and forget about it
 ---@return string # `:help 'stl` format string
-function M.StatusLine()
+function My.StatusLine()
   -- stylua: ignore start
   local stl_parts = {
     "%( %{% toupper(mode() == '' ? 'b' : mode()) .. ' │'              %}%)",
@@ -77,7 +78,7 @@ end
 ---
 ---Evaluated when searching for file names using the `:find` command
 ---@return string[] results Array of files found
-function M.FindFunc(name)
+function My.FindFunc(name)
   local search_pattern = name or '.'
   local cmd = vim.list_extend({
     'rg',
@@ -93,18 +94,17 @@ end
 
 -- Using builtin glob() example (vim script):
 --[[
-function! FindFuncGlob(cmdarg, cmdcomplete)
+function My.FindFuncGlob(cmdarg, cmdcomplete)
   let pat = a:cmdcomplete ? $'{a:cmdarg}*' : a:cmdarg
   return glob(pat, v:false, v:true)
 endfunction
-set findfunc=FindFuncGlob
+set findfunc="v:lua.My.FindFuncGlob"
 
 -- Use the 'git ls-files' output
-function FindGitFiles(cmdarg, cmdcomplete)
+function My.FindGitFiles(cmdarg, cmdcomplete)
   let fnames = systemlist('git ls-files')
   return fnames->filter('v:val =~? a:cmdarg')
 endfunction
-set findfunc=FindGitFiles
+set findfunc="v:lua.My.FindGitFiles"
 --]]
 
-return M

@@ -67,7 +67,7 @@ vim.o.smoothscroll = true
 -- searching/matching
 vim.o.ignorecase = true
 vim.o.smartcase = true
-vim.o.findfunc = "v:lua.require'my.functions'.FindFunc"
+vim.o.findfunc = "v:lua.My.FindFunc"
 vim.o.inccommand = 'split'
 vim.o.pumheight = 10
 vim.o.shortmess = vim.o.shortmess
@@ -100,7 +100,7 @@ vim.o.foldlevelstart = 99
 -- always save 1 column space for signs - default 'auto' pops column in/out as needed if we are really tight on space
 vim.o.signcolumn = 'yes:1'
 -- `%!` here means use string as an expression: eval it, and use the result as the option value
-vim.o.statusline = "%!v:lua.require'my.functions'.StatusLine()"
+vim.o.statusline = "%!v:lua.My.StatusLine()"
 
 -- default is 20, and so doesn't respect &equalalways
 vim.o.helpheight = 0
@@ -113,7 +113,7 @@ vim.o.autocomplete = true
 vim.o.complete = 'o^10,.^10,w^5,b^5'
 vim.o.completeopt = 'menuone,popup,fuzzy,noselect'
 -- special `:h v:lua` required here to pass lua callback name, see `:h option-value-function`
-vim.o.findfunc = "v:lua.require'my.functions'.FindFunc"
+vim.o.findfunc = "v:lua.My.FindFunc"
 vim.o.wildmode = 'noselect:lastused,full'
 vim.o.wildoptions = 'exacttext,fuzzy,pum,tagfile'
 
@@ -147,4 +147,6 @@ if vim.fn.has('win32') == 1 then
   -- vim.o.shellredir = '2>&1 | %%{ "$_" } | Out-File %s; exit $LastExitCode'
   vim.o.shellredir = '>%s 2>&1'
 end
+
+vim.cmd.packadd('nohlsearch')
 
